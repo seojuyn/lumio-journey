@@ -1,0 +1,16 @@
+.range-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.range-label { font-size: 12px; color: var(--text1); font-weight: 500; }
+.range-val   { font-family: var(--font-display); font-size: 24px; font-weight: 900; color: var(--text0); }
+
+.range-minmax {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 18px;
+}

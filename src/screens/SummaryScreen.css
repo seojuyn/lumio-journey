@@ -1,0 +1,125 @@
+.svc-demo-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r8);
+  padding: 4px;
+  width: fit-content;
+  align-items: center;
+}
+
+.svc-demo-btn {
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: var(--font-body);
+}
+
+.anika-hero {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.ah-top {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ah-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.ah-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.ah-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 6px;
+}
+
+.ah-narrative {
+  font-size: 13.5px;
+  color: var(--text1);
+  line-height: 1.65;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.metric-box {
+  background: var(--bg3);
+  border-radius: var(--r8);
+  padding: 12px 14px;
+}
+
+.metric-lbl { font-size: 11px; color: var(--text2); margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+.metric-val { font-size: 18px; font-weight: 800; color: var(--text0); font-family: var(--font-display); margin-bottom: 2px; }
+.metric-sub { font-size: 10.5px; color: var(--text2); }
+
+.ah-bottom {
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dti-track {
+  height: 6px;
+  background: var(--bg3);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.dti-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width .4s ease, background .3s;
+}
+
+.dti-narrative {
+  font-size: 13px;
+  color: var(--text1);
+  line-height: 1.65;
+  background: var(--bg3);
+  border-radius: var(--r8);
+  padding: 12px 14px;
+}
+
+.submit-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .ah-row { flex-direction: column; }
+  .submit-card { flex-direction: column; align-items: flex-start; }
+}

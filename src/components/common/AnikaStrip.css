@@ -1,0 +1,47 @@
+.anika-strip {
+  background: rgba(79, 110, 247, .07);
+  border: 1px solid rgba(79, 110, 247, .2);
+  border-radius: var(--r16);
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.ai-orb {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: var(--accentg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  font-family: var(--font-display);
+}
+
+.ai-txt {
+  font-size: 12.5px;
+  color: var(--text1);
+  line-height: 1.65;
+}
+.ai-txt strong { color: var(--text0); }
+
+.ai-orb-lg {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: var(--accentg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  font-family: var(--font-display);
+}

@@ -1,0 +1,7 @@
+.joint-panel {
+  background: rgba(79, 110, 247, .06);
+  border: 1px solid rgba(79, 110, 247, .2);
+  border-radius: var(--r12);
+  padding: 16px;
+  margin-top: 12px;
+}

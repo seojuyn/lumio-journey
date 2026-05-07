@@ -1,0 +1,65 @@
+.choice-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.choice-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.choice-grid-6 { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+
+.choice-card {
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  padding: 18px 16px;
+  cursor: pointer;
+  background: var(--bg2);
+  transition: all .18s;
+  position: relative;
+  text-align: center;
+}
+.choice-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+.choice-card.on    { border-color: rgba(79,110,247,.55); background: rgba(79,110,247,.08); }
+
+.cc-check {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: transparent;
+  transition: all .15s;
+}
+.choice-card.on .cc-check {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.cc-icon   { font-size: 26px; margin-bottom: 10px; }
+.cc-title  { font-family: var(--font-display); font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.cc-desc   { font-size: 11.5px; color: var(--text1); line-height: 1.4; }
+
+/* Cond card variant */
+.cond-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+.cond-card {
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  padding: 18px 14px;
+  cursor: pointer;
+  background: var(--bg2);
+  transition: all .18s;
+  text-align: center;
+  position: relative;
+}
+.cond-card:hover { border-color: var(--border2); }
+.cond-card.on { border-color: rgba(79,110,247,.5); background: rgba(79,110,247,.07); }
+.cond-card .cc-check { position: absolute; top: 10px; right: 10px; }
+
+@media (max-width: 900px) {
+  .choice-grid-2 { grid-template-columns: 1fr; }
+  .choice-grid-3 { grid-template-columns: 1fr 1fr; }
+  .choice-grid-6 { grid-template-columns: repeat(3, 1fr); }
+  .cond-grid     { grid-template-columns: 1fr 1fr; }
+}

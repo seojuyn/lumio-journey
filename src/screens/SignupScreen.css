@@ -1,0 +1,23 @@
+.otp-inputs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+  justify-content: center;
+}
+
+.otp-inp {
+  width: 48px;
+  height: 56px;
+  border-radius: var(--r8);
+  border: 1.5px solid var(--border2);
+  background: var(--bg3);
+  color: var(--text0);
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+  font-family: var(--font-display);
+  outline: none;
+  transition: border-color .15s;
+  caret-color: var(--accent);
+}
+.otp-inp:focus { border-color: var(--accent); }

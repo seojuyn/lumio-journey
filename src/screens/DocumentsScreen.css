@@ -1,0 +1,108 @@
+.ob-panel { padding: 4px 0 8px; }
+
+.banks-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.bank-btn {
+  border: 1px solid var(--border);
+  border-radius: var(--r8);
+  padding: 10px 8px;
+  cursor: pointer;
+  text-align: center;
+  background: var(--bg3);
+  transition: all .15s;
+}
+.bank-btn:hover { border-color: var(--border2); }
+.bank-btn.on { border-color: rgba(79,110,247,.5); background: rgba(79,110,247,.1); }
+
+.bank-icon { font-size: 18px; margin-bottom: 4px; }
+.bank-name { font-size: 11px; font-weight: 700; color: var(--text1); }
+
+.ob-connect-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--accentg);
+  border: none;
+  border-radius: var(--r8);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .15s;
+  margin-bottom: 12px;
+  font-family: var(--font-body);
+}
+.ob-connect-btn:disabled { opacity: .4; cursor: not-allowed; }
+.ob-connect-btn:not(:disabled):hover { opacity: .85; }
+
+.ob-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--text2);
+  margin-bottom: 12px;
+}
+.ob-line { flex: 1; height: 1px; background: var(--border); }
+
+.upload-zone {
+  border: 1.5px dashed var(--border2);
+  border-radius: var(--r8);
+  padding: 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s;
+  margin-bottom: 8px;
+}
+.upload-zone:hover { border-color: var(--accent); }
+.upload-zone.done { border-color: var(--green); background: var(--greenbg); }
+
+.uz-icon { font-size: 22px; margin-bottom: 6px; }
+.uz-title { font-size: 13px; font-weight: 700; color: var(--text0); margin-bottom: 3px; }
+.uz-sub { font-size: 11.5px; color: var(--text2); }
+
+.ob-connected {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--greenbg);
+  border: 1px solid var(--greenborder);
+  border-radius: var(--r8);
+  padding: 14px 16px;
+  margin-top: 10px;
+}
+
+.doc-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.doc-item:last-of-type { border-bottom: none; }
+
+.doc-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r8);
+  background: var(--bg3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.doc-info { flex: 1; min-width: 0; }
+.doc-name { font-size: 13px; font-weight: 700; color: var(--text0); margin-bottom: 2px; }
+.doc-sub { font-size: 11.5px; color: var(--text2); }
+
+.doc-action { flex-shrink: 0; }
+
+@media (max-width: 900px) {
+  .banks-grid { grid-template-columns: repeat(4, 1fr); }
+}

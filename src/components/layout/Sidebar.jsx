@@ -1,0 +1,78 @@
+import { useMemo } from 'react';
+import { useApp } from '../../context/AppContext';
+import { SCREENS, TRUST_SIDEBAR } from '../../constants/screens';
+import './Sidebar.css';
+
+export function Sidebar() {
+  const { state, goTo } = useApp();
+  const { currentScreen, completedScreens } = state;
+
+  const pct = ((currentScreen + 1) / SCREENS.length) * 100;
+
+  const groups = useMemo(() => {
+    const result = [];
+    let lastGroup = '';
+    SCREENS.forEach((s, i) => {
+      if (s.group !== lastGroup) {
+        result.push({ type: 'group', label: s.group });
+        lastGroup = s.group;
+      }
+      const isActive = i === currentScreen;
+      const isCompleted = completedScreens.includes(i);
+      const isLocked = i > currentScreen && !isCompleted;
+      result.push({ type: 'item', screen: s, index: i, isActive, isCompleted, isLocked });
+    });
+    return result;
+  }, [currentScreen, completedScreens]);
+
+  return (
+    <div className="sidebar" id="sidebar">
+      <div className="sidebar-brand">
+        <div className="brand-logo">
+          <div className="brand-icon">Ax</div>
+          <div className="brand-name">Axio Finance</div>
+        </div>
+        <div className="brand-tag">Consumer Quote Journey · Finance for the new generation</div>
+      </div>
+
+      <div className="sidebar-progress">
+        <div className="progress-label">
+          <span>Journey progress</span>
+          <span>{currentScreen + 1} / {SCREENS.length}</span>
+        </div>
+        <div className="progress-track">
+          <div className="progress-fill" style={{ width: `${pct.toFixed(1)}%` }} />
+        </div>
+      </div>
+
+      <nav className="nav-list">
+        {groups.map((item, idx) =>
+          item.type === 'group' ? (
+            <div key={`group-${idx}`} className="nav-group-label">{item.label}</div>
+          ) : (
+            <div
+              key={item.index}
+              className={`nav-item${item.isActive ? ' active' : ''}${item.isCompleted ? ' completed' : ''}${item.isLocked ? ' locked' : ''}`}
+              onClick={() => !item.isLocked && goTo(item.index)}
+            >
+              <div className="nav-num">
+                {item.isCompleted ? '' : item.index + 1}
+              </div>
+              <span className="nav-label">{item.screen.label}</span>
+              <span className="nav-dot" />
+            </div>
+          )
+        )}
+      </nav>
+
+      <div className="sidebar-trust">
+        {TRUST_SIDEBAR.map((t, i) => (
+          <div key={i} className="trust-item">
+            <span className="trust-icon">{t.icon}</span>
+            {t.text}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

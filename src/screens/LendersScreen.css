@@ -1,0 +1,10 @@
+.lender-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .lender-grid { grid-template-columns: 1fr; }
+}

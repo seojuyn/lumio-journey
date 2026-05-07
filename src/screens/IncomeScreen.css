@@ -1,0 +1,30 @@
+.income-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-bottom: 16px; }
+
+.itc {
+  border: 1px solid var(--border); border-radius: var(--r12);
+  padding: 14px; cursor: pointer; background: var(--bg2);
+  transition: all .15s; position: relative;
+}
+.itc:hover { border-color: var(--border2); }
+.itc.on    { border-color: rgba(79,110,247,.5); background: rgba(79,110,247,.1); }
+
+.itc-check {
+  position: absolute; top: 10px; right: 10px;
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--border2); font-size: 9px; color: transparent;
+  display: flex; align-items: center; justify-content: center;
+}
+.itc.on .itc-check { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.itc-icon  { font-size: 20px; margin-bottom: 7px; }
+.itc-label { font-size: 12.5px; font-weight: 700; margin-bottom: 2px; font-family: var(--font-display); }
+.itc-hint  { font-size: 11px; color: var(--text2); }
+
+.income-entries { margin-bottom: 10px; }
+.income-entry { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r12); padding: 14px; margin-bottom: 10px; }
+.income-entry-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.income-entry-label { font-weight: 700; font-family: var(--font-display); font-size: 13.5px; }
+
+@media (max-width: 900px) {
+  .income-type-grid { grid-template-columns: 1fr 1fr; }
+}
