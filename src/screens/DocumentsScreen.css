@@ -1,4 +1,652 @@
-/* ─── Hero section ─────────────────────────────────────────────── */
+/* ─── Bank section: connected card ─────────────────────────────── */
+.bank-connected-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--greenbg);
+  border: 1px solid var(--greenborder);
+  border-radius: var(--r22);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.bank-connected-icon { color: var(--green); flex-shrink: 0; }
+.bank-connected-body { flex: 1; min-width: 0; }
+.bank-connected-title { font-size: 13.5px; font-weight: 700; color: var(--text0); margin-bottom: 2px; }
+.bank-connected-sub   { font-size: 12px; color: var(--text2); }
+
+.bank-connected-disconnect {
+  background: none;
+  border: 1px solid var(--greenborder);
+  border-radius: var(--r8);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.bank-connected-disconnect:hover { background: rgba(16, 185, 129, 0.12); }
+
+/* ─── Bank section: active flow ────────────────────────────────── */
+.bank-section { margin-bottom: 20px; }
+
+/* Hero card */
+.bank-hero {
+  background: linear-gradient(135deg, var(--bg0) 0%, #2b0d60 50%, var(--accent) 100%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r22);
+  padding: 20px 22px;
+  margin-bottom: 12px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.bank-hero-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.bank-hero-copy { flex: 1; min-width: 0; }
+
+.bank-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text1);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+
+.bank-hero-title { font-size: 19px; font-weight: 700; color: var(--text0); margin-bottom: 6px; line-height: 1.2; }
+.bank-hero-desc  { font-size: 12.5px; color: var(--text1); line-height: 1.65; margin: 0 0 12px; }
+
+.bank-hero-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.bank-hero-chip {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text1);
+}
+
+.bank-hero-icon-wrap {
+  width: 50px; height: 50px; min-width: 50px;
+  border-radius: var(--r16);
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text0);
+  flex-shrink: 0;
+}
+
+/* Flow grid */
+.bank-flow-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .bank-flow-grid { grid-template-columns: 1fr 274px; }
+}
+
+.bank-flow-main { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+/* Progress card */
+.bank-progress-card {
+  background: rgba(23, 16, 47, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r22);
+  padding: 14px 18px;
+  box-shadow: var(--card-shadow);
+}
+
+.bank-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.bank-progress-label { font-size: 11.5px; font-weight: 600; color: var(--text1); }
+.bank-progress-pct   { font-size: 12px; font-weight: 700; color: var(--hover); }
+
+.bank-progress-track {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.bank-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--cta) 0%, var(--accent2) 100%);
+}
+
+.bank-step-pills {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.bank-step-pills::-webkit-scrollbar { display: none; }
+
+.bank-step-pill {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: rgba(30, 27, 75, 0.5);
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+.bank-step-pill.active {
+  background: var(--accentg);
+  border-color: transparent;
+  color: #fff;
+}
+.bank-step-pill.done {
+  background: rgba(16, 185, 129, 0.10);
+  border-color: var(--greenborder);
+  color: var(--green);
+}
+
+/* Content card */
+.bank-content-card {
+  background: rgba(23, 16, 47, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r22);
+  padding: 20px 22px;
+  box-shadow: var(--card-shadow);
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bank-content-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bank-content-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--hover);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 4px;
+}
+
+.bank-content-title { font-size: 18px; font-weight: 700; color: var(--text0); }
+
+.bank-content-step-icon {
+  width: 40px; height: 40px; min-width: 40px;
+  border-radius: var(--r12);
+  background: rgba(126, 34, 206, 0.12);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--hover);
+}
+
+.bank-step-body { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+/* Internal step nav */
+.bank-step-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.bank-nav-back {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: var(--r12);
+  border: 1px solid var(--border2);
+  background: rgba(30, 27, 75, 0.4);
+  color: var(--text1);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all .15s;
+  white-space: nowrap;
+}
+.bank-nav-back:hover  { border-color: var(--hover); color: var(--text0); }
+.bank-nav-back:disabled { opacity: .35; cursor: not-allowed; }
+
+.bank-nav-next {
+  flex: 1;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: var(--r12);
+  border: none;
+  background: var(--accentg);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.35);
+  transition: box-shadow .18s, transform .18s;
+}
+.bank-nav-next:hover    { box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5); transform: translateY(-1px); }
+.bank-nav-next:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* ─── Step 0: Intro ─────────────────────────────────────────────── */
+.bank-intro-box {
+  background: rgba(126, 34, 206, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: var(--r16);
+  padding: 16px;
+}
+.bank-intro-box-title { font-size: 13.5px; font-weight: 700; color: var(--text0); margin-bottom: 6px; }
+.bank-intro-box-desc  { font-size: 12.5px; color: var(--text2); line-height: 1.65; margin: 0; }
+
+.bank-benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.bank-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(23, 16, 47, 0.6);
+  border: 1px solid var(--border);
+  border-radius: var(--r12);
+  padding: 12px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text1);
+}
+.bank-benefit-icon { color: var(--hover); flex-shrink: 0; }
+
+/* ─── Step 1: Banks ─────────────────────────────────────────────── */
+.bank-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(30, 27, 75, 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--r12);
+  padding: 10px 14px;
+}
+.bank-search-icon  { color: var(--text2); flex-shrink: 0; }
+.bank-search-input {
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text0);
+  font-family: var(--font-body);
+  width: 100%;
+}
+.bank-search-input::placeholder { color: var(--text2); }
+
+.bank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+
+.bank-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(23, 16, 47, 0.6);
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  padding: 11px 13px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  transition: border-color .15s, background .15s;
+}
+.bank-btn:hover  { border-color: var(--border2); background: rgba(139, 92, 246, 0.06); }
+.bank-btn.active { border-color: var(--accent2); background: rgba(126, 34, 206, 0.10); }
+
+.bank-btn-left { display: flex; align-items: center; gap: 9px; min-width: 0; }
+
+.bank-btn-icon {
+  width: 34px; height: 34px; min-width: 34px;
+  border-radius: var(--r8);
+  background: rgba(30, 27, 75, 0.8);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--hover);
+}
+
+.bank-btn-name { font-size: 12px; font-weight: 700; color: var(--text0); margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bank-btn-type { font-size: 10.5px; font-weight: 500; color: var(--text2); }
+.bank-btn-check       { color: var(--text2); flex-shrink: 0; }
+.bank-btn-check.active { color: var(--green); }
+
+.bank-warn {
+  background: var(--yellowbg);
+  border: 1px solid var(--yellowborder);
+  border-radius: var(--r12);
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--yellow);
+}
+
+/* ─── Step 2: Period ────────────────────────────────────────────── */
+.bank-period-desc { font-size: 12.5px; color: var(--text2); line-height: 1.6; margin: 0; }
+
+.bank-period-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+.bank-period-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 8px;
+  background: rgba(23, 16, 47, 0.6);
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.bank-period-option:hover  { border-color: var(--border2); }
+.bank-period-option.active {
+  border-color: var(--accent2);
+  background: var(--accentg);
+  box-shadow: 0 4px 16px rgba(109, 40, 217, 0.35);
+}
+
+.bank-period-num  { font-size: 26px; font-weight: 700; color: var(--text0); line-height: 1; }
+.bank-period-unit { font-size: 11px; font-weight: 600; color: var(--text1); margin-top: 4px; }
+.bank-period-option.active .bank-period-num,
+.bank-period-option.active .bank-period-unit { color: #fff; }
+
+.bank-period-note {
+  background: rgba(23, 16, 47, 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  padding: 14px 16px;
+}
+.bank-period-note-title { font-size: 13px; font-weight: 700; color: var(--text0); margin-bottom: 5px; }
+.bank-period-note-desc  { font-size: 12px; color: var(--text2); line-height: 1.6; margin: 0; }
+
+/* ─── Step 3: Consent ───────────────────────────────────────────── */
+.bank-consent-info {
+  background: rgba(126, 34, 206, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: var(--r16);
+  padding: 14px 16px;
+}
+.bank-consent-info-title { font-size: 13px; font-weight: 700; color: var(--text0); margin-bottom: 5px; }
+.bank-consent-info-desc  { font-size: 12px; color: var(--text2); line-height: 1.6; margin: 0; }
+
+.bank-consent-items { display: flex; flex-direction: column; gap: 7px; }
+
+.bank-consent-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(23, 16, 47, 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--r12);
+  padding: 12px 14px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: border-color .15s;
+}
+.bank-consent-item:hover { border-color: var(--border2); }
+
+.bank-consent-checkbox {
+  width: 16px; height: 16px; min-width: 16px;
+  accent-color: var(--accent2);
+  margin-top: 1px;
+  cursor: pointer;
+}
+
+.bank-consent-label { font-size: 12.5px; font-weight: 500; color: var(--text1); line-height: 1.55; }
+
+/* ─── Step 4: Connect ───────────────────────────────────────────── */
+.bank-connect-info {
+  background: rgba(23, 16, 47, 0.7);
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  padding: 14px 16px;
+}
+.bank-connect-info-title { font-size: 13px; font-weight: 700; color: var(--text0); margin-bottom: 5px; }
+.bank-connect-info-desc  { font-size: 12px; color: var(--text2); line-height: 1.6; margin: 0; }
+
+.bank-connect-list { display: flex; flex-direction: column; gap: 7px; }
+
+.bank-connect-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(23, 16, 47, 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--r12);
+  padding: 12px 14px;
+}
+
+.bank-connect-item-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
+.bank-connect-item-icon {
+  width: 34px; height: 34px; min-width: 34px;
+  border-radius: var(--r8);
+  background: rgba(126, 34, 206, 0.10);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--hover);
+}
+
+.bank-connect-item-name { font-size: 13px; font-weight: 700; color: var(--text0); margin-bottom: 1px; }
+.bank-connect-item-sub  { font-size: 11px; font-weight: 500; color: var(--text2); }
+
+.bank-connect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: var(--r8);
+  border: none;
+  background: var(--accentg);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  box-shadow: 0 3px 10px rgba(109, 40, 217, 0.3);
+  transition: box-shadow .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.bank-connect-btn:hover { box-shadow: 0 5px 16px rgba(109, 40, 217, 0.45); }
+.bank-connect-btn.done {
+  background: var(--greenbg);
+  border: 1px solid var(--greenborder);
+  color: var(--green);
+  box-shadow: none;
+}
+
+.bank-connect-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--text2);
+}
+.bank-connect-line { flex: 1; height: 1px; background: var(--border); }
+
+.bank-pdf-zone {
+  border: 1.5px dashed var(--border2);
+  border-radius: var(--r16);
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(30, 27, 75, 0.3);
+  transition: border-color .15s, background .15s;
+}
+.bank-pdf-zone:hover  { border-color: var(--hover); background: rgba(139, 92, 246, 0.06); }
+.bank-pdf-zone.done   { border-style: solid; border-color: var(--greenborder); background: var(--greenbg); }
+
+.bank-pdf-zone-icon  { color: var(--text2); display: block; margin: 0 auto 6px; }
+.bank-pdf-zone-title { font-size: 13px; font-weight: 600; color: var(--text0); margin-bottom: 3px; }
+.bank-pdf-zone-sub   { font-size: 11.5px; color: var(--text2); }
+
+/* ─── Step 5: Review ────────────────────────────────────────────── */
+.bank-review-hero {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--greenbg);
+  border: 1px solid var(--greenborder);
+  border-radius: var(--r16);
+  padding: 14px 16px;
+}
+.bank-review-hero-icon  { color: var(--green); flex-shrink: 0; margin-top: 1px; }
+.bank-review-hero-title { font-size: 14px; font-weight: 700; color: var(--green); margin-bottom: 4px; }
+.bank-review-hero-desc  { font-size: 12px; color: var(--text2); line-height: 1.55; margin: 0; }
+
+.bank-review-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+.bank-review-metric {
+  background: rgba(23, 16, 47, 0.6);
+  border: 1px solid var(--border);
+  border-radius: var(--r12);
+  padding: 12px 14px;
+}
+.bank-review-metric.green  { background: var(--greenbg);          border-color: var(--greenborder);       }
+.bank-review-metric.yellow { background: var(--yellowbg);         border-color: var(--yellowborder);      }
+.bank-review-metric.accent { background: rgba(126, 34, 206, 0.10); border-color: rgba(139, 92, 246, 0.25); }
+
+.bank-review-metric-label { font-size: 10.5px; font-weight: 600; color: var(--text2); margin-bottom: 5px; }
+.bank-review-metric-value { font-size: 20px; font-weight: 700; }
+.bank-review-metric.green  .bank-review-metric-value { color: var(--green); }
+.bank-review-metric.yellow .bank-review-metric-value { color: var(--yellow); }
+.bank-review-metric.accent .bank-review-metric-value { color: var(--hover); }
+
+.bank-review-checks {
+  background: rgba(23, 16, 47, 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  padding: 14px 16px;
+}
+.bank-review-checks-title { font-size: 13px; font-weight: 700; color: var(--text0); margin-bottom: 10px; }
+.bank-review-checks-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.bank-review-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text1);
+}
+.bank-review-check-icon { color: var(--green); flex-shrink: 0; }
+
+/* ─── Bank summary panel (desktop) ─────────────────────────────── */
+.bank-summary-panel {
+  display: none;
+  background: rgba(23, 16, 47, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r22);
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  position: sticky;
+  top: 24px;
+}
+
+@media (min-width: 900px) {
+  .bank-summary-panel { display: block; }
+}
+
+.bank-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bank-summary-icon {
+  width: 42px; height: 42px; min-width: 42px;
+  border-radius: var(--r12);
+  background: rgba(126, 34, 206, 0.12);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--hover);
+}
+
+.bank-summary-eyebrow { font-size: 10px; font-weight: 700; color: var(--hover); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+.bank-summary-title   { font-size: 15px; font-weight: 700; color: var(--text0); }
+
+.bank-summary-stats { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+
+.bank-summary-stat {
+  border-radius: var(--r12);
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+}
+.bank-summary-stat.accent { background: rgba(126, 34, 206, 0.10); border-color: rgba(139, 92, 246, 0.25); }
+.bank-summary-stat.muted  { background: rgba(23, 16, 47, 0.5); }
+.bank-summary-stat.green  { background: var(--greenbg); border-color: var(--greenborder); }
+.bank-summary-stat.yellow { background: var(--yellowbg); border-color: var(--yellowborder); }
+
+.bank-summary-stat-label { font-size: 10.5px; font-weight: 600; color: var(--text2); margin-bottom: 4px; }
+.bank-summary-stat-value { font-size: 18px; font-weight: 700; color: var(--text0); }
+.bank-summary-stat.accent .bank-summary-stat-value { color: var(--hover); }
+.bank-summary-stat.green  .bank-summary-stat-value { color: var(--green); }
+.bank-summary-stat.yellow .bank-summary-stat-value { color: var(--yellow); }
+
+.bank-summary-anika {
+  background: rgba(10, 5, 20, 0.65);
+  border: 1px solid var(--border);
+  border-radius: var(--r16);
+  padding: 14px;
+}
+.bank-summary-anika-title { font-size: 12px; font-weight: 700; color: var(--hover); margin-bottom: 6px; }
+.bank-summary-anika-desc  { font-size: 11.5px; color: var(--text2); line-height: 1.6; margin: 0; }
+
+/* ─── Section divider ───────────────────────────────────────────── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 14px;
+}
+.section-divider-line { flex: 1; height: 1px; background: var(--border); }
+.section-divider-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+/* ─── Legacy hero section (removed, kept for compat) ────────────── */
 .doc-hero {
   background: linear-gradient(135deg, #0f0520 0%, var(--bg1) 45%, #2b0d60 100%);
   border: 1px solid var(--glass-border);

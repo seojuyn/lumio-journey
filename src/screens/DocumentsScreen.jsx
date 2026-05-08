@@ -6,82 +6,49 @@ import { ScreenHeader } from '../components/common/ScreenHeader';
 import { BtnPrimary, BtnGhost, BtnRow } from '../components/common/Button';
 import './DocumentsScreen.css';
 
+// ─── Document upload data ─────────────────────────────────────────────────────
+
 const DOCUMENTS = [
   {
-    id: 'driver_front',
-    group: 'Identity',
-    title: 'Driver Licence Front',
-    subtitle: 'Capture the front side of your licence',
-    icon: 'Wallet',
-    required: true,
-    defaultStatus: 'not_started',
-    stateKey: 'licence',
+    id: 'driver_front', group: 'Identity',
+    title: 'Driver Licence Front', subtitle: 'Capture the front side of your licence',
+    icon: 'Wallet', required: true, defaultStatus: 'not_started', stateKey: 'licence',
     extracted: ['Full name', 'Date of birth', 'Licence number'],
   },
   {
-    id: 'driver_back',
-    group: 'Identity',
-    title: 'Driver Licence Back',
-    subtitle: 'Capture the back side for address check',
-    icon: 'Wallet',
-    required: true,
-    defaultStatus: 'not_started',
-    stateKey: 'licence',
+    id: 'driver_back', group: 'Identity',
+    title: 'Driver Licence Back', subtitle: 'Capture the back side for address check',
+    icon: 'Wallet', required: true, defaultStatus: 'not_started', stateKey: 'licence',
     extracted: ['Residential address', 'Card number', 'Expiry date'],
   },
   {
-    id: 'passport',
-    group: 'Identity',
-    title: 'Passport',
-    subtitle: 'Photo page or PDF copy accepted',
-    icon: 'BookMarked',
-    required: false,
-    defaultStatus: 'not_started',
-    stateKey: null,
+    id: 'passport', group: 'Identity',
+    title: 'Passport', subtitle: 'Photo page or PDF copy accepted',
+    icon: 'BookMarked', required: false, defaultStatus: 'not_started', stateKey: null,
     extracted: ['Passport number', 'Country', 'Expiry date'],
   },
   {
-    id: 'medicare',
-    group: 'Identity',
-    title: 'Medicare Card',
-    subtitle: 'Used as supporting identity verification',
-    icon: 'Shield',
-    required: true,
-    defaultStatus: 'not_started',
-    stateKey: 'medicare',
+    id: 'medicare', group: 'Identity',
+    title: 'Medicare Card', subtitle: 'Used as supporting identity verification',
+    icon: 'Shield', required: true, defaultStatus: 'not_started', stateKey: 'medicare',
     extracted: ['Medicare number', 'Reference number', 'Expiry'],
   },
   {
-    id: 'payslips',
-    group: 'Income',
-    title: 'Payslips',
-    subtitle: 'Upload your latest 2 payslips',
-    icon: 'Upload',
-    required: true,
-    defaultStatus: 'not_started',
-    stateKey: 'payslips',
+    id: 'payslips', group: 'Income',
+    title: 'Payslips', subtitle: 'Upload your latest 2 payslips',
+    icon: 'Upload', required: true, defaultStatus: 'not_started', stateKey: 'payslips',
     extracted: ['Employer', 'Gross income', 'Pay cycle', 'YTD income'],
   },
   {
-    id: 'rate_notice',
-    group: 'Property / Address',
-    title: 'Rate Notice',
-    subtitle: 'For property owners or investment property',
-    icon: 'Home',
-    required: false,
-    defaultStatus: 'not_started',
-    stateKey: 'rates',
+    id: 'rate_notice', group: 'Property / Address',
+    title: 'Rate Notice', subtitle: 'For property owners or investment property',
+    icon: 'Home', required: false, defaultStatus: 'not_started', stateKey: 'rates',
     extracted: ['Property address', 'Owner name', 'Council valuation'],
   },
   {
-    id: 'rental_agreement',
-    group: 'Property / Address',
-    title: 'Rental Agreement',
-    subtitle: 'For customers currently renting',
-    icon: 'FileText',
-    required: true,
-    defaultStatus: 'not_started',
-    stateKey: null,
+    id: 'rental_agreement', group: 'Property / Address',
+    title: 'Rental Agreement', subtitle: 'For customers currently renting',
+    icon: 'FileText', required: true, defaultStatus: 'not_started', stateKey: null,
     extracted: ['Lease address', 'Rent amount', 'Lease term'],
   },
 ];
@@ -101,6 +68,50 @@ const UPLOAD_METHODS = [
   { title: 'Choose Screenshot', desc: 'Select a screenshot from phone', icon: 'Smartphone' },
 ];
 
+// ─── Bank statement flow data ─────────────────────────────────────────────────
+
+const BANK_ITEMS = [
+  { id: 'cba',   icon: 'Landmark',  name: 'Commonwealth', type: 'Major'    },
+  { id: 'anz',   icon: 'Building2', name: 'ANZ',          type: 'Major'    },
+  { id: 'nab',   icon: 'Banknote',  name: 'NAB',          type: 'Major'    },
+  { id: 'wbc',   icon: 'Store',     name: 'Westpac',      type: 'Major'    },
+  { id: 'ing',   icon: 'Sparkles',  name: 'ING',          type: 'Digital'  },
+  { id: 'mac',   icon: 'BarChart2', name: 'Macquarie',    type: 'Digital'  },
+  { id: 'ben',   icon: 'Home',      name: 'Bendigo',      type: 'Regional' },
+  { id: 'other', icon: 'Plus',      name: 'Other',        type: 'Regional' },
+];
+
+const FLOW_STEPS = [
+  { id: 'intro',   title: 'Connect banks',    short: 'Why we need this',  stepIcon: 'Sparkles'     },
+  { id: 'banks',   title: 'Choose banks',     short: 'Multiple banks',    stepIcon: 'Building2'    },
+  { id: 'period',  title: 'Statement period', short: '3, 6 or 12 months', stepIcon: 'CalendarDays' },
+  { id: 'consent', title: 'Consent',          short: 'Your declaration',  stepIcon: 'Shield'       },
+  { id: 'connect', title: 'Secure connect',   short: 'Bank redirect',     stepIcon: 'Lock'         },
+  { id: 'review',  title: 'Review',           short: 'Anika summary',     stepIcon: 'BarChart2'    },
+];
+
+const CONSENT_ITEMS = [
+  { key: 'privacy',    label: 'I have read and understood the Privacy Consent.' },
+  { key: 'cdr',        label: 'I consent to share selected bank account and transaction data.' },
+  { key: 'assessment', label: 'I authorise Axio, Stoik and Anika AI to use this data for finance assessment.' },
+  { key: 'revoke',     label: 'I understand I can withdraw consent, subject to application requirements.' },
+];
+
+const INTRO_BENEFITS = [
+  { icon: 'CheckCircle2', label: 'Verify income'   },
+  { icon: 'CreditCard',   label: 'Review expenses' },
+  { icon: 'AlertCircle',  label: 'Find risk flags' },
+  { icon: 'Target',       label: 'Match lenders'   },
+];
+
+const ANIKA_CHECKS = [
+  'Income deposits', 'Pay cycle',
+  'Living expenses', 'BNPL and loans',
+  'Dishonours',      'Spending behaviour',
+];
+
+// ─── Document upload sub-components ──────────────────────────────────────────
+
 function StatusBadge({ status }) {
   const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.not_started;
   return (
@@ -108,26 +119,6 @@ function StatusBadge({ status }) {
       <Icon name={cfg.icon} size={11} strokeWidth={2} />
       {cfg.label}
     </span>
-  );
-}
-
-function ProgressBar({ completed, total }) {
-  const pct = Math.round((completed / Math.max(total, 1)) * 100);
-  return (
-    <div className="doc-progress">
-      <div className="doc-progress-row">
-        <span className="doc-progress-label">Document progress</span>
-        <span className="doc-progress-pct">{pct}%</span>
-      </div>
-      <div className="doc-progress-track">
-        <motion.div
-          className="doc-progress-fill"
-          initial={{ width: 0 }}
-          animate={{ width: `${pct}%` }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-        />
-      </div>
-    </div>
   );
 }
 
@@ -194,7 +185,6 @@ function UploadSheet({ doc, onClose, onUpload }) {
               <Icon name="X" size={15} />
             </button>
           </div>
-
           <div className="doc-sheet-methods">
             {UPLOAD_METHODS.map((m) => (
               <button
@@ -214,7 +204,6 @@ function UploadSheet({ doc, onClose, onUpload }) {
               </button>
             ))}
           </div>
-
           <div className="doc-sheet-anika">
             <Icon name="Sparkles" size={15} className="doc-sheet-anika-icon" />
             <div>
@@ -243,14 +232,14 @@ function PreviewPanel({ selectedDoc, onUpload }) {
           <Icon name={selectedDoc.icon} size={22} />
         </div>
       </div>
-
       <div className="doc-preview-dropzone">
         <div className="doc-preview-scan-icon">
           <Icon name="ScanLine" size={34} />
         </div>
         <div className="doc-preview-drop-title">Drop files here or use camera capture</div>
         <div className="doc-preview-drop-desc">
-          PDF, JPG, PNG and screenshots accepted. Anika checks quality, reads key details and flags issues automatically.
+          PDF, JPG, PNG and screenshots accepted. Anika checks quality, reads key details and flags
+          issues automatically.
         </div>
         <div className="doc-preview-actions">
           <button type="button" className="doc-preview-btn-primary" onClick={() => onUpload(selectedDoc.id)}>
@@ -261,19 +250,19 @@ function PreviewPanel({ selectedDoc, onUpload }) {
           </button>
         </div>
       </div>
-
       <div className="doc-preview-extracts">
         <div className="doc-preview-extracts-title">Anika AI extracts</div>
         <div className="doc-preview-extracts-grid">
           {selectedDoc.extracted.map((item) => (
             <div key={item} className="doc-extract-item">
-              <span className="doc-extract-check"><Icon name="Check" size={10} strokeWidth={2.5} /></span>
+              <span className="doc-extract-check">
+                <Icon name="Check" size={10} strokeWidth={2.5} />
+              </span>
               {item}
             </div>
           ))}
         </div>
       </div>
-
       <div className="doc-preview-security">
         <Icon name="Lock" size={14} className="doc-security-icon" />
         <div>
@@ -286,6 +275,464 @@ function PreviewPanel({ selectedDoc, onUpload }) {
     </div>
   );
 }
+
+// ─── Bank statement sub-components ───────────────────────────────────────────
+
+function BankSummaryPanel({ selectedBanks, months, consentReady }) {
+  return (
+    <div className="bank-summary-panel">
+      <div className="bank-summary-header">
+        <div className="bank-summary-icon">
+          <Icon name="Zap" size={19} />
+        </div>
+        <div>
+          <div className="bank-summary-eyebrow">Application check</div>
+          <div className="bank-summary-title">Bank data setup</div>
+        </div>
+      </div>
+      <div className="bank-summary-stats">
+        <div className="bank-summary-stat accent">
+          <div className="bank-summary-stat-label">Selected banks</div>
+          <div className="bank-summary-stat-value">{selectedBanks.length}</div>
+        </div>
+        <div className="bank-summary-stat muted">
+          <div className="bank-summary-stat-label">Statement period</div>
+          <div className="bank-summary-stat-value">{months} months</div>
+        </div>
+        <div className={`bank-summary-stat ${consentReady ? 'green' : 'yellow'}`}>
+          <div className="bank-summary-stat-label">Consent status</div>
+          <div className="bank-summary-stat-value">{consentReady ? 'Ready' : 'Incomplete'}</div>
+        </div>
+      </div>
+      <div className="bank-summary-anika">
+        <div className="bank-summary-anika-title">Anika AI will review:</div>
+        <div className="bank-summary-anika-desc">
+          Income, expenses, cashflow, liabilities, dishonours, BNPL, gambling indicators, recurring
+          repayments and lender readiness.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BankFlowSection({ state, updateState }) {
+  const [bankStep, setBankStep] = useState(0);
+  const [selectedBankIds, setSelectedBankIds] = useState(['cba', 'nab']);
+  const [months, setMonths] = useState(6);
+  const [bankSearch, setBankSearch] = useState('');
+  const [consent, setConsent] = useState({
+    privacy: false, cdr: false, assessment: false, revoke: false,
+  });
+  const [connectedIds, setConnectedIds] = useState([]);
+
+  const selectedBanks = BANK_ITEMS.filter((b) => selectedBankIds.includes(b.id));
+  const consentReady = Object.values(consent).every(Boolean);
+  const filteredBanks = useMemo(
+    () => BANK_ITEMS.filter((b) => b.name.toLowerCase().includes(bankSearch.toLowerCase())),
+    [bankSearch]
+  );
+
+  const canContinue =
+    (bankStep === 1 && selectedBankIds.length > 0) ||
+    (bankStep === 3 && consentReady) ||
+    (bankStep !== 1 && bankStep !== 3);
+
+  const toggleBank = (id) =>
+    setSelectedBankIds((prev) =>
+      prev.includes(id) ? prev.filter((bid) => bid !== id) : [...prev, id]
+    );
+
+  const connectBank = (id) => setConnectedIds((prev) => [...new Set([...prev, id])]);
+
+  const handleNext = () => { if (canContinue) setBankStep((p) => Math.min(FLOW_STEPS.length - 1, p + 1)); };
+  const handleBack = () => setBankStep((p) => Math.max(0, p - 1));
+
+  const buildSummary = () =>
+    `${selectedBankIds.length} bank${selectedBankIds.length !== 1 ? 's' : ''} · ${months} months · CDR accredited`;
+
+  const handleComplete = () => {
+    updateState({
+      bankConnected: true,
+      selectedBank: selectedBankIds[0] || null,
+      uploadedDocs: { ...state.uploadedDocs, bankstatements: true },
+      bankConnectionSummary: buildSummary(),
+    });
+  };
+
+  const handlePdfUpload = () => {
+    updateState({
+      bankConnected: true,
+      selectedBank: null,
+      uploadedDocs: { ...state.uploadedDocs, bankstatements: true },
+      bankConnectionSummary: 'PDF statements uploaded · CDR accredited',
+    });
+  };
+
+  const handleDisconnect = () =>
+    updateState({ bankConnected: false, selectedBank: null, bankConnectionSummary: null });
+
+  const pct = Math.round(((bankStep + 1) / FLOW_STEPS.length) * 100);
+
+  // ── Connected state ───────────────────────────────────────────────────────
+  if (state.bankConnected) {
+    return (
+      <div className="bank-connected-card">
+        <div className="bank-connected-icon">
+          <Icon name="CheckCircle2" size={20} />
+        </div>
+        <div className="bank-connected-body">
+          <div className="bank-connected-title">Bank statements connected</div>
+          <div className="bank-connected-sub">
+            {state.bankConnectionSummary || 'Connected · CDR accredited'}
+          </div>
+        </div>
+        <button type="button" className="bank-connected-disconnect" onClick={handleDisconnect}>
+          Disconnect
+        </button>
+      </div>
+    );
+  }
+
+  // ── Active flow ───────────────────────────────────────────────────────────
+  return (
+    <div className="bank-section">
+      {/* Hero */}
+      <div className="bank-hero">
+        <div className="bank-hero-inner">
+          <div className="bank-hero-copy">
+            <div className="bank-hero-eyebrow">
+              <Icon name="Building2" size={11} />
+              Axio × Stoik
+            </div>
+            <h2 className="bank-hero-title">Connect your bank statements</h2>
+            <p className="bank-hero-desc">
+              Select your banks, give consent, and let Anika AI securely review your banking
+              conduct for faster lender matching.
+            </p>
+            <div className="bank-hero-chips">
+              <span className="bank-hero-chip">No PDFs</span>
+              <span className="bank-hero-chip">Multi-bank</span>
+              <span className="bank-hero-chip">CDR consent</span>
+            </div>
+          </div>
+          <div className="bank-hero-icon-wrap">
+            <Icon name="Building2" size={26} />
+          </div>
+        </div>
+      </div>
+
+      {/* Flow grid: content + desktop summary panel */}
+      <div className="bank-flow-grid">
+        <div className="bank-flow-main">
+
+          {/* Step progress */}
+          <div className="bank-progress-card">
+            <div className="bank-progress-row">
+              <span className="bank-progress-label">Step {bankStep + 1} of {FLOW_STEPS.length}</span>
+              <span className="bank-progress-pct">{pct}%</span>
+            </div>
+            <div className="bank-progress-track">
+              <motion.div
+                className="bank-progress-fill"
+                animate={{ width: `${pct}%` }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+              />
+            </div>
+            <div className="bank-step-pills">
+              {FLOW_STEPS.map((s, i) => (
+                <span
+                  key={s.id}
+                  className={`bank-step-pill${i === bankStep ? ' active' : i < bankStep ? ' done' : ''}`}
+                >
+                  {s.title}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Step content card */}
+          <div className="bank-content-card">
+            <div className="bank-content-head">
+              <div>
+                <div className="bank-content-eyebrow">{FLOW_STEPS[bankStep].short}</div>
+                <h3 className="bank-content-title">{FLOW_STEPS[bankStep].title}</h3>
+              </div>
+              <div className="bank-content-step-icon">
+                <Icon name={FLOW_STEPS[bankStep].stepIcon} size={18} />
+              </div>
+            </div>
+
+            {/* Step 0 — Intro */}
+            {bankStep === 0 && (
+              <div className="bank-step-body">
+                <div className="bank-intro-box">
+                  <div className="bank-intro-box-title">Fast, simple and secure</div>
+                  <p className="bank-intro-box-desc">
+                    Instead of uploading bank statement PDFs, you can securely connect your bank
+                    accounts. Anika AI reads the data and prepares a finance assessment summary.
+                  </p>
+                </div>
+                <div className="bank-benefits-grid">
+                  {INTRO_BENEFITS.map((b) => (
+                    <div key={b.label} className="bank-benefit-item">
+                      <Icon name={b.icon} size={15} className="bank-benefit-icon" />
+                      <span>{b.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Step 1 — Banks */}
+            {bankStep === 1 && (
+              <div className="bank-step-body">
+                <div className="bank-search-wrap">
+                  <Icon name="Search" size={14} className="bank-search-icon" />
+                  <input
+                    className="bank-search-input"
+                    value={bankSearch}
+                    onChange={(e) => setBankSearch(e.target.value)}
+                    placeholder="Search your bank…"
+                  />
+                </div>
+                <div className="bank-grid">
+                  {filteredBanks.map((bank) => {
+                    const active = selectedBankIds.includes(bank.id);
+                    return (
+                      <button
+                        key={bank.id}
+                        type="button"
+                        className={`bank-btn${active ? ' active' : ''}`}
+                        onClick={() => toggleBank(bank.id)}
+                      >
+                        <div className="bank-btn-left">
+                          <div className="bank-btn-icon">
+                            <Icon name={bank.icon} size={16} />
+                          </div>
+                          <div>
+                            <div className="bank-btn-name">{bank.name}</div>
+                            <div className="bank-btn-type">{bank.type}</div>
+                          </div>
+                        </div>
+                        <Icon
+                          name={active ? 'CheckCircle2' : 'Plus'}
+                          size={15}
+                          className={`bank-btn-check${active ? ' active' : ''}`}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+                {selectedBankIds.length === 0 && (
+                  <div className="bank-warn">Select at least one bank to continue.</div>
+                )}
+              </div>
+            )}
+
+            {/* Step 2 — Period */}
+            {bankStep === 2 && (
+              <div className="bank-step-body">
+                <p className="bank-period-desc">
+                  Choose how many months of banking activity Anika AI should analyse.
+                </p>
+                <div className="bank-period-grid">
+                  {[3, 6, 12].map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      className={`bank-period-option${months === p ? ' active' : ''}`}
+                      onClick={() => setMonths(p)}
+                    >
+                      <span className="bank-period-num">{p}</span>
+                      <span className="bank-period-unit">months</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="bank-period-note">
+                  <div className="bank-period-note-title">Recommended: 6 months</div>
+                  <p className="bank-period-note-desc">
+                    Good for most personal loans and car loans. Use 12 months for complex income,
+                    self-employed applicants or specific lender requests.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3 — Consent */}
+            {bankStep === 3 && (
+              <div className="bank-step-body">
+                <div className="bank-consent-info">
+                  <div className="bank-consent-info-title">Your declaration</div>
+                  <p className="bank-consent-info-desc">
+                    You control which banks are shared, the period of data, and the purpose of
+                    access.
+                  </p>
+                </div>
+                <div className="bank-consent-items">
+                  {CONSENT_ITEMS.map((item) => (
+                    <label key={item.key} className="bank-consent-item">
+                      <input
+                        type="checkbox"
+                        checked={consent[item.key]}
+                        onChange={(e) =>
+                          setConsent((prev) => ({ ...prev, [item.key]: e.target.checked }))
+                        }
+                        className="bank-consent-checkbox"
+                      />
+                      <span className="bank-consent-label">{item.label}</span>
+                    </label>
+                  ))}
+                </div>
+                {!consentReady && (
+                  <div className="bank-warn">
+                    All declarations must be accepted before continuing.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Step 4 — Connect */}
+            {bankStep === 4 && (
+              <div className="bank-step-body">
+                <div className="bank-connect-info">
+                  <div className="bank-connect-info-title">Secure bank redirect</div>
+                  <p className="bank-connect-info-desc">
+                    Axio does not collect internet banking passwords. You will be redirected to your
+                    bank or approved Open Banking provider to authenticate securely.
+                  </p>
+                </div>
+                <div className="bank-connect-list">
+                  {selectedBanks.map((bank) => {
+                    const isConnected = connectedIds.includes(bank.id);
+                    return (
+                      <div key={bank.id} className="bank-connect-item">
+                        <div className="bank-connect-item-left">
+                          <div className="bank-connect-item-icon">
+                            <Icon name={bank.icon} size={16} />
+                          </div>
+                          <div>
+                            <div className="bank-connect-item-name">{bank.name}</div>
+                            <div className="bank-connect-item-sub">
+                              {isConnected ? 'Connected · read-only' : 'Ready to connect'}
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          className={`bank-connect-btn${isConnected ? ' done' : ''}`}
+                          onClick={() => connectBank(bank.id)}
+                        >
+                          {isConnected ? (
+                            <><Icon name="Check" size={12} /> Connected</>
+                          ) : (
+                            'Connect'
+                          )}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="bank-connect-divider">
+                  <div className="bank-connect-line" />
+                  <span>or upload PDF manually</span>
+                  <div className="bank-connect-line" />
+                </div>
+                <div
+                  className={`bank-pdf-zone${state.uploadedDocs?.bankstatements ? ' done' : ''}`}
+                  role="button"
+                  tabIndex={0}
+                  onClick={handlePdfUpload}
+                  onKeyDown={(e) => e.key === 'Enter' && handlePdfUpload()}
+                >
+                  <Icon name="FileText" size={18} className="bank-pdf-zone-icon" />
+                  <div className="bank-pdf-zone-title">Upload PDF statements</div>
+                  <div className="bank-pdf-zone-sub">
+                    3 months · all accounts used for income or expenses
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 5 — Review */}
+            {bankStep === 5 && (
+              <div className="bank-step-body">
+                <div className="bank-review-hero">
+                  <Icon name="CheckCircle2" size={18} className="bank-review-hero-icon" />
+                  <div>
+                    <div className="bank-review-hero-title">Bank statement review ready</div>
+                    <p className="bank-review-hero-desc">
+                      Anika AI has prepared a conduct summary for the customer and analyst.
+                    </p>
+                  </div>
+                </div>
+                <div className="bank-review-metrics">
+                  <div className="bank-review-metric green">
+                    <div className="bank-review-metric-label">Income confidence</div>
+                    <div className="bank-review-metric-value">92%</div>
+                  </div>
+                  <div className="bank-review-metric yellow">
+                    <div className="bank-review-metric-label">Expenses</div>
+                    <div className="bank-review-metric-value">Review</div>
+                  </div>
+                  <div className="bank-review-metric accent">
+                    <div className="bank-review-metric-label">Risk flags</div>
+                    <div className="bank-review-metric-value">3</div>
+                  </div>
+                </div>
+                <div className="bank-review-checks">
+                  <div className="bank-review-checks-title">Anika AI checks</div>
+                  <div className="bank-review-checks-grid">
+                    {ANIKA_CHECKS.map((check) => (
+                      <div key={check} className="bank-review-check-item">
+                        <Icon name="Check" size={11} className="bank-review-check-icon" />
+                        {check}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Internal step navigation */}
+            <div className="bank-step-nav">
+              <button
+                type="button"
+                className="bank-nav-back"
+                onClick={handleBack}
+                disabled={bankStep === 0}
+              >
+                ← Back
+              </button>
+              {bankStep < FLOW_STEPS.length - 1 ? (
+                <button
+                  type="button"
+                  className="bank-nav-next"
+                  onClick={handleNext}
+                  disabled={!canContinue}
+                >
+                  Continue →
+                </button>
+              ) : (
+                <button type="button" className="bank-nav-next" onClick={handleComplete}>
+                  Complete setup →
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop summary panel */}
+        <BankSummaryPanel
+          selectedBanks={selectedBanks}
+          months={months}
+          consentReady={consentReady}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ─── Main screen ──────────────────────────────────────────────────────────────
 
 export function DocumentsScreen() {
   const { state, updateState, next, prev } = useApp();
@@ -309,7 +756,6 @@ export function DocumentsScreen() {
   );
 
   const selectedDoc = computedDocs.find((d) => d.id === selectedId) || computedDocs[0];
-  const completed = computedDocs.filter((d) => ['verified', 'uploaded'].includes(d.status)).length;
 
   const groups = useMemo(
     () =>
@@ -332,26 +778,23 @@ export function DocumentsScreen() {
         eyebrow="Step 8 · Documents"
         title="My"
         titleGradient="Documents"
-        sub="Upload your ID, income, address and residency documents using camera, screenshots, images or PDF files."
+        sub="Connect your bank accounts and upload supporting documents for your application."
       />
 
-      <div className="doc-hero">
-        <div className="doc-hero-inner">
-          <div className="doc-hero-copy">
-            <div className="doc-hero-pill">
-              <Icon name="Sparkles" size={11} />
-              Anika AI document verification
-            </div>
-            <p className="doc-hero-desc">
-              Required documents are reviewed first so your application can move faster.
-            </p>
-          </div>
-          <div className="doc-hero-progress-box">
-            <ProgressBar completed={completed} total={DOCUMENTS.length} />
-          </div>
-        </div>
+      {/* ── Bank Statement Connection Flow ── */}
+      <BankFlowSection state={state} updateState={updateState} />
+
+      {/* ── Section divider ── */}
+      <div className="section-divider">
+        <div className="section-divider-line" />
+        <span className="section-divider-label">
+          <Icon name="FileText" size={12} />
+          Documents to upload
+        </span>
+        <div className="section-divider-line" />
       </div>
 
+      {/* ── Anika info banner ── */}
       <div className="doc-anika-banner">
         <Icon name="Lock" size={15} className="doc-anika-icon" />
         <div>
@@ -363,6 +806,7 @@ export function DocumentsScreen() {
         </div>
       </div>
 
+      {/* ── Document list + preview panel ── */}
       <div className="doc-main-grid">
         <div className="doc-list-col">
           {Object.entries(groups).map(([group, docs]) => (
