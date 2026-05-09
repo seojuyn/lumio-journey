@@ -40,3 +40,15 @@
   line-height: 1.65;
   max-width: 640px;
 }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .screen-header  { margin-bottom: 20px; }
+  .screen-title   { font-size: 24px; letter-spacing: -.5px; }
+  .screen-sub     { font-size: 13px; }
+  .screen-eyebrow { font-size: 10.5px; padding: 4px 12px; margin-bottom: 10px; }
+}
+
+@media (max-width: 400px) {
+  .screen-title { font-size: 22px; }
+}

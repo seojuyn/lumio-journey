@@ -122,3 +122,105 @@
   font-family: var(--font-display);
   letter-spacing: -.4px;
 }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 580px) {
+  /* Stack expense rows: label on top, stepper on bottom */
+  .expense-row {
+    flex-wrap: wrap;
+    align-items: stretch;
+    padding: 13px 0;
+    gap: 0;
+  }
+
+  .er-left {
+    width: 100%;
+    flex: unset;
+    padding-bottom: 10px;
+  }
+
+  .er-right {
+    width: 100%;
+    flex-shrink: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  /* Stepper fills the full row width */
+  .expense-row .stepper {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+  }
+
+  /* Value cell expands to fill space between buttons */
+  .expense-row .st-val {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Share label sits inline to the left of the stepper */
+  .er-share {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* Shared card stats: tighten padding on small screens */
+  .s-stat {
+    padding: 10px 10px;
+  }
+
+  .s-stat-lbl {
+    font-size: 10px;
+    letter-spacing: 0.2px;
+  }
+
+  .s-stat-val {
+    font-size: 14px;
+  }
+
+  /* Total bar wraps cleanly on narrow screens */
+  .total-bar {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 14px 16px;
+  }
+
+  .tb-label {
+    font-size: 13.5px;
+  }
+
+  .tb-val {
+    font-size: 20px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .tb-sub {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 400px) {
+  .er-name {
+    font-size: 13px;
+  }
+
+  .er-sub {
+    font-size: 11px;
+  }
+
+  .s-stat-val {
+    font-size: 13px;
+  }
+
+  .s-stat-lbl {
+    font-size: 9.5px;
+  }
+
+  .tb-val {
+    font-size: 18px;
+  }
+}

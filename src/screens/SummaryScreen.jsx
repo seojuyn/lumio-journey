@@ -93,7 +93,7 @@ export function SummaryScreen() {
             <div className="dti-track">
               <div className="dti-fill" style={{ width: s.dtiFill, background: s.dtiColor }} />
             </div>
-            <div className="flex-between" style={{ fontSize: 10.5, color: 'var(--text2)' }}>
+            <div className="dti-labels">
               <span style={{ color: 'var(--green)' }}>0–50% Strong</span>
               <span style={{ color: 'var(--yellow)' }}>50–65% Marginal</span>
               <span style={{ color: 'var(--red)' }}>65%+ At risk</span>

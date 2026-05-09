@@ -3,7 +3,6 @@ import { useApp } from '../context/AppContext';
 import { ScreenHeader } from '../components/common/ScreenHeader';
 import { BtnPrimary, BtnGhost, BtnRow } from '../components/common/Button';
 import { Card, CardTitle } from '../components/common/Card';
-import '../components/forms/ChoiceCard.css';
 import './SignupScreen.css';
 
 export function SignupScreen() {
@@ -19,29 +18,25 @@ export function SignupScreen() {
     const next = [...otp];
     next[i] = val;
     setOtp(next);
-    if (val && i < 5) {
-      otpRefs.current[i + 1]?.focus();
-    }
+    if (val && i < 5) otpRefs.current[i + 1]?.focus();
   }
 
   function handleOtpKeyDown(i, e) {
-    if (e.key === 'Backspace' && !otp[i] && i > 0) {
-      otpRefs.current[i - 1]?.focus();
-    }
+    if (e.key === 'Backspace' && !otp[i] && i > 0) otpRefs.current[i - 1]?.focus();
   }
 
   return (
-    <div className="screen-enter">
+    <div className="screen-enter signup-screen">
       <ScreenHeader
-        eyebrow="✦ Step 12 · Account creation"
+        eyebrow="Step 12 · Account creation"
         title="Save your"
         titleGradient="application"
         sub="Create an account to track your application and come back anytime."
       />
 
-      <div className="choice-grid-2">
+      <div className="signup-cards">
         <Card>
-          <CardTitle icon="👤">Create account</CardTitle>
+          <CardTitle icon="UserCircle">Create account</CardTitle>
           <div className="fld">
             <span className="fl">Mobile number</span>
             <input className="inp" placeholder="0400 000 000" value={mobile} onChange={e => setMobile(e.target.value)} />
@@ -54,15 +49,15 @@ export function SignupScreen() {
             <span className="fl">Password</span>
             <input className="inp" type="password" placeholder="Create a strong password" value={password} onChange={e => setPassword(e.target.value)} />
           </div>
-          <BtnPrimary style={{ width: '100%' }} onClick={() => {}}>Send OTP &amp; create account →</BtnPrimary>
-          <div className="text-small text-border2" style={{ textAlign: 'center', marginTop: 14 }}>
-            Already have an account? <span className="text-strong" style={{ color: 'var(--accent)', cursor: 'pointer' }}>Sign in</span>
+          <BtnPrimary className="signup-btn-full" onClick={() => {}}>Send OTP &amp; create account →</BtnPrimary>
+          <div className="signup-signin-hint">
+            Already have an account? <span className="signup-signin-link">Sign in</span>
           </div>
         </Card>
 
         <Card>
-          <CardTitle icon="🔢">OTP verification</CardTitle>
-          <div className="text-small text-border2" style={{ marginBottom: 18 }}>Enter the 6-digit code sent to your mobile</div>
+          <CardTitle icon="ShieldCheck">OTP verification</CardTitle>
+          <div className="signup-otp-hint">Enter the 6-digit code sent to your mobile</div>
           <div className="otp-inputs">
             {otp.map((d, i) => (
               <input
@@ -77,9 +72,9 @@ export function SignupScreen() {
               />
             ))}
           </div>
-          <BtnPrimary style={{ width: '100%' }} onClick={next}>Verify &amp; continue →</BtnPrimary>
-          <div className="text-small text-border2" style={{ textAlign: 'center', marginTop: 12 }}>
-            Resend code in <span style={{ color: 'var(--accent)' }}>0:45</span>
+          <BtnPrimary className="signup-btn-full" onClick={next}>Verify &amp; continue →</BtnPrimary>
+          <div className="signup-resend-hint">
+            Resend code in <span className="signup-resend-timer">0:45</span>
           </div>
         </Card>
       </div>
