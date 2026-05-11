@@ -1,7 +1,7 @@
 .sidebar {
   width: var(--sidebar-w);
   min-width: var(--sidebar-w);
-  background: rgba(16, 7, 32, 0.97);
+  background: rgba(26, 11, 56, 0.88);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-right: 1px solid var(--glass-border);
@@ -20,7 +20,7 @@
 .sidebar-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 4, 22, 0.82);
+  background: rgba(16, 7, 32, 0.75);
   z-index: 199;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -66,7 +66,7 @@
 }
 .progress-track {
   height: 3px;
-  background: rgba(167, 139, 250, 0.15);
+  background: rgba(167, 139, 250, 0.1);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -93,16 +93,16 @@
   user-select: none;
 }
 .nav-item:hover:not(.locked) {
-  background: rgba(139, 92, 246, 0.13);
-  border-color: rgba(139, 92, 246, 0.22);
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.15);
 }
 .nav-item.active {
-  background: rgba(126, 34, 206, 0.22);
-  border-color: rgba(139, 92, 246, 0.45);
-  box-shadow: 0 0 12px rgba(126, 34, 206, 0.18), inset 0 1px 0 rgba(255,255,255,.05);
+  background: rgba(126, 34, 206, 0.18);
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 0 12px rgba(126, 34, 206, 0.15), inset 0 1px 0 rgba(255,255,255,.04);
 }
-.nav-item.completed { opacity: .80; }
-.nav-item.locked    { opacity: .35; cursor: not-allowed; }
+.nav-item.completed { opacity: .72; }
+.nav-item.locked    { opacity: .3; cursor: not-allowed; }
 
 .nav-num {
   width: 22px; height: 22px; min-width: 22px; border-radius: 50%;

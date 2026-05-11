@@ -1,7 +1,7 @@
 .topbar {
   height: var(--topbar-h);
   border-bottom: 1px solid var(--glass-border);
-  background: rgba(14, 6, 28, 0.94);
+  background: rgba(26, 11, 56, 0.78);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   display: flex;
@@ -59,7 +59,7 @@
   gap: 5px;
   width: 36px;
   height: 36px;
-  background: rgba(24, 21, 62, 0.75);
+  background: rgba(30, 27, 75, 0.6);
   border: 1px solid var(--border);
   border-radius: var(--r8);
   cursor: pointer;

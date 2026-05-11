@@ -1,7 +1,7 @@
 .stepper {
   display: flex;
   align-items: center;
-  background: rgba(22, 18, 56, 0.76);
+  background: rgba(30, 27, 75, 0.6);
   border: 1px solid var(--border);
   border-radius: var(--r8);
   overflow: hidden;
