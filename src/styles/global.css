@@ -16,8 +16,8 @@ html {
 body {
   background: var(--bg0);
   background-image:
-    radial-gradient(ellipse 85% 55% at 50% -10%, rgba(109, 40, 217, 0.14) 0%, transparent 65%),
-    radial-gradient(ellipse 45% 35% at 85% 95%, rgba(59, 7, 100, 0.22) 0%, transparent 60%);
+    radial-gradient(ellipse 85% 55% at 50% -10%, rgba(109, 40, 217, 0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 35% at 85% 95%, rgba(59, 7, 100, 0.16) 0%, transparent 60%);
   color: var(--text0);
   font-family: var(--font-body);
   font-size: 14px;
@@ -107,7 +107,7 @@ body {
 .inp {
   width: 100%;
   height: 46px;
-  background: rgba(30, 27, 75, 0.55);
+  background: rgba(24, 21, 62, 0.70);
   border: 1px solid var(--border);
   border-radius: var(--r8);
   color: var(--text0);
@@ -122,18 +122,18 @@ body {
 }
 .inp:focus {
   border-color: var(--hover);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.16);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.20);
 }
 .inp::placeholder { color: var(--text2); }
 .inp.error {
   border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.12);
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.14);
 }
 
 .sel {
   width: 100%;
   height: 46px;
-  background: rgba(30, 27, 75, 0.55);
+  background: rgba(24, 21, 62, 0.70);
   border: 1px solid var(--border);
   border-radius: var(--r8);
   color: var(--text0);
@@ -150,7 +150,7 @@ body {
 }
 .sel:focus {
   border-color: var(--hover);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.16);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.20);
 }
 
 .fld { margin-bottom: var(--sp16); }

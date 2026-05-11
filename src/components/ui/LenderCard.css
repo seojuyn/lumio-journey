@@ -6,7 +6,7 @@
 .lender-card {
   border-radius: var(--r22);
   border: 1px solid var(--glass-border);
-  background: rgba(23, 16, 47, 0.75);
+  background: rgba(20, 13, 40, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   overflow: hidden;
@@ -72,8 +72,8 @@
 
 .qmark {
   width: 16px; height: 16px; border-radius: 50%;
-  background: rgba(30, 27, 75, 0.8);
-  border: 1px solid rgba(167, 139, 250, 0.25);
+  background: rgba(24, 21, 62, 0.88);
+  border: 1px solid rgba(167, 139, 250, 0.38);
   font-size: 10px; font-weight: 700; color: var(--hover);
   display: flex; align-items: center; justify-content: center;
   cursor: help; position: relative;
@@ -82,7 +82,7 @@
 .tooltip {
   position: absolute; bottom: calc(100% + 8px); left: 50%;
   transform: translateX(-50%); width: 220px;
-  background: rgba(26, 11, 56, 0.95);
+  background: rgba(14, 6, 28, 0.97);
   border: 1px solid rgba(139, 92, 246, 0.35);
   border-radius: var(--r12); padding: 12px 14px;
   z-index: 99; pointer-events: none; opacity: 0;
@@ -120,9 +120,9 @@
 .approval-section {
   padding: 12px 18px;
   border-top: 1px solid var(--border);
-  background: rgba(30, 27, 75, 0.4);
+  background: rgba(22, 18, 56, 0.58);
 }
-.approval-bar  { height: 5px; background: rgba(167, 139, 250, 0.1); border-radius: 5px; overflow: hidden; margin: 8px 0; }
+.approval-bar  { height: 5px; background: rgba(167, 139, 250, 0.16); border-radius: 5px; overflow: hidden; margin: 8px 0; }
 .approval-fill { height: 100%; border-radius: 5px; }
 
 .reason {
