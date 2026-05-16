@@ -10,7 +10,8 @@ const IncomeScreen      = lazy(() => import('./screens/IncomeScreen').then(m => 
 const AssetsScreen      = lazy(() => import('./screens/AssetsScreen').then(m => ({ default: m.AssetsScreen })));
 const LiabilitiesScreen = lazy(() => import('./screens/LiabilitiesScreen').then(m => ({ default: m.LiabilitiesScreen })));
 const ExpensesScreen    = lazy(() => import('./screens/ExpensesScreen').then(m => ({ default: m.ExpensesScreen })));
-const DocumentsScreen   = lazy(() => import('./screens/DocumentsScreen').then(m => ({ default: m.DocumentsScreen })));
+const ConnectBanksScreen    = lazy(() => import('./screens/ConnectBanksScreen').then(m => ({ default: m.ConnectBanksScreen })));
+const DocumentsUploadScreen = lazy(() => import('./screens/DocumentsUploadScreen').then(m => ({ default: m.DocumentsUploadScreen })));
 const PrivacyScreen     = lazy(() => import('./screens/PrivacyScreen').then(m => ({ default: m.PrivacyScreen })));
 const SummaryScreen     = lazy(() => import('./screens/SummaryScreen').then(m => ({ default: m.SummaryScreen })));
 const LendersScreen     = lazy(() => import('./screens/LendersScreen').then(m => ({ default: m.LendersScreen })));
@@ -25,7 +26,8 @@ const SCREEN_COMPONENTS = [
   AssetsScreen,
   LiabilitiesScreen,
   ExpensesScreen,
-  DocumentsScreen,
+  ConnectBanksScreen,
+  DocumentsUploadScreen,
   PrivacyScreen,
   SummaryScreen,
   LendersScreen,
