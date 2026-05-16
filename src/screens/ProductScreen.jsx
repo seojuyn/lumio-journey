@@ -1,4 +1,5 @@
 import { ShieldCheck } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '../components/common/Icon';
 import { useApp } from '../context/AppContext';
 import { ScreenHeader } from '../components/common/ScreenHeader';
@@ -9,6 +10,7 @@ import './ProductScreen.css';
 
 export function ProductScreen() {
   const { state, updateState, next } = useApp();
+  const selected = state.loanType;
 
   return (
     <div className="screen-enter">
@@ -30,25 +32,57 @@ export function ProductScreen() {
       </div>
 
       <div className="choice-grid-2 mb-24">
-        {PRODUCTS.map(p => (
-          <div
-            key={p.id}
-            className={`product-card ${state.loanType === p.id ? 'selected' : ''}`}
-            onClick={() => updateState({ loanType: p.id })}
-          >
-            <div className="pc-body">
-              <div className="pc-icon"><Icon name={p.icon} size={28} /></div>
-              <div className="pc-title">{p.title}</div>
-              <div className="pc-desc">{p.desc}</div>
-              <div className="pc-rate">{p.rate} <span>{p.rateNote}</span></div>
-              {p.features.map((f, i) => <div key={i} className="pc-feat">{f}</div>)}
+        {PRODUCTS.map(p => {
+          const isSelected = selected === p.id;
+          return (
+            <div
+              key={p.id}
+              className={`product-card${isSelected ? ' selected' : ''}`}
+            >
+              {/* Top-right selection ring */}
+              <div className={`pc-ring${isSelected ? ' pc-ring--active' : ''}`} aria-hidden="true">
+                <AnimatePresence>
+                  {isSelected && (
+                    <motion.span
+                      className="pc-ring-tick"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 340, damping: 22 }}
+                    >
+                      <Icon name="Check" size={13} strokeWidth={3} />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <div className="pc-body">
+                <div className="pc-icon"><Icon name={p.icon} size={28} /></div>
+                <div className="pc-title">{p.title}</div>
+                <div className="pc-desc">{p.desc}</div>
+                <div className="pc-rate">{p.rate} <span>{p.rateNote}</span></div>
+                {p.features.map((f, i) => <div key={i} className="pc-feat">{f}</div>)}
+              </div>
+
+              <div className="pc-footer">
+                <div className="pc-footer-left">
+                  <span className="text-small text-border2">{p.footerNote}</span>
+                  <Badge variant={p.badge.cls.replace('badge-', '')}>{p.badge.text}</Badge>
+                </div>
+                <button
+                  className={`pc-apply-btn${isSelected ? ' pc-apply-btn--applied' : ''}`}
+                  onClick={() => updateState({ loanType: p.id })}
+                >
+                  {isSelected ? (
+                    <><Icon name="Check" size={12} strokeWidth={2.5} /> Applied</>
+                  ) : (
+                    'Apply'
+                  )}
+                </button>
+              </div>
             </div>
-            <div className="pc-footer">
-              <span className="text-small text-border2">{p.footerNote}</span>
-              <Badge variant={p.badge.cls.replace('badge-', '')}>{p.badge.text}</Badge>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="promise-grid">

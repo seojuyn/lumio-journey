@@ -90,7 +90,7 @@ function PersonalLoanDetails({ repay, rateLabel }) {
         <div className="divider" />
         <div className="fld">
           <label className="fl">Loan term</label>
-          <Chips>
+          <Chips className="chips-even">
             {LOAN_TERMS.map(y => (
               <Chip key={y} selected={state.loanTerm === y} onClick={() => updateState({ loanTerm: y })}>
                 {y} {y === 1 ? 'year' : 'years'}
@@ -272,7 +272,7 @@ function CarLoanDetails({ repay, rateLabel }) {
         <RangeSlider label="Vehicle price / loan amount" value={state.loanAmount} prefix="$" min={5000} max={500000} step={1000} onChange={v => updateState({ loanAmount: v })} minLabel="$5,000" maxLabel="$500,000" />
 
         <div className="divider" />
-        <RangeSlider label="Cash deposit" value={state.deposit} displayValue={fmt(state.deposit)} min={0} max={200000} step={500} onChange={v => updateState({ deposit: v })} minLabel="$0" maxLabel="$200,000" />
+        <RangeSlider label="Cash deposit" value={state.deposit} prefix="$" min={0} max={200000} step={500} onChange={v => updateState({ deposit: v })} minLabel="$0" maxLabel="$200,000" />
 
         <div className="divider" />
         <div className="flex-between" style={{ marginBottom: 12 }}>
@@ -296,13 +296,13 @@ function CarLoanDetails({ repay, rateLabel }) {
           <Icon name="CircleDollarSign" size={13} /> Balloon payment <span className="text-border2" style={{ fontSize: 11, fontWeight: 400 }}>(optional)</span>
         </div>
         <div className="card" style={{ background: 'var(--bg2)', borderRadius: 'var(--r8)', padding: 14 }}>
-          <RangeSlider label="Balloon percentage" value={state.balloonPct} displayValue={`${state.balloonPct}%`} min={0} max={40} step={5} onChange={v => updateState({ balloonPct: v })} minLabel="0% (none)" maxLabel="40%" />
+          <RangeSlider label="Balloon percentage" value={state.balloonPct} suffix="%" min={1} max={40} step={1} onChange={v => updateState({ balloonPct: v })} minLabel="1%" maxLabel="40%" />
         </div>
 
         <div className="divider" />
         <div className="fld" style={{ marginBottom: 0 }}>
           <label className="fl">Loan term</label>
-          <Chips>
+          <Chips className="chips-even">
             {LOAN_TERMS.map(y => (
               <Chip key={y} selected={state.loanTerm === y} onClick={() => updateState({ loanTerm: y })}>
                 {y} {y === 1 ? 'year' : 'years'}
@@ -320,7 +320,7 @@ function CarLoanDetails({ repay, rateLabel }) {
             { label: 'Trade-in',      val: '−$0', accent: false },
             { label: 'Net loan',      val: fmt(netLoan), accent: true },
           ].map(b => (
-            <div key={b.label} className="card" style={{ background: b.accent ? 'rgba(79,110,247,.1)' : 'var(--bg2)', border: `1px solid ${b.accent ? 'rgba(79,110,247,.25)' : 'var(--border)'}`, borderRadius: 'var(--r8)', padding: 12, textAlign: 'center' }}>
+            <div key={b.label} className="card" style={{ background: b.accent ? 'rgba(79,110,247,.1)' : 'var(--bg2)', border: `1px solid ${b.accent ? 'rgba(79,110,247,.25)' : 'var(--border)'}`, borderRadius: 'var(--r8)', padding: 12, textAlign: 'center', marginBottom: 0 }}>
               <div className="text-small text-border2" style={{ marginBottom: 3 }}>{b.label}</div>
               <div className="text-strong" style={b.accent ? { color: '#8ea6ff' } : {}}>{b.val}</div>
             </div>

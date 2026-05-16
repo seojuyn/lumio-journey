@@ -1,4 +1,8 @@
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 .chip {
   padding: 9px 16px;
@@ -8,20 +12,39 @@
   color: var(--text1);
   font-size: 13px;
   cursor: pointer;
-  transition: all .18s;
+  transition: border-color .2s ease, background .2s ease, box-shadow .22s ease, color .18s ease;
   font-weight: 500;
   font-family: var(--font-body);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  text-align: center;
+  white-space: nowrap;
 }
+
 .chip:hover {
   border-color: rgba(139, 92, 246, 0.45);
   color: var(--text0);
   background: rgba(126, 34, 206, 0.1);
 }
+
 .chip.on {
-  border-color: rgba(139, 92, 246, 0.6);
-  background: rgba(126, 34, 206, 0.18);
+  border-color: rgba(139, 92, 246, 0.72);
+  background: rgba(126, 34, 206, 0.22);
   color: var(--text0);
-  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2);
+  font-weight: 600;
+  box-shadow:
+    0 0 0 1px rgba(139, 92, 246, 0.28),
+    0 0 14px rgba(139, 92, 246, 0.2),
+    inset 0 0 12px rgba(109, 40, 217, 0.08);
+}
+
+/* Equal-width chips — used for loan term selectors */
+.chips-even {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+}
+
+.chips-even .chip {
+  min-width: 0;
 }
