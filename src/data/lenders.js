@@ -7,7 +7,7 @@ export const LENDERS = [
     rate: '8.49%',
     comp: '9.12%',
     best: true,
-    etFee: '$0 after 24 mo',
+    etFee: '$0 after 24 months',
     estFee: '$195 once',
     brokFee: '$0 to you',
     baseRepay: '$612',

@@ -6,6 +6,7 @@ import { useApp } from '../context/AppContext';
 import { ScreenHeader } from '../components/common/ScreenHeader';
 import { BtnPrimary, BtnGhost, BtnRow } from '../components/common/Button';
 import { INCOME_DOC_MAP } from '../data/incomeDocMap';
+import { INCOME_TYPES } from '../data/incomeTypes';
 import './DocumentsScreen.css';
 
 // ─── Static document data (always shown) ─────────────────────────────────────
@@ -169,6 +170,8 @@ function DocumentCard({ doc, selected, onClick }) {
     </motion.button>
   );
 }
+
+const getDocUploadKey = (doc) => doc.stateKey ?? doc.id;
 
 function UploadSheet({ doc, onClose, onUpload }) {
   if (!doc) return null;
@@ -888,6 +891,7 @@ export function DocumentsScreen() {
   const groups = useMemo(() => {
     const map = new Map();
     const seen = new Set();
+    const incomeDocIds = new Set();
 
     const push = (groupLabel, groupIcon, doc) => {
       if (seen.has(doc.id)) return;
@@ -895,17 +899,50 @@ export function DocumentsScreen() {
       if (!map.has(groupLabel)) map.set(groupLabel, { icon: groupIcon, docs: [] });
       map.get(groupLabel).docs.push({
         ...doc,
-        status: doc.stateKey && state.uploadedDocs?.[doc.stateKey] ? 'uploaded' : 'not_started',
+        status: state.uploadedDocs?.[getDocUploadKey(doc)] ? 'uploaded' : 'not_started',
       });
     };
 
+    const withStatus = (doc) => ({
+      ...doc,
+      status: state.uploadedDocs?.[getDocUploadKey(doc)] ? 'uploaded' : 'not_started',
+    });
+
     STATIC_DOCS.forEach((d) => push(d.groupLabel, d.groupIcon, d));
 
-    (state.incomeTypes ?? []).forEach((typeId) => {
-      const entry = INCOME_DOC_MAP[typeId];
-      if (!entry) return;
-      entry.docs.forEach((d) => push('Income Documents', 'Briefcase', d));
-    });
+    const incomeSections = (state.incomeTypes ?? [])
+      .map((typeId) => {
+        const entry = INCOME_DOC_MAP[typeId];
+        const type = INCOME_TYPES.find((item) => item.id === typeId);
+        if (!entry || !type) return null;
+
+        const docs = entry.docs
+          .filter((doc) => {
+            if (seen.has(doc.id) || incomeDocIds.has(doc.id)) return false;
+            seen.add(doc.id);
+            incomeDocIds.add(doc.id);
+            return true;
+          })
+          .map(withStatus);
+
+        if (docs.length === 0) return null;
+
+        return {
+          id: typeId,
+          label: type.label,
+          icon: type.icon,
+          docs,
+        };
+      })
+      .filter(Boolean);
+
+    if (incomeSections.length > 0) {
+      map.set('Income Documents', {
+        icon: 'Briefcase',
+        docs: incomeSections.flatMap((section) => section.docs),
+        incomeSections,
+      });
+    }
 
     if (requiresRentalDocs) {
       HOUSING_DOCS.forEach((d) => push(d.groupLabel, d.groupIcon, d));
@@ -930,8 +967,8 @@ export function DocumentsScreen() {
 
   const markUpload = (docId) => {
     const doc = allDocs.find((d) => d.id === docId);
-    if (doc?.stateKey) {
-      updateState({ uploadedDocs: { ...state.uploadedDocs, [doc.stateKey]: true } });
+    if (doc) {
+      updateState({ uploadedDocs: { ...state.uploadedDocs, [getDocUploadKey(doc)]: true } });
     }
   };
 
@@ -1049,21 +1086,63 @@ export function DocumentsScreen() {
                 </div>
                 {label === 'Income Documents' && (
                   <p className="doc-group-helper">
-                    Required documents are generated automatically from your selected income sources.
+                    Required documents are grouped automatically from your selected income sources.
                   </p>
                 )}
-                <div className="doc-group-cards">
-                  <AnimatePresence initial={false}>
-                    {group.docs.map((doc) => (
-                      <DocumentCard
-                        key={doc.id}
-                        doc={doc}
-                        selected={doc.id === selectedDoc?.id}
-                        onClick={() => handleDocClick(doc)}
-                      />
-                    ))}
-                  </AnimatePresence>
-                </div>
+                {group.incomeSections ? (
+                  <div className="doc-income-sections">
+                    <AnimatePresence initial={false}>
+                      {group.incomeSections.map((section) => (
+                        <motion.div
+                          key={section.id}
+                          className="doc-income-section"
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          transition={{ duration: 0.22, ease: 'easeOut' }}
+                          layout
+                        >
+                          <div className="doc-income-section-head">
+                            <div className="doc-income-section-title">
+                              <span className="doc-income-section-icon">
+                                <Icon name={section.icon} size={12} />
+                              </span>
+                              <span>{section.label}</span>
+                            </div>
+                            <span className="doc-income-section-count">
+                              {section.docs.length} document{section.docs.length !== 1 ? 's' : ''}
+                            </span>
+                          </div>
+                          <div className="doc-group-cards">
+                            <AnimatePresence initial={false}>
+                              {section.docs.map((doc) => (
+                                <DocumentCard
+                                  key={doc.id}
+                                  doc={doc}
+                                  selected={doc.id === selectedDoc?.id}
+                                  onClick={() => handleDocClick(doc)}
+                                />
+                              ))}
+                            </AnimatePresence>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <div className="doc-group-cards">
+                    <AnimatePresence initial={false}>
+                      {group.docs.map((doc) => (
+                        <DocumentCard
+                          key={doc.id}
+                          doc={doc}
+                          selected={doc.id === selectedDoc?.id}
+                          onClick={() => handleDocClick(doc)}
+                        />
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                )}
               </motion.section>
             ))}
           </AnimatePresence>

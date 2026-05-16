@@ -21,7 +21,7 @@
   border: 1px solid var(--border2); background: transparent;
   color: var(--text1); font-size: 12px; font-weight: 600;
   cursor: pointer; white-space: nowrap;
-  transition: all .18s;
+  transition: border-color .18s ease, color .18s ease, background .18s ease, box-shadow .18s ease;
 }
 .doc-action button:hover {
   border-color: var(--hover);
@@ -31,9 +31,8 @@
 .doc-action button.ob-btn {
   background: var(--accentg);
   border: none; color: #fff;
-  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.35);
+  box-shadow: 0 3px 12px rgba(109, 40, 217, 0.30);
 }
 .doc-action button.ob-btn:hover {
-  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5);
-  transform: translateY(-1px);
+  box-shadow: 0 3px 16px rgba(109, 40, 217, 0.40);
 }

@@ -10,20 +10,19 @@
   background: rgba(23, 16, 47, 0.65);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: all .2s cubic-bezier(.22, 1, .36, 1);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
   position: relative;
   text-align: center;
 }
 .choice-card:hover {
-  border-color: rgba(139, 92, 246, 0.4);
-  background: rgba(126, 34, 206, 0.1);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-color: rgba(139, 92, 246, 0.38);
+  background: rgba(126, 34, 206, 0.09);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
 }
 .choice-card.on {
   border-color: rgba(139, 92, 246, 0.6);
   background: rgba(126, 34, 206, 0.14);
-  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.25), var(--glow-sm);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.22), 0 0 14px rgba(139, 92, 246, 0.14);
 }
 
 .cc-check {
@@ -39,14 +38,14 @@
   justify-content: center;
   font-size: 10px;
   color: transparent;
-  transition: all .18s;
+  transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
   background: rgba(30, 27, 75, 0.5);
 }
 .choice-card.on .cc-check {
   background: var(--accentg);
   border-color: transparent;
   color: #fff;
-  box-shadow: var(--glow-sm);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.24);
 }
 
 .cc-icon   { display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: var(--hover); }
@@ -64,18 +63,18 @@
   background: rgba(23, 16, 47, 0.65);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: all .2s cubic-bezier(.22, 1, .36, 1);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
   text-align: center;
   position: relative;
 }
 .cond-card:hover {
-  border-color: rgba(139, 92, 246, 0.4);
-  transform: translateY(-1px);
+  border-color: rgba(139, 92, 246, 0.38);
+  background: rgba(126, 34, 206, 0.07);
 }
 .cond-card.on {
   border-color: rgba(139, 92, 246, 0.55);
   background: rgba(126, 34, 206, 0.12);
-  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.22), var(--glow-sm);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2), 0 0 14px rgba(139, 92, 246, 0.12);
 }
 .cond-card .cc-check { position: absolute; top: 10px; right: 10px; }
 

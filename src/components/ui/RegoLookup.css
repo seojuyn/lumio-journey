@@ -10,12 +10,12 @@
   background: var(--accentg); color: #fff;
   font-size: 13px; font-weight: 600; cursor: pointer;
   white-space: nowrap;
-  transition: all .18s;
+  transition: box-shadow .2s ease, opacity .18s;
   font-family: var(--font-display);
-  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.4);
+  box-shadow: 0 3px 12px rgba(109, 40, 217, 0.32);
 }
-.rego-btn:hover { box-shadow: 0 6px 20px rgba(109, 40, 217, 0.55); transform: translateY(-1px); }
-.rego-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; box-shadow: none; }
+.rego-btn:hover { box-shadow: 0 3px 18px rgba(109, 40, 217, 0.42); }
+.rego-btn:disabled { opacity: .58; cursor: not-allowed; box-shadow: none; }
 
 .rego-loading {
   display: flex; align-items: center; gap: 10px;

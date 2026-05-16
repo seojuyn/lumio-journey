@@ -4,11 +4,11 @@ export function Chips({ children, className, style }) {
   return <div className={`chips${className ? ` ${className}` : ''}`} style={style}>{children}</div>;
 }
 
-export function Chip({ children, selected, onClick, style }) {
+export function Chip({ children, selected, onClick, disabled, style }) {
   return (
     <div
-      className={`chip ${selected ? 'on' : ''}`}
-      onClick={onClick}
+      className={`chip${selected ? ' on' : ''}${disabled ? ' disabled' : ''}`}
+      onClick={disabled ? undefined : onClick}
       style={style}
     >
       {children}

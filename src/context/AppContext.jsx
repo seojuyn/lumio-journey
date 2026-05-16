@@ -15,7 +15,7 @@ const initialState = {
   vehicleFound: true,
   securityType: 'unsecured',
   loanAmount: 25000,
-  loanTerm: 5,
+  loanTerm: null,
   deposit: 5000,
   tradeIn: false,
   balloonPct: 0,

@@ -39,27 +39,45 @@
 }
 
 .chip.on {
-  border-color: rgba(139, 92, 246, 0.82);
-  background: rgba(126, 34, 206, 0.24);
+  border-color: rgba(139, 92, 246, 0.72);
+  background: rgba(126, 34, 206, 0.22);
   color: var(--text0);
   font-weight: 600;
-  transform: translateY(-1px);
   box-shadow:
-    0 0 0 1px rgba(139, 92, 246, 0.32),
-    0 0 18px rgba(139, 92, 246, 0.24),
-    0 2px 10px rgba(0, 0, 0, 0.22),
-    inset 0 0 14px rgba(109, 40, 217, 0.1);
+    0 0 0 1px rgba(139, 92, 246, 0.24),
+    0 0 12px rgba(139, 92, 246, 0.16),
+    inset 0 0 10px rgba(109, 40, 217, 0.08);
+}
+
+.chip.disabled {
+  opacity: .58;
+  cursor: not-allowed;
+  color: var(--text2);
+  border-color: var(--border);
+  background: rgba(30, 27, 75, 0.35);
+  box-shadow: none;
+  transform: none !important;
+  transition: opacity .2s ease;
+}
+
+.chip.disabled:hover {
+  border-color: var(--border);
+  color: var(--text2);
+  background: rgba(30, 27, 75, 0.35);
+  box-shadow: none;
+  transform: none;
 }
 
 /* ─── Equal-width: loan term selectors (short labels) ─────── */
 .chips-even {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
   gap: 8px;
 }
 
 .chips-even .chip {
   min-width: 0;
+  min-height: 40px;
 }
 
 /* ─── Grid: longer labels (Living Situation, Employment) ───── */

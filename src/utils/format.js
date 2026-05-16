@@ -2,9 +2,9 @@ export function fmt(n) {
   return '$' + Math.round(n).toLocaleString();
 }
 
-export function calcRepay(amt, termYrs, rateAnnual) {
+export function calcRepay(amt, termMonths, rateAnnual) {
   const r = rateAnnual / 12;
-  const n = termYrs * 12;
+  const n = termMonths || 0;
   if (n === 0 || amt === 0) return 0;
   return Math.round((amt * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
 }

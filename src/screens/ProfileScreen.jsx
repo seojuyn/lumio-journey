@@ -27,7 +27,7 @@ const RESIDENCY_OPTIONS = [
   { id: 'pr',      icon: 'ClipboardList', title: 'Permanent resident' },
   { id: 'visa',    icon: 'Plane',         title: 'Visa holder' },
 ];
-const LIVING_OPTIONS = ['Mortgage','Owner','Rent — agent','Rent — private','Parents / family','Boarding'];
+const LIVING_OPTIONS = ['Mortgage','Owner','Rent — agent','Rent — private','Family','Boarding'];
 const EMP_OPTIONS    = ['Full-time','Part-time','Casual','Contract','Self-employed','Not employed','Other'];
 const DEPENDANT_AGES = ['0–2 years','3–5 years','6–12 years','13–17 years','18+ (still dependent)'];
 

@@ -165,7 +165,7 @@
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: all .18s;
+  transition: border-color .18s ease, color .18s ease, background .18s ease, box-shadow .18s ease;
   font-family: var(--font-body);
 }
 .yn-pill:hover { border-color: var(--hover); color: var(--text0); }
@@ -173,7 +173,7 @@
   background: var(--accentg);
   border-color: transparent;
   color: #fff;
-  box-shadow: var(--glow-sm);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.22);
 }
 
 .rent-fields {
@@ -184,6 +184,8 @@
   margin-top: 14px;
   border-top: 1px solid var(--border);
 }
+
+.rent-field--wide { grid-column: span 2; }
 
 .rent-field label {
   display: block;
@@ -224,7 +226,7 @@
   font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: all .18s;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
   font-family: var(--font-body);
 }
 .freq-pill:hover { border-color: var(--hover); color: var(--text0); }
@@ -235,6 +237,44 @@
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
+
+/* Rent section: switch to single-column before freq-pills get too cramped */
+@media (max-width: 640px) {
+  .rent-fields {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .rent-field--wide {
+    grid-column: span 1;
+  }
+
+  /* Full-width freq-pills: give each pill a proper touch target */
+  .freq-pills {
+    gap: 8px;
+  }
+
+  .freq-pill {
+    height: 42px;
+    font-size: 12.5px;
+  }
+
+  /* Sole-renter row: allow label to wrap above pills on very small screens */
+  .rent-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .yn-pills {
+    gap: 8px;
+  }
+
+  .yn-pill {
+    height: 36px;
+    min-width: 64px;
+  }
+}
+
 @media (max-width: 580px) {
   /* Stack expense rows: label on top, stepper on bottom */
   .expense-row {

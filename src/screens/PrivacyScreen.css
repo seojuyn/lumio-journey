@@ -47,11 +47,11 @@
   font-size: 11px;
   color: transparent;
   margin-top: 1px;
-  transition: all .18s;
+  transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
 }
 .check-box.checked {
   background: var(--accentg);
   border-color: transparent;
   color: #fff;
-  box-shadow: var(--glow-sm);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.22);
 }

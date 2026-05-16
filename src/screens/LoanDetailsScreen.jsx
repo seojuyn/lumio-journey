@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Sparkles, RefreshCw, AlertTriangle } from 'lucide-react';
 import { Icon } from '../components/common/Icon';
 import { useApp } from '../context/AppContext';
@@ -18,7 +19,8 @@ import { MARKETPLACE_CARS, MARKETPLACE_STATS } from '../data/productData';
 import { fmt, calcRepay, getRate, getRateLabel } from '../utils/format';
 import './LoanDetailsScreen.css';
 
-const LOAN_TERMS = [1, 2, 3, 4, 5, 6, 7];
+const LOAN_TERMS_MO = [12, 24, 36, 48, 60, 72, 84];
+const BALLOON_MAX_TERM = 60;
 
 export function LoanDetailsScreen() {
   const { state, updateState, next, prev } = useApp();
@@ -91,9 +93,9 @@ function PersonalLoanDetails({ repay, rateLabel }) {
         <div className="fld">
           <label className="fl">Loan term</label>
           <Chips className="chips-even">
-            {LOAN_TERMS.map(y => (
-              <Chip key={y} selected={state.loanTerm === y} onClick={() => updateState({ loanTerm: y })}>
-                {y} {y === 1 ? 'year' : 'years'}
+            {LOAN_TERMS_MO.map(mo => (
+              <Chip key={mo} selected={state.loanTerm === mo} onClick={() => updateState({ loanTerm: mo })}>
+                {mo} months
               </Chip>
             ))}
           </Chips>
@@ -101,7 +103,7 @@ function PersonalLoanDetails({ repay, rateLabel }) {
         <RepayBox
           label="Estimated monthly repayment"
           sub="Indicative · actual rate confirmed after matching"
-          value={`${fmt(repay)} / mo`}
+          value={state.loanTerm ? `${fmt(repay)} / mo` : '— select a term'}
           rateLabel={rateLabel}
         />
       </Card>
@@ -151,6 +153,13 @@ function CarLoanDetails({ repay, rateLabel }) {
   const { state, updateState } = useApp();
 
   const netLoan = Math.max(0, state.loanAmount - state.deposit);
+  const balloonRestricted = state.balloonPct >= 30;
+
+  useEffect(() => {
+    if (state.balloonPct >= 30 && state.loanTerm > BALLOON_MAX_TERM) {
+      updateState({ loanTerm: null });
+    }
+  }, [state.balloonPct, state.loanTerm, updateState]);
 
   return (
     <>
@@ -296,22 +305,30 @@ function CarLoanDetails({ repay, rateLabel }) {
           <Icon name="CircleDollarSign" size={13} /> Balloon payment <span className="text-border2" style={{ fontSize: 11, fontWeight: 400 }}>(optional)</span>
         </div>
         <div className="card" style={{ background: 'var(--bg2)', borderRadius: 'var(--r8)', padding: 14 }}>
-          <RangeSlider label="Balloon percentage" value={state.balloonPct} suffix="%" min={1} max={40} step={1} onChange={v => updateState({ balloonPct: v })} minLabel="1%" maxLabel="40%" />
+          <RangeSlider label="Balloon percentage" value={state.balloonPct} suffix="%" min={0} max={40} step={1} onChange={v => updateState({ balloonPct: v })} minLabel="0%" maxLabel="40%" />
         </div>
 
         <div className="divider" />
         <div className="fld" style={{ marginBottom: 0 }}>
           <label className="fl">Loan term</label>
           <Chips className="chips-even">
-            {LOAN_TERMS.map(y => (
-              <Chip key={y} selected={state.loanTerm === y} onClick={() => updateState({ loanTerm: y })}>
-                {y} {y === 1 ? 'year' : 'years'}
-              </Chip>
-            ))}
+            {LOAN_TERMS_MO.map(mo => {
+              const isDisabled = balloonRestricted && mo > BALLOON_MAX_TERM;
+              return (
+                <Chip key={mo} selected={state.loanTerm === mo} disabled={isDisabled} onClick={() => updateState({ loanTerm: mo })}>
+                  {mo} months
+                </Chip>
+              );
+            })}
           </Chips>
+          {balloonRestricted && (
+            <p className="loan-term-helper">
+              Loan terms above 60 months are unavailable for balloon payments over 30%.
+            </p>
+          )}
         </div>
 
-        <RepayBox label="Estimated monthly repayment" sub="Indicative · confirmed after matching" value={`${fmt(repay)} / mo`} rateLabel={rateLabel} />
+        <RepayBox label="Estimated monthly repayment" sub="Indicative · confirmed after matching" value={state.loanTerm ? `${fmt(repay)} / mo` : '— select a term'} rateLabel={rateLabel} />
 
         <div className="grid-4" style={{ marginTop: 12 }}>
           {[

@@ -318,7 +318,7 @@
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-body);
-  transition: all .15s;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
   white-space: nowrap;
 }
 
@@ -328,7 +328,7 @@
 }
 
 .bank-nav-back:disabled {
-  opacity: .35;
+  opacity: .58;
   cursor: not-allowed;
 }
 
@@ -345,20 +345,18 @@
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-body);
-  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.35);
-  transition: box-shadow .18s, transform .18s;
+  box-shadow: 0 3px 12px rgba(109, 40, 217, 0.30);
+  transition: box-shadow .2s ease;
 }
 
 .bank-nav-next:hover {
-  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5);
-  transform: translateY(-1px);
+  box-shadow: 0 3px 18px rgba(109, 40, 217, 0.40);
 }
 
 .bank-nav-next:disabled {
-  opacity: .35;
+  opacity: .58;
   cursor: not-allowed;
   box-shadow: none;
-  transform: none;
 }
 
 /* ─── Step 0: Intro ─────────────────────────────────────────────── */
@@ -1389,6 +1387,67 @@
   gap: 7px;
 }
 
+.doc-income-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.doc-income-section {
+  background: rgba(23, 16, 47, 0.46);
+  border: 1px solid rgba(167, 139, 250, 0.13);
+  border-radius: var(--r16);
+  padding: 10px;
+  overflow: hidden;
+}
+
+.doc-income-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 1px 2px 9px;
+  margin-bottom: 9px;
+  border-bottom: 1px solid rgba(167, 139, 250, 0.1);
+}
+
+.doc-income-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--text0);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.doc-income-section-title span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-income-section-icon {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: var(--r8);
+  background: rgba(109, 40, 217, 0.13);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  color: var(--hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doc-income-section-count {
+  flex-shrink: 0;
+  color: var(--text2);
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 /* ─── Document cards ────────────────────────────────────────────── */
 .doc-upload-card {
   display: block;
@@ -1675,13 +1734,12 @@
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-body);
-  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.35);
-  transition: box-shadow .18s, transform .18s;
+  box-shadow: 0 3px 12px rgba(109, 40, 217, 0.30);
+  transition: box-shadow .2s ease;
 }
 
 .doc-preview-btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5);
-  transform: translateY(-1px);
+  box-shadow: 0 3px 18px rgba(109, 40, 217, 0.40);
 }
 
 .doc-preview-btn-ghost {
@@ -1697,7 +1755,7 @@
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-body);
-  transition: all .18s;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
 }
 
 .doc-preview-btn-ghost:hover {
@@ -2033,6 +2091,16 @@
     padding: 12px 13px;
   }
 
+  .doc-income-section {
+    padding: 9px;
+  }
+
+  .doc-income-section-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
   .doc-card-icon-wrap {
     width: 36px;
     height: 36px;
@@ -2329,17 +2397,16 @@
   font-family: var(--font-body);
   cursor: pointer;
   letter-spacing: .1px;
-  box-shadow: 0 5px 20px rgba(109, 40, 217, 0.48);
-  transition: box-shadow .18s, transform .18s, opacity .18s;
+  box-shadow: 0 3px 14px rgba(109, 40, 217, 0.34);
+  transition: box-shadow .2s ease, opacity .18s;
 }
 
 .sc-modal-connect-btn:not(:disabled):hover {
-  box-shadow: 0 8px 28px rgba(109, 40, 217, 0.62);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(109, 40, 217, 0.44);
 }
 
 .sc-modal-connect-btn:disabled {
-  opacity: 0.4;
+  opacity: .58;
   cursor: not-allowed;
   box-shadow: none;
 }

@@ -64,7 +64,7 @@
   border-radius: 20px;
   padding: 3px 10px;
   cursor: pointer;
-  transition: all .18s;
+  transition: border-color .18s ease, background .18s ease, color .18s ease;
   white-space: nowrap;
   touch-action: manipulation;
 }

@@ -26,8 +26,8 @@
 
   /* ─── TEXT ────────────────────────────────────────────────── */
   --text0: #FFFFFF;        /* Primary */
-  --text1: #C4B5FD;        /* Muted / Secondary */
-  --text2: #7C6AAD;        /* Dim / Labels / Placeholders */
+  --text1: #D8CCFF;        /* Muted / Secondary */
+  --text2: #A596D0;        /* Dim / Labels / Placeholders */
 
   /* ─── STATUS ──────────────────────────────────────────────── */
   --green:        #10B981;
@@ -62,7 +62,7 @@
   --font-ai:      'Geist', 'Inter', sans-serif;
 
   /* ─── LAYOUT ──────────────────────────────────────────────── */
-  --sidebar-w:  260px;
+  --sidebar-w:  276px;
   --topbar-h:   60px;
   --content-px: 36px;
   --content-py: 32px;
@@ -81,4 +81,11 @@
   --sp28: 28px;
   --sp32: 32px;
   --sp36: 36px;
+}
+
+@media (max-width: 1100px) and (min-width: 901px) {
+  :root {
+    --sidebar-w: 268px;
+    --content-px: 28px;
+  }
 }

@@ -9,7 +9,8 @@
       "Bash(node -e \"const p=require\\('./node_modules/react-day-picker/package.json'\\); console.log\\(p.exports ? JSON.stringify\\(Object.keys\\(p.exports\\)\\) : 'no exports field'\\);\")",
       "Bash(node -e \"const p=require\\('./node_modules/react-day-picker/package.json'\\); const styles=Object.entries\\(p.exports||{}\\).filter\\(\\([k]\\)=>k.includes\\('style'\\)||k.includes\\('css'\\)\\); console.log\\(JSON.stringify\\(styles\\)\\);\")",
       "Bash(npx vite *)",
-      "Bash(node -e \"const opts = ['Rent — agent','Rent — private']; opts.forEach\\(l => console.log\\(JSON.stringify\\(l\\), '->', JSON.stringify\\(l.toLowerCase\\(\\).replace\\(/ /g,'-'\\).replace\\(/—/g,'-'\\)\\)\\)\\)\")"
+      "Bash(node -e \"const opts = ['Rent — agent','Rent — private']; opts.forEach\\(l => console.log\\(JSON.stringify\\(l\\), '->', JSON.stringify\\(l.toLowerCase\\(\\).replace\\(/ /g,'-'\\).replace\\(/—/g,'-'\\)\\)\\)\\)\")",
+      "Bash(Remove-Item \"b:\\\\axio\\\\axio-react\\\\src\\\\screens\\\\SignupScreen.jsx\", \"b:\\\\axio\\\\axio-react\\\\src\\\\screens\\\\SignupScreen.css\")"
     ]
   }
 }

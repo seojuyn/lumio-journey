@@ -10,24 +10,20 @@
 .lender-card {
   border-radius: var(--r22);
   border: 1px solid var(--glass-border);
-  background: rgba(23, 16, 47, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(23, 16, 47, 0.92);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-shadow: var(--card-shadow);
-  transition: border-color .22s, box-shadow .22s, transform .22s;
+  transition: border-color .22s ease;
 }
 .lender-card:hover {
-  border-color: rgba(139, 92, 246, 0.35);
-  box-shadow: var(--card-shadow-hover);
-  transform: translateY(-2px);
+  border-color: rgba(139, 92, 246, 0.26);
 }
 .lender-card.best {
-  border-color: rgba(139, 92, 246, 0.5);
+  border-color: rgba(139, 92, 246, 0.48);
   background: rgba(109, 40, 217, 0.08);
-  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2), var(--card-shadow);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.16), var(--card-shadow);
 }
 
 /* ─── Header ────────────────────────────────────────────────────── */
@@ -52,7 +48,7 @@
   color: #fff;
   letter-spacing: -.3px;
   flex-shrink: 0;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
 }
 
 .lc-header-body {
@@ -80,13 +76,13 @@
 /* ─── Repayment hero ────────────────────────────────────────────── */
 .lc-repay {
   padding: 18px 18px 16px;
-  background: linear-gradient(135deg, rgba(109, 40, 217, 0.14) 0%, rgba(147, 51, 234, 0.06) 100%);
+  background: linear-gradient(180deg, rgba(109, 40, 217, 0.14) 0%, rgba(147, 51, 234, 0.06) 100%);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   text-align: center;
 }
 .best .lc-repay {
-  background: linear-gradient(135deg, rgba(109, 40, 217, 0.22) 0%, rgba(147, 51, 234, 0.1) 100%);
+  background: linear-gradient(180deg, rgba(109, 40, 217, 0.22) 0%, rgba(147, 51, 234, 0.1) 100%);
   border-color: rgba(139, 92, 246, 0.2);
 }
 
@@ -226,7 +222,6 @@
   min-width: 6px;
   border-radius: 50%;
   background: var(--green);
-  box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
 }
 
 /* ─── Approval confidence ───────────────────────────────────────── */
@@ -303,17 +298,15 @@
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-body);
-  transition: box-shadow .18s, transform .18s, background .18s, color .18s, border-color .18s;
+  transition: opacity .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
 }
 
 .lc-apply-primary {
   background: var(--accentg);
   color: #fff;
-  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.4);
 }
 .lc-apply-primary:hover {
-  box-shadow: 0 6px 22px rgba(109, 40, 217, 0.55);
-  transform: translateY(-1px);
+  opacity: 0.88;
 }
 
 .lc-apply-ghost {

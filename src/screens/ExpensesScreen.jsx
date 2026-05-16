@@ -130,7 +130,7 @@ export function ExpensesScreen() {
                 <label>Full rental amount</label>
                 <input placeholder="$0" value={fullRentalAmount} onChange={e => setFullRentalAmount(e.target.value)} />
               </div>
-              <div className="rent-field" style={{ gridColumn: 'span 2' }}>
+              <div className="rent-field rent-field--wide">
                 <label>Frequency</label>
                 <div className="freq-pills">
                   {['Weekly', 'Fortnightly', 'Monthly'].map(f => (

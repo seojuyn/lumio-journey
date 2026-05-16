@@ -13,18 +13,17 @@
   background: rgba(23, 16, 47, 0.65);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: all .2s cubic-bezier(.22, 1, .36, 1);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
   position: relative;
 }
 .itc:hover {
-  border-color: rgba(139, 92, 246, 0.4);
-  background: rgba(126, 34, 206, 0.08);
-  transform: translateY(-1px);
+  border-color: rgba(139, 92, 246, 0.38);
+  background: rgba(126, 34, 206, 0.07);
 }
 .itc.on {
   border-color: rgba(139, 92, 246, 0.6);
   background: rgba(109, 40, 217, 0.14);
-  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2), var(--glow-sm);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2), 0 0 14px rgba(139, 92, 246, 0.12);
 }
 
 .itc-check {
@@ -34,13 +33,13 @@
   font-size: 9px; color: transparent;
   display: flex; align-items: center; justify-content: center;
   background: rgba(30, 27, 75, 0.5);
-  transition: all .18s;
+  transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
 }
 .itc.on .itc-check {
   background: var(--accentg);
   border-color: transparent;
   color: #fff;
-  box-shadow: var(--glow-sm);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.22);
 }
 
 .itc-icon  { display: flex; align-items: center; margin-bottom: 7px; color: var(--hover); }

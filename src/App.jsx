@@ -14,7 +14,7 @@ const DocumentsScreen   = lazy(() => import('./screens/DocumentsScreen').then(m 
 const PrivacyScreen     = lazy(() => import('./screens/PrivacyScreen').then(m => ({ default: m.PrivacyScreen })));
 const SummaryScreen     = lazy(() => import('./screens/SummaryScreen').then(m => ({ default: m.SummaryScreen })));
 const LendersScreen     = lazy(() => import('./screens/LendersScreen').then(m => ({ default: m.LendersScreen })));
-const SignupScreen      = lazy(() => import('./screens/SignupScreen').then(m => ({ default: m.SignupScreen })));
+const CreateAccount     = lazy(() => import('./screens/CreateAccount').then(m => ({ default: m.CreateAccount })));
 const DashboardScreen   = lazy(() => import('./screens/DashboardScreen').then(m => ({ default: m.DashboardScreen })));
 
 const SCREEN_COMPONENTS = [
@@ -29,7 +29,7 @@ const SCREEN_COMPONENTS = [
   PrivacyScreen,
   SummaryScreen,
   LendersScreen,
-  SignupScreen,
+  CreateAccount,
   DashboardScreen,
 ];
 

@@ -29,7 +29,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all .18s;
+  transition: background .18s ease, color .18s ease;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }

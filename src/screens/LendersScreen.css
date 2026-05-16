@@ -23,8 +23,6 @@
   border-radius: var(--r12);
   padding: 3px;
   gap: 2px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .freq-tab {
@@ -37,7 +35,7 @@
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-body);
-  transition: background .18s, color .18s, box-shadow .18s;
+  transition: background .2s ease, color .2s ease;
   white-space: nowrap;
 }
 
@@ -49,7 +47,6 @@
 .freq-tab.active {
   background: var(--accentg);
   color: #fff;
-  box-shadow: 0 2px 10px rgba(109, 40, 217, 0.35);
 }
 
 /* ─── Responsive ────────────────────────────────────────────────── */
