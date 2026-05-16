@@ -23,7 +23,7 @@ export function ALCard({ id, icon, title, desc, hasFin, on, onToggle, isLinked, 
             <div className="al-title">{title}</div>
             <div className="al-desc">{desc}</div>
             {on && <div className="al-meta">1 item declared</div>}
-            {linkedMeta && <div className="al-meta al-meta-linked">{linkedMeta}</div>}
+            {on && linkedMeta && <div className="al-meta al-meta-linked">{linkedMeta}</div>}
           </div>
         </div>
         <div className="al-head-actions">

@@ -53,6 +53,13 @@
 }
 
 /* ─── HEAD ──────────────────────────────────────────────────── */
+/*
+ * Fixed height keeps every collapsed card identical regardless of
+ * description length or metadata presence. The padding is included
+ * in the 74px via box-sizing: border-box, giving ~46px of content
+ * area — enough for a 34px icon beside a title + one-line desc.
+ * Overflow is clipped so no wrapping text can break the rhythm.
+ */
 .al-head {
   padding: 14px 15px;
   cursor: pointer;
@@ -61,8 +68,17 @@
   align-items: flex-start;
   gap: 12px;
   transition: background .18s;
+  height: 74px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 .al-head:hover { background: rgba(139, 92, 246, 0.05); }
+
+/* Expanded state: release the height lock so meta text is visible */
+.al-card.on .al-head {
+  height: auto;
+  overflow: visible;
+}
 
 /* Horizontal: icon sits left of title+desc block */
 .al-head-left {
@@ -115,6 +131,17 @@
   font-size: 11.5px;
   color: var(--text2);
   line-height: 1.4;
+  /* Single-line clamp — looks intentional, not accidentally clipped */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Full description visible when the card is open */
+.al-card.on .al-desc {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
 }
 
 .al-meta {

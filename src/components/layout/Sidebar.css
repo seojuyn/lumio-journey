@@ -303,7 +303,7 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: var(--text2);
-  opacity: 0.8;
+  opacity: 0.95;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -311,7 +311,7 @@
 .nav-group-rule {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.18), transparent);
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.28), transparent);
   border-radius: 1px;
 }
 
@@ -381,13 +381,13 @@
   height: 22px;
   min-width: 22px;
   border-radius: 50%;
-  border: 1.5px solid rgba(167, 139, 250, 0.28);
+  border: 1.5px solid rgba(167, 139, 250, 0.38);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 10.5px;
   font-weight: 700;
-  color: #BFB1EA;
+  color: #CFC5F2;
   flex-shrink: 0;
   transition: background .2s, border-color .2s, box-shadow .25s, color .2s;
 }
@@ -403,15 +403,17 @@
 }
 
 .nav-item.completed .nav-ind {
-  background: var(--greenbg);
-  border-color: rgba(16, 185, 129, 0.55);
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.78);
   color: var(--green);
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+  box-shadow:
+    0 0 0 2px rgba(16, 185, 129, 0.1),
+    0 0 12px rgba(16, 185, 129, 0.42);
 }
 
 .nav-item.locked .nav-ind {
-  border-color: rgba(167, 139, 250, 0.15);
-  color: #7468A8;
+  border-color: rgba(167, 139, 250, 0.22);
+  color: #9A8EC8;
 }
 
 /* ─── Label ─────────────────────────────────────────────────── */
@@ -429,8 +431,12 @@
   font-weight: 600;
 }
 
+.nav-item.completed .nav-label {
+  color: #D8F0EA;
+}
+
 .nav-item.locked .nav-label {
-  color: #7468A8;
+  color: #9A8EC8;
 }
 
 /* ─── Active indicator dot (trailing) ───────────────────────── */
@@ -464,20 +470,21 @@
   width: 2px;
   height: 13px;
   border-radius: 1px;
-  background: rgba(139, 92, 246, 0.18);
+  background: rgba(139, 92, 246, 0.3);
   flex-shrink: 0;
 }
 
 .nav-seg.seg-done {
   background: linear-gradient(180deg,
-    rgba(16, 185, 129, 0.38) 0%,
-    rgba(16, 185, 129, 0.18) 100%);
+    rgba(16, 185, 129, 0.72) 0%,
+    rgba(16, 185, 129, 0.38) 100%);
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.3);
 }
 
 .nav-seg.seg-active {
   background: linear-gradient(180deg,
-    rgba(167, 100, 255, 0.6) 0%,
-    rgba(139, 92, 246, 0.18) 100%);
+    rgba(196, 148, 255, 0.78) 0%,
+    rgba(139, 92, 246, 0.28) 100%);
 }
 
 /* ─── Trust strip ──────────────────────────────────────────── */
