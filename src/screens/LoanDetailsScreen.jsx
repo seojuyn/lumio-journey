@@ -3,7 +3,6 @@ import { Sparkles, RefreshCw, AlertTriangle } from 'lucide-react';
 import { Icon } from '../components/common/Icon';
 import { useApp } from '../context/AppContext';
 import { ScreenHeader } from '../components/common/ScreenHeader';
-import { AnikaStrip } from '../components/common/AnikaStrip';
 import { AnikaPanel } from '../components/common/AnikaPanel';
 import { BtnPrimary, BtnGhost, BtnRow } from '../components/common/Button';
 import { Card, CardTitle } from '../components/common/Card';
@@ -114,10 +113,16 @@ function PersonalLoanDetails({ repay, rateLabel }) {
       </Card>
 
       <Card>
-        <CardTitle icon="Lock">Would you like to secure this loan?</CardTitle>
-        <AnikaStrip style={{ marginBottom: 16 }}>
-          <strong>Securing against a vehicle you own outright</strong> typically reduces your rate by 1.5–3% and improves approval probability. The vehicle must have no existing finance.
-        </AnikaStrip>
+        <div className="sec-loan-hd">
+          <CardTitle icon="Lock">Would You Like to Secure Your Personal Loan</CardTitle>
+          <p className="sec-loan-sub">
+            A secured personal loan uses an asset, such as a vehicle, as security for the loan.
+          </p>
+        </div>
+        <AnikaPanel
+          message="Securing against a vehicle you own outright typically reduces your rate by 1.5–3% and improves approval probability. The vehicle must have no existing finance."
+          thinkingMs={400}
+        />
         <ChoiceGrid cols={2}>
           <ChoiceCard
             selected={state.securityType === 'unsecured'}
@@ -302,6 +307,16 @@ function CarLoanDetails({ repay, rateLabel }) {
           <>
             <InfoBanner icon="Sparkles" variant="blue">Enter your trade-in rego — Anika retrieves vehicle details automatically.</InfoBanner>
             <RegoLookup prefix="ti" />
+            <div className="divider" />
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 12 }}>
+              <div className="text-strong text-small" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Icon name="CreditCard" size={13} /> Trade-in under finance?
+              </div>
+              <Chips>
+                <Chip selected={state.tradeInFinance === true}  onClick={() => updateState({ tradeInFinance: true })}>Yes</Chip>
+                <Chip selected={state.tradeInFinance === false} onClick={() => updateState({ tradeInFinance: false })}>No</Chip>
+              </Chips>
+            </div>
           </>
         )}
 

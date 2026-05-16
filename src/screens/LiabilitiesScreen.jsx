@@ -35,6 +35,7 @@ export function LiabilitiesScreen() {
             onToggle={() => toggleLiability(l.id)}
             isLinked={l.linked}
             linkedMeta={l.linked ? 'Auto-linked from Real-estate · $410,000' : null}
+            isLiability={!l.linked}
           />
         ))}
       </div>

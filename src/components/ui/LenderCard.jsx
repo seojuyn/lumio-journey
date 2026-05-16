@@ -20,7 +20,7 @@ function InfoRow({ label, value, valCls = '', last }) {
 }
 
 export function LenderCard({ lender, frequency = 'monthly' }) {
-  const { next } = useApp();
+  const { next, state } = useApp();
   const [open, setOpen] = useState(false);
 
   const {
@@ -61,9 +61,11 @@ export function LenderCard({ lender, frequency = 'monthly' }) {
           </div>
         </div>
         {best && (
-          <Badge variant="green" style={{ flexShrink: 0, alignSelf: 'flex-start' }}>
-            <Star size={10} fill="currentColor" /> Best match
-          </Badge>
+          <div className="lc-best-badge">
+            <Badge variant="green">
+              <Star size={9} fill="currentColor" /> Best match
+            </Badge>
+          </div>
         )}
       </div>
 
@@ -101,7 +103,7 @@ export function LenderCard({ lender, frequency = 'monthly' }) {
         <InfoRow label="Establishment fee"  value={estFee}          valCls={estGreen ? 'val-green' : 'val-yellow'} />
         <InfoRow label="Early exit fee"     value={etFee}           valCls={etGreen  ? 'val-green' : 'val-amber'}  />
         <InfoRow label="Extra repayments"   value={extraRepayments}                                                 />
-        <InfoRow label="Loan term"          value={loanTerm}        last                                            />
+        <InfoRow label="Loan term"          value={state.loanTerm + " Months" ?? '—'} last                                       />
       </div>
 
       {/* ── Brokerage transparency strip ── */}

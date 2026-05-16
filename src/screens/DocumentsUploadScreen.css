@@ -189,7 +189,7 @@
 }
 
 .doc-group-section {
-  margin-bottom: 14px;
+  margin-bottom: 22px;
   overflow: hidden;
 }
 
@@ -246,7 +246,7 @@
 .doc-group-cards {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 10px;
 }
 
 .doc-income-sections {

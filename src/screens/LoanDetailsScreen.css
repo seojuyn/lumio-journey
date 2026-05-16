@@ -1,3 +1,22 @@
+/* ─── Secure loan card header ──────────────────────────────────── */
+.sec-loan-hd { margin-bottom: 16px; }
+
+.sec-loan-hd .card-title { margin-bottom: 6px; }
+
+.sec-loan-sub {
+  font-size: 13px;
+  color: var(--text1);
+  line-height: 1.55;
+  margin: 0;
+  padding-left: 48px; /* aligns with title text, past the icon */
+}
+
+.sec-loan-hd + .anika-panel { margin-bottom: 16px; }
+
+@media (max-width: 480px) {
+  .sec-loan-sub { padding-left: 0; }
+}
+
 .cond-panel {
   background: var(--yellowbg);
   border: 1px solid var(--yellowborder);

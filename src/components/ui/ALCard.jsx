@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Check, Sparkles, Link } from 'lucide-react';
+import { Check, Sparkles, Link, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '../common/Icon';
 import { ToggleSwitch } from '../forms/ToggleSwitch';
 import './ALCard.css';
 
-export function ALCard({ id, icon, title, desc, hasFin, on, onToggle, isLinked, linkedMeta, isRealEstate, children }) {
+export function ALCard({ id, icon, title, desc, hasFin, on, onToggle, isLinked, linkedMeta, isRealEstate, isLiability, children }) {
   const [finOpen, setFinOpen] = useState(false);
   const [finNote, setFinNote] = useState(false);
 
@@ -17,39 +18,55 @@ export function ALCard({ id, icon, title, desc, hasFin, on, onToggle, isLinked, 
     <div className={`al-card ${on ? 'on' : ''}`}>
       <div className="al-head" onClick={onToggle}>
         <div>
-          <div className="al-icon-box"><Icon name={icon} size={20} /></div>
+          <div className="al-icon-box"><Icon name={icon} size={18} /></div>
           <div className="al-title">{title}</div>
           <div className="al-desc">{desc}</div>
           {on && <div className="al-meta">1 item declared</div>}
           {linkedMeta && <div className="al-meta">{linkedMeta}</div>}
         </div>
-        <div className="al-check">
-          <Check size={13} strokeWidth={2.5} />
+        <div className="al-head-actions">
+          <div className="al-check">
+            <Check size={12} strokeWidth={2.5} />
+          </div>
+          <ChevronDown size={13} className="al-chevron" />
         </div>
       </div>
 
-      {on && (
-        <div className="al-body" style={{ display: 'flex' }}>
-          {isLinked ? (
-            <LinkedEntry />
-          ) : id === 'creditcard' ? (
-            <CreditCardEntry title={title} />
-          ) : (
-            <DefaultEntry
-              title={title}
-              isRealEstate={isRealEstate}
-              hasFin={hasFin}
-              finOpen={finOpen}
-              finNote={finNote}
-              onFinToggle={handleFinToggle}
-            />
-          )}
-          {!isLinked && (
-            <button className="add-entry-btn">+ Add another {title.toLowerCase()}</button>
-          )}
-          {children}
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {on && (
+          <motion.div
+            key="body"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.26, ease: [0.4, 0, 0.2, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div className="al-body">
+              {isLinked ? (
+                <LinkedEntry />
+              ) : id === 'creditcard' ? (
+                <CreditCardEntry title={title} />
+              ) : isLiability ? (
+                <LiabilityEntry title={title} />
+              ) : (
+                <DefaultEntry
+                  title={title}
+                  isRealEstate={isRealEstate}
+                  hasFin={hasFin}
+                  finOpen={finOpen}
+                  finNote={finNote}
+                  onFinToggle={handleFinToggle}
+                />
+              )}
+              {!isLinked && (
+                <button className="add-entry-btn">+ Add another {title.toLowerCase()}</button>
+              )}
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -75,23 +92,74 @@ function LinkedEntry() {
 }
 
 function CreditCardEntry({ title }) {
+  const [cardNum, setCardNum] = useState('');
+
+  const handleCardNum = (e) => {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 16);
+    const groups = digits.match(/.{1,4}/g) || [];
+    setCardNum(groups.join(' '));
+  };
+
   return (
     <div className="al-entry">
       <div className="flex-between" style={{ marginBottom: 10 }}>
         <span className="text-strong" style={{ fontSize: 12.5 }}>{title} 1</span>
-        <span className="badge badge-red">$0</span>
+        <span className="badge badge-blue">$0</span>
       </div>
       <div className="al-fields">
+        <div className="al-field" style={{ gridColumn: 'span 2' }}>
+          <label>Credit Card Number</label>
+          <input
+            placeholder="•••• •••• •••• ••••"
+            value={cardNum}
+            onChange={handleCardNum}
+            maxLength={19}
+            className="cc-num-input"
+          />
+        </div>
         <div className="al-field" style={{ gridColumn: 'span 2' }}>
           <label>Lender</label>
           <input placeholder="e.g. ANZ, NAB, Westpac" />
         </div>
         <div className="al-field">
-          <label>Card limit</label>
+          <label>Card Limit</label>
           <input placeholder="$0" />
         </div>
         <div className="al-field">
-          <label>Current balance</label>
+          <label>Current Balance</label>
+          <input placeholder="$0" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LiabilityEntry({ title }) {
+  return (
+    <div className="al-entry">
+      <div className="flex-between" style={{ marginBottom: 10 }}>
+        <span className="text-strong" style={{ fontSize: 12.5 }}>{title} 1</span>
+        <span className="badge badge-blue">$0</span>
+      </div>
+      <div className="al-fields">
+        <div className="al-field">
+          <label>Lender</label>
+          <input placeholder="e.g. ANZ, CBA, Latitude" />
+        </div>
+        <div className="al-field">
+          <label>Amount Borrowed</label>
+          <input placeholder="$0" />
+        </div>
+        <div className="al-field">
+          <label>Current Balance</label>
+          <input placeholder="$0" />
+        </div>
+        <div className="al-field">
+          <label>Interest Rate</label>
+          <input placeholder="e.g. 6.99" />
+        </div>
+        <div className="al-field" style={{ gridColumn: 'span 2' }}>
+          <label>Repayments</label>
           <input placeholder="$0" />
         </div>
       </div>

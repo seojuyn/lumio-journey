@@ -71,6 +71,18 @@ const HOUSING_DOCS = [
   },
 ];
 
+const VISA_DOC = {
+  id: 'visa_document',
+  groupLabel: 'Visa Documentation',
+  groupIcon: 'Plane',
+  title: 'Visa Document',
+  subtitle: 'Grant letter, eVisa confirmation or visa label in passport',
+  icon: 'Plane',
+  required: true,
+  stateKey: 'visa_document',
+  extracted: ['Visa subclass', 'Expiry date', 'Work entitlements'],
+};
+
 const STATUS_CONFIG = {
   verified:    { label: 'Verified',     icon: 'CheckCircle2', cls: 'verified'    },
   uploaded:    { label: 'Uploaded',     icon: 'Clock',        cls: 'uploaded'    },
@@ -270,6 +282,9 @@ export function DocumentsUploadScreen() {
     state.livingStatus === 'rent---agent' ||
     state.livingStatus === 'rent---private';
 
+  const isVisaHolder = state.residency === 'visa';
+  const visaUploaded = !!state.uploadedDocs?.visa_document;
+
   const groups = useMemo(() => {
     const map = new Map();
     const seen = new Set();
@@ -330,8 +345,12 @@ export function DocumentsUploadScreen() {
       HOUSING_DOCS.forEach((d) => push(d.groupLabel, d.groupIcon, d));
     }
 
+    if (isVisaHolder) {
+      push(VISA_DOC.groupLabel, VISA_DOC.groupIcon, VISA_DOC);
+    }
+
     return map;
-  }, [state.incomeTypes, state.uploadedDocs, requiresRentalDocs]);
+  }, [state.incomeTypes, state.uploadedDocs, requiresRentalDocs, isVisaHolder]);
 
   const allDocs = useMemo(() => [...groups.values()].flatMap((g) => g.docs), [groups]);
 
@@ -401,6 +420,36 @@ export function DocumentsUploadScreen() {
             <div className="doc-income-banner-desc">
               Return to the Income step and select your income sources. Required upload documents
               will be generated automatically based on your selection.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Visa docs contextual notice ── */}
+      {isVisaHolder && (
+        <div className={`rental-docs-notice${visaUploaded ? ' rental-docs-notice--done' : ''}`}>
+          <Icon name="Plane" size={15} className="rental-docs-notice-icon" />
+          <div>
+            <div className="rental-docs-notice-title">
+              Visa documentation required
+            </div>
+            <div className="rental-docs-notice-desc">
+              {visaUploaded
+                ? 'Visa document uploaded — you\'re good to continue.'
+                : 'Lenders require proof of your current visa. Upload your grant letter, eVisa confirmation or visa label before submitting your application.'}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Visa validation alert ── */}
+      {isVisaHolder && !visaUploaded && (
+        <div className="doc-income-banner">
+          <Icon name="AlertTriangle" size={15} className="doc-income-banner-icon" />
+          <div>
+            <div className="doc-income-banner-title">Visa documentation is required</div>
+            <div className="doc-income-banner-desc">
+              Upload your visa document in the Visa Documentation section below before you can continue.
             </div>
           </div>
         </div>
@@ -515,7 +564,13 @@ export function DocumentsUploadScreen() {
 
       <BtnRow>
         <BtnGhost onClick={prev}>← Back</BtnGhost>
-        <BtnPrimary onClick={next}>Continue to privacy →</BtnPrimary>
+        <BtnPrimary
+          onClick={next}
+          disabled={isVisaHolder && !visaUploaded}
+          style={isVisaHolder && !visaUploaded ? { opacity: 0.45, cursor: 'not-allowed' } : {}}
+        >
+          Continue to privacy →
+        </BtnPrimary>
       </BtnRow>
 
       <UploadSheet doc={sheetDoc} onClose={() => setSheetDoc(null)} onUpload={markUpload} />
