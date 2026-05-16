@@ -9,9 +9,10 @@ import { LENDERS } from '../data/lenders';
 import './LendersScreen.css';
 
 const FREQ_TABS = [
-  { id: 'monthly',     label: 'Monthly'     },
-  { id: 'fortnightly', label: 'Fortnightly'  },
+  
   { id: 'weekly',      label: 'Weekly'       },
+  { id: 'fortnightly', label: 'Fortnightly'  },
+  { id: 'monthly',     label: 'Monthly'     },
 ];
 
 export function LendersScreen() {

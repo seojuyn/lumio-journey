@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Users, AlertTriangle } from 'lucide-react';
 import { Icon } from '../components/common/Icon';
 import { useApp } from '../context/AppContext';
@@ -23,6 +24,12 @@ export function ExpensesScreen() {
   const totalExp = Object.values(state.expenses).reduce((a, b) => a + b, 0);
   const yourShare = Math.round(totalExp * state.sharedPct / 100);
   const partnerCovers = totalExp - yourShare;
+
+  const [soleRenter, setSoleRenter] = useState(null);
+  const [rentalAmount, setRentalAmount] = useState('');
+  const [rentalFreq, setRentalFreq] = useState('Monthly');
+  const [leaseCount, setLeaseCount] = useState('');
+  const [fullRentalAmount, setFullRentalAmount] = useState('');
 
   return (
     <div className="screen-enter">
@@ -83,6 +90,58 @@ export function ExpensesScreen() {
       <AnikaStrip>
         <strong>Anika HEM benchmark:</strong> For a {isCouple ? 'couple' : 'single applicant'} in Sydney the minimum lender benchmark is <strong>{isCouple ? '$4,620' : '$3,840'}/mo</strong>. If declared expenses are lower, lenders apply the higher figure.
       </AnikaStrip>
+
+      <Card>
+        <CardTitle icon="Home">Essential Living Expenses</CardTitle>
+        <div className="rent-section">
+          <div className="rent-section-title">Rent Declaration</div>
+          <div className="rent-row">
+            <span className="rent-label">Sole renter?</span>
+            <div className="yn-pills">
+              <button className={`yn-pill ${soleRenter === 'yes' ? 'active' : ''}`} onClick={() => setSoleRenter('yes')}>Yes</button>
+              <button className={`yn-pill ${soleRenter === 'no' ? 'active' : ''}`} onClick={() => setSoleRenter('no')}>No</button>
+            </div>
+          </div>
+
+          {soleRenter === 'yes' && (
+            <div className="rent-fields">
+              <div className="rent-field">
+                <label>Rental amount</label>
+                <input placeholder="$0" value={rentalAmount} onChange={e => setRentalAmount(e.target.value)} />
+              </div>
+              <div className="rent-field">
+                <label>Frequency</label>
+                <div className="freq-pills">
+                  {['Weekly', 'Fortnightly', 'Monthly'].map(f => (
+                    <button key={f} className={`freq-pill ${rentalFreq === f ? 'active' : ''}`} onClick={() => setRentalFreq(f)}>{f}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {soleRenter === 'no' && (
+            <div className="rent-fields">
+              <div className="rent-field">
+                <label>People on the lease</label>
+                <input type="number" min="1" placeholder="2" value={leaseCount} onChange={e => setLeaseCount(e.target.value)} />
+              </div>
+              <div className="rent-field">
+                <label>Full rental amount</label>
+                <input placeholder="$0" value={fullRentalAmount} onChange={e => setFullRentalAmount(e.target.value)} />
+              </div>
+              <div className="rent-field" style={{ gridColumn: 'span 2' }}>
+                <label>Frequency</label>
+                <div className="freq-pills">
+                  {['Weekly', 'Fortnightly', 'Monthly'].map(f => (
+                    <button key={f} className={`freq-pill ${rentalFreq === f ? 'active' : ''}`} onClick={() => setRentalFreq(f)}>{f}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </Card>
 
       <Card>
         <CardTitle icon="BarChart2">Monthly expenses</CardTitle>

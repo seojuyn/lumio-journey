@@ -126,6 +126,114 @@
 
 .expense-row .stepper { width: 100%; }
 
+/* ─── RENTAL CARD ────────────────────────────────────────── */
+.rent-section { padding-top: 4px; }
+
+.rent-section-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text2);
+  margin-bottom: 14px;
+}
+
+.rent-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.rent-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text0);
+  font-family: var(--font-display);
+}
+
+.yn-pills { display: flex; gap: 6px; }
+
+.yn-pill {
+  height: 32px;
+  padding: 0 22px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: rgba(30, 27, 75, 0.6);
+  color: var(--text1);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s;
+  font-family: var(--font-body);
+}
+.yn-pill:hover { border-color: var(--hover); color: var(--text0); }
+.yn-pill.active {
+  background: var(--accentg);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--glow-sm);
+}
+
+.rent-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-top: 14px;
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.rent-field label {
+  display: block;
+  font-size: 10px;
+  color: var(--text2);
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+.rent-field input {
+  width: 100%;
+  height: 38px;
+  background: rgba(30, 27, 75, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text0);
+  font-size: 13px;
+  padding: 0 12px;
+  outline: none;
+  font-family: var(--font-body);
+  transition: border-color .2s;
+  box-sizing: border-box;
+}
+.rent-field input:focus { border-color: var(--hover); box-shadow: 0 0 0 2px rgba(139,92,246,.1); }
+.rent-field input::placeholder { color: var(--text2); }
+
+.freq-pills { display: flex; gap: 5px; }
+
+.freq-pill {
+  flex: 1;
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(30, 27, 75, 0.6);
+  color: var(--text2);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s;
+  font-family: var(--font-body);
+}
+.freq-pill:hover { border-color: var(--hover); color: var(--text0); }
+.freq-pill.active {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: rgba(139, 92, 246, 0.45);
+  color: var(--hover);
+}
+
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 580px) {
   /* Stack expense rows: label on top, stepper on bottom */

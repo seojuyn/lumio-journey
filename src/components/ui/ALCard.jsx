@@ -32,6 +32,8 @@ export function ALCard({ id, icon, title, desc, hasFin, on, onToggle, isLinked, 
         <div className="al-body" style={{ display: 'flex' }}>
           {isLinked ? (
             <LinkedEntry />
+          ) : id === 'creditcard' ? (
+            <CreditCardEntry title={title} />
           ) : (
             <DefaultEntry
               title={title}
@@ -68,6 +70,31 @@ function LinkedEntry() {
         <div className="al-field"><label>Linked asset</label><input value="Real-estate: Main home" readOnly style={{ color: 'var(--green)' }} /></div>
       </div>
       <div className="text-small text-border2" style={{ marginTop: 8 }}>To edit, update in Assets section.</div>
+    </div>
+  );
+}
+
+function CreditCardEntry({ title }) {
+  return (
+    <div className="al-entry">
+      <div className="flex-between" style={{ marginBottom: 10 }}>
+        <span className="text-strong" style={{ fontSize: 12.5 }}>{title} 1</span>
+        <span className="badge badge-red">$0</span>
+      </div>
+      <div className="al-fields">
+        <div className="al-field" style={{ gridColumn: 'span 2' }}>
+          <label>Lender</label>
+          <input placeholder="e.g. ANZ, NAB, Westpac" />
+        </div>
+        <div className="al-field">
+          <label>Card limit</label>
+          <input placeholder="$0" />
+        </div>
+        <div className="al-field">
+          <label>Current balance</label>
+          <input placeholder="$0" />
+        </div>
+      </div>
     </div>
   );
 }

@@ -27,12 +27,12 @@ export function Sidebar({ open, onClose }) {
     return result;
   }, [currentScreen, completedScreens]);
 
-  function handleNavClick(item) {
+  const handleNavClick = (item) => {
     if (!item.isLocked) {
       goTo(item.index);
       onClose?.();
     }
-  }
+  };
 
   return (
     <>
@@ -42,19 +42,41 @@ export function Sidebar({ open, onClose }) {
         <div className="sidebar-brand">
           <div className="brand-logo">
             <div className="brand-icon">Ax</div>
-            <div className="brand-name">Axio Finance</div>
+            <div className="brand-text">
+              <div className="brand-name">Axio Finance</div>
+              <div className="brand-ai-badge">
+                <span className="brand-ai-dot" />
+                AI-guided
+              </div>
+            </div>
           </div>
           <div className="brand-tag">Consumer Quote Journey · Finance for the new generation</div>
         </div>
 
         <div className="sidebar-progress">
-          <div className="progress-label">
-            <span>Journey progress</span>
-            <span>{currentScreen + 1} / {SCREENS.length}</span>
+          <div className="sp-head">
+            <span className="sp-eyebrow">Journey Progress</span>
+            <span className="sp-pct">{Math.round(pct)}%</span>
           </div>
-          <div className="progress-track">
-            <div className="progress-fill" style={{ width: `${pct.toFixed(1)}%` }} />
+
+          <div className="sp-counter">
+            <div className="sp-counter-main">
+              <span className="sp-num">{currentScreen + 1}</span>
+              <span className="sp-sep">/</span>
+              <span className="sp-total">{SCREENS.length}</span>
+            </div>
+            <span className="sp-unit">steps completed</span>
           </div>
+
+          <div className="sp-track-wrap">
+            <div className="sp-track">
+              <div className="sp-fill" style={{ width: `${pct.toFixed(1)}%` }} />
+            </div>
+            <div className="sp-mark" style={{ left: '25%' }} />
+            <div className="sp-mark" style={{ left: '50%' }} />
+            <div className="sp-mark" style={{ left: '75%' }} />
+          </div>
+
         </div>
 
         <nav className="nav-list">
