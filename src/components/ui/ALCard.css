@@ -336,6 +336,25 @@
   font-weight: 600;
 }
 
+.al-select-option.disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.al-select-option-lock {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--text2);
+  background: var(--surface-inner);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 1px 7px;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
 /* ─── ADD ANOTHER ───────────────────────────────────────────── */
 .add-entry-btn {
   width: 100%;

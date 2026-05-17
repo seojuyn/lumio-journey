@@ -183,7 +183,10 @@
   letter-spacing: -.1px;
   transition: opacity .2s ease;
   margin: 0 auto 14px;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   flex-shrink: 0;
 }
 

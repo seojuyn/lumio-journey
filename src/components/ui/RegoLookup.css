@@ -10,6 +10,7 @@
   background: var(--accentg); color: #fff;
   font-size: 13px; font-weight: 600; cursor: pointer;
   white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: center;
   transition: box-shadow .2s ease, opacity .18s;
   font-family: var(--font-display);
   box-shadow: 0 3px 10px rgba(109, 40, 217, 0.26);

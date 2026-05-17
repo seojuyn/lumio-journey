@@ -318,6 +318,10 @@
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   transition: border-color .15s ease, color .15s ease, background .15s ease;
   white-space: nowrap;
 }
@@ -345,6 +349,10 @@
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   box-shadow: 0 3px 12px rgba(109, 40, 217, 0.30);
   transition: box-shadow .2s ease;
 }
@@ -743,6 +751,7 @@
 .bank-connect-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   padding: 7px 14px;
   border-radius: var(--r8);
