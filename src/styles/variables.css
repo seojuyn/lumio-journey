@@ -106,25 +106,27 @@
 
 /* ═══════════════════════════════════════════════════════════════
    LIGHT THEME OVERRIDES
+   Glassmorphism-enhanced: layered translucent surfaces, soft
+   purple shadows, inset glass highlights, ambient depth.
    ═══════════════════════════════════════════════════════════════ */
 [data-theme="light"] {
   /* ─── BACKGROUNDS ─────────────────────────────────────────── */
-  --bg0: #F2F4FB;
-  --bg1: #E8ECF8;
+  --bg0: #F3F5FB;
+  --bg1: #EAECF7;
   --bg2: #FFFFFF;
-  --bg3: #F7F8FE;
-  --bg4: #EDF0FC;
+  --bg3: #F8F9FE;
+  --bg4: #EEF1FC;
 
-  /* ─── SEMANTIC SURFACES ───────────────────────────────────── */
-  --surface-card:    rgba(255, 255, 255, 0.97);
-  --surface-input:   rgba(236, 239, 255, 0.80);
-  --surface-inner:   rgba(243, 245, 255, 0.90);
+  /* ─── SEMANTIC SURFACES (glass hierarchy) ─────────────────── */
+  --surface-card:    rgba(255, 255, 255, 0.72);   /* True frosted glass */
+  --surface-input:   rgba(248, 249, 255, 0.90);   /* Opaque enough for text */
+  --surface-inner:   rgba(243, 245, 255, 0.78);   /* Inner elements */
   --surface-hover:   rgba(91, 61, 245, 0.05);
   --surface-active:  rgba(91, 61, 245, 0.09);
-  --surface-nav:     rgba(242, 244, 252, 0.98);
-  --surface-topbar:  rgba(255, 255, 255, 0.95);
+  --surface-nav:     rgba(250, 251, 255, 0.84);   /* Frosted sidebar */
+  --surface-topbar:  rgba(255, 255, 255, 0.76);   /* Frosted top bar */
   --surface-accent:  rgba(91, 61, 245, 0.06);
-  --surface-overlay: rgba(30, 20, 60, 0.40);
+  --surface-overlay: rgba(25, 15, 55, 0.36);
 
   /* ─── BRAND ───────────────────────────────────────────────── */
   --accent:  #4F35D9;
@@ -136,18 +138,18 @@
   /* ─── GRADIENTS ───────────────────────────────────────────── */
   --accentg:      linear-gradient(135deg, #5B3DF5 0%, #7C4DFF 55%, #9B6DFF 100%);
   --accentg-deep: linear-gradient(135deg, #3729A8 0%, #4F35D9 45%, #6B46FF 100%);
-  --dashg:        linear-gradient(145deg, #F2F4FB 0%, #E8ECF8 40%, #DDE2F5 100%);
+  --dashg:        linear-gradient(145deg, #F3F5FB 0%, #EAECF7 40%, #E3E8F6 100%);
 
   /* ─── BORDERS ─────────────────────────────────────────────── */
-  --border:       rgba(91, 61, 245, 0.11);
-  --border2:      rgba(91, 61, 245, 0.20);
-  --glass-border: rgba(91, 61, 245, 0.13);
-  --white-glass:  rgba(255, 255, 255, 0.80);
+  --border:       rgba(91, 61, 245, 0.09);
+  --border2:      rgba(91, 61, 245, 0.18);
+  --glass-border: rgba(91, 61, 245, 0.10);
+  --white-glass:  rgba(255, 255, 255, 0.92);
 
   /* ─── TEXT ────────────────────────────────────────────────── */
-  --text0: #0F172A;        /* Deep navy — strong contrast */
-  --text1: #334155;        /* Secondary — clear & readable */
-  --text2: #64748B;        /* Muted — accessible */
+  --text0: #0F172A;
+  --text1: #334155;
+  --text2: #64748B;
 
   /* ─── STATUS ──────────────────────────────────────────────── */
   --green:        #059669;
@@ -160,14 +162,24 @@
   --redbg:        rgba(220, 38, 38, 0.07);
   --redborder:    rgba(220, 38, 38, 0.20);
 
-  /* ─── SHADOWS ─────────────────────────────────────────────── */
-  --glow-clr:          rgba(91, 61, 245, 0.18);
-  --glow-sm:           0 2px 8px rgba(91, 61, 245, 0.10);
-  --glow-md:           0 4px 16px rgba(91, 61, 245, 0.14);
-  --glow-lg:           0 8px 28px rgba(91, 61, 245, 0.20);
-  --card-shadow:       0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 14px rgba(15, 23, 42, 0.07);
-  --card-shadow-hover: 0 2px 6px rgba(15, 23, 42, 0.08), 0 8px 22px rgba(15, 23, 42, 0.09), 0 0 0 1px rgba(91, 61, 245, 0.10);
+  /* ─── SHADOWS — glass elevation system ───────────────────── */
+  --glow-clr:          rgba(91, 61, 245, 0.16);
+  --glow-sm:           0 2px 10px rgba(91, 61, 245, 0.10), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --glow-md:           0 4px 20px rgba(91, 61, 245, 0.14), 0 2px 6px rgba(15, 23, 42, 0.05);
+  --glow-lg:           0 8px 36px rgba(91, 61, 245, 0.18), 0 4px 14px rgba(15, 23, 42, 0.06);
+  /* inset white edge = glass highlight; outer ring = card definition */
+  --card-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 18px rgba(91, 61, 245, 0.08),
+    0 0 0 1px rgba(91, 61, 245, 0.07);
+  --card-shadow-hover:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 8px rgba(15, 23, 42, 0.06),
+    0 14px 32px rgba(91, 61, 245, 0.13),
+    0 0 0 1px rgba(91, 61, 245, 0.14);
 }
+
 
 @media (max-width: 1100px) and (min-width: 901px) {
   :root {
