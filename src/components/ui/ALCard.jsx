@@ -17,7 +17,7 @@ const PROPERTY_TYPES = [
 const PROPERTY_TYPE_LABELS = Object.fromEntries(PROPERTY_TYPES.map(p => [p.value, p.label]));
 
 /* ─── Property type dropdown ──────────────────────────────────── */
-function PropertyTypeSelect({ value, onChange }) {
+function PropertyTypeSelect({ value, onChange, ownerOccupiedTaken }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const selected = PROPERTY_TYPES.find(o => o.value === value);
@@ -44,17 +44,25 @@ function PropertyTypeSelect({ value, onChange }) {
             transition={{ duration: 0.16, ease: EASE }}
             style={{ transformOrigin: 'top' }}
           >
-            {PROPERTY_TYPES.map(opt => (
-              <button
-                key={opt.value}
-                type="button"
-                className={`al-select-option${value === opt.value ? ' selected' : ''}`}
-                onMouseDown={(e) => { e.preventDefault(); onChange(opt.value); setOpen(false); }}
-              >
-                <span>{opt.label}</span>
-                {value === opt.value && <Check size={11} strokeWidth={2.5} />}
-              </button>
-            ))}
+            {PROPERTY_TYPES.map(opt => {
+              const isDisabled = opt.value === 'owner-occupied' && ownerOccupiedTaken;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  className={`al-select-option${value === opt.value ? ' selected' : ''}${isDisabled ? ' disabled' : ''}`}
+                  title={isDisabled ? 'Only one owner-occupied property is allowed' : undefined}
+                  aria-disabled={isDisabled || undefined}
+                  onMouseDown={isDisabled ? undefined : (e) => { e.preventDefault(); onChange(opt.value); setOpen(false); }}
+                >
+                  <span>{opt.label}</span>
+                  {isDisabled
+                    ? <span className="al-select-option-lock">1 max</span>
+                    : value === opt.value && <Check size={11} strokeWidth={2.5} />
+                  }
+                </button>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>
@@ -82,6 +90,7 @@ export function ALCard({
   onAddItem,    // () => void
   onRemoveItem, // (itemId: number) => void
   onItemChange, // (itemId: number, fields: object) => void
+  ownerOccupiedItemId, // which itemId (if any) currently holds owner-occupied
 }) {
   // Uncontrolled fallback (used by liabilities)
   const nextItemId = useRef(2);
@@ -189,6 +198,12 @@ export function ALCard({
                               hasFin={hasFin}
                               values={isControlled ? (controlledItems[itemId] || {}) : {}}
                               onChange={isControlled ? (fields) => onItemChange?.(itemId, fields) : undefined}
+                              ownerOccupiedTaken={
+                                isRealEstate &&
+                                ownerOccupiedItemId !== null &&
+                                ownerOccupiedItemId !== undefined &&
+                                ownerOccupiedItemId !== itemId
+                              }
                               {...entryProps}
                             />
                           )}
@@ -288,7 +303,7 @@ function LinkedEntry({ data }) {
  * AssetsScreen → ALCard → DefaultEntry. Changes are pushed back up
  * immediately via onChange, making every keystroke persistent.
  */
-function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, values = {}, onChange }) {
+function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, values = {}, onChange, ownerOccupiedTaken }) {
   // Convenience: set a single field from an input event
   const set = (field) => (e) => onChange?.({ [field]: e.target.value });
 
@@ -316,6 +331,7 @@ function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, v
               <PropertyTypeSelect
                 value={propType}
                 onChange={val => onChange?.({ propertyType: val })}
+                ownerOccupiedTaken={ownerOccupiedTaken}
               />
             </>
           ) : (

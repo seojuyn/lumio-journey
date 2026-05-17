@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { LayoutGrid, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { ScreenHeader } from '../components/common/ScreenHeader';
@@ -25,12 +25,22 @@ export function AssetsScreen() {
     prev,
   } = useApp();
 
+  // ─── Owner-Occupied uniqueness tracking ──────────────────────────────────
+  // Derived from items: which item ID (if any) currently holds owner-occupied.
+  const reItems = state.assetsData?.realestate?.items;
+
+  const ownerOccupiedItemId = useMemo(() => {
+    if (!reItems) return null;
+    for (const [id, vals] of Object.entries(reItems)) {
+      if (vals.propertyType === 'owner-occupied') return Number(id);
+    }
+    return null;
+  }, [reItems]);
+
   // ─── Real estate ↔ Liabilities sync ─────────────────────────────────────
   // Keeps realEstateLinks in context in sync with assetsData.realestate.items.
   // Runs whenever asset items change (field edits, add, remove) or the card
   // is toggled. This is the single source of truth for the Liabilities view.
-  const reItems = state.assetsData?.realestate?.items;
-
   useEffect(() => {
     if (!state.assets.realestate) return;
     const items = reItems || {};
@@ -124,6 +134,7 @@ export function AssetsScreen() {
                   onItemChange={handlers.onItemChange}
                   addLabel={a.addLabel}
                   addDesc={a.addDesc}
+                  ownerOccupiedItemId={a.id === 'realestate' ? ownerOccupiedItemId : undefined}
                 />
               );
             })}
