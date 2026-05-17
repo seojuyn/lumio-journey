@@ -14,7 +14,14 @@
       "Bash(sed -n '1,40p' b:/axio/axio-react/src/screens/AssetsScreen.jsx)",
       "Bash(sed -n '85,100p' b:/axio/axio-react/src/screens/ExpensesScreen.jsx)",
       "Bash(sed -n '25,45p' b:/axio/axio-react/src/screens/LendersScreen.jsx)",
-      "Bash(sed -n '1,30p' b:/axio/axio-react/src/screens/LiabilitiesScreen.jsx)"
+      "Bash(sed -n '1,30p' b:/axio/axio-react/src/screens/LiabilitiesScreen.jsx)",
+      "Bash(New-Item -ItemType File \"b:\\\\axio\\\\axio-react\\\\src\\\\data\\\\lenderNames.js\")",
+      "Bash(Out-Null)",
+      "Bash(Write-Output \"created\")",
+      "PowerShell(New-Item -ItemType File \"b:\\\\axio\\\\axio-react\\\\src\\\\data\\\\lenderNames.js\")",
+      "PowerShell(\"created\")",
+      "PowerShell(New-Item -ItemType File \"b:\\\\axio\\\\axio-react\\\\src\\\\components\\\\common\\\\LenderAutocomplete.jsx\")",
+      "PowerShell(New-Item -ItemType File \"b:\\\\axio\\\\axio-react\\\\src\\\\components\\\\common\\\\LenderAutocomplete.css\")"
     ]
   }
 }

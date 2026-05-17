@@ -3,6 +3,7 @@ import { Check, Link, ChevronDown, Trash2, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '../common/Icon';
 import { ToggleSwitch } from '../forms/ToggleSwitch';
+import { LenderAutocomplete } from '../common/LenderAutocomplete';
 import './ALCard.css';
 
 const EASE = [0.25, 0.46, 0.45, 0.94];
@@ -370,7 +371,11 @@ function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, v
                 <div className="fin-body">
                   <div className="al-field">
                     <label>Lender</label>
-                    <input placeholder="e.g. CBA" value={lender} onChange={set('lender')} />
+                    <LenderAutocomplete
+                      value={lender}
+                      onChange={(val) => onChange?.({ lender: val })}
+                      placeholder="e.g. CBA"
+                    />
                   </div>
                   <div className="al-field">
                     <label>Original amount</label>
@@ -411,6 +416,7 @@ function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, v
 /* ─── Credit card entry (liability, uncontrolled) ────────────────── */
 function CreditCardEntry({ num, canRemove, onRemove }) {
   const [cardNum, setCardNum] = useState('');
+  const [lender, setLender] = useState('');
   const [consolidate, setConsolidate] = useState(false);
 
   const handleCardNum = (e) => {
@@ -434,7 +440,7 @@ function CreditCardEntry({ num, canRemove, onRemove }) {
         </div>
         <div className="al-field" style={{ gridColumn: 'span 2' }}>
           <label>Lender</label>
-          <input placeholder="e.g. ANZ, NAB, Westpac" />
+          <LenderAutocomplete value={lender} onChange={setLender} placeholder="e.g. ANZ, NAB, Westpac" />
         </div>
         <div className="al-field">
           <label>Card Limit</label>
@@ -455,6 +461,7 @@ function CreditCardEntry({ num, canRemove, onRemove }) {
 
 /* ─── Generic liability entry (uncontrolled) ─────────────────────── */
 function LiabilityEntry({ title, num, canRemove, onRemove }) {
+  const [lender, setLender] = useState('');
   const [consolidate, setConsolidate] = useState(false);
 
   return (
@@ -463,7 +470,7 @@ function LiabilityEntry({ title, num, canRemove, onRemove }) {
       <div className="al-fields">
         <div className="al-field">
           <label>Lender</label>
-          <input placeholder="e.g. ANZ, CBA, Latitude" />
+          <LenderAutocomplete value={lender} onChange={setLender} placeholder="e.g. ANZ, CBA, Latitude" />
         </div>
         <div className="al-field">
           <label>Amount Borrowed</label>
