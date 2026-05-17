@@ -15,29 +15,19 @@ const PROPERTY_TYPES = [
 
 const PROPERTY_TYPE_LABELS = Object.fromEntries(PROPERTY_TYPES.map(p => [p.value, p.label]));
 
+/* ─── Property type dropdown ──────────────────────────────────── */
 function PropertyTypeSelect({ value, onChange }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-
-  // Click-outside handler
-  const handleMouseDown = (e) => {
-    if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-  };
-
-  // Attach/detach via inline event delegation on the wrapper
   const selected = PROPERTY_TYPES.find(o => o.value === value);
 
   return (
-    <div
-      className="al-select-wrap"
-      ref={ref}
-      onBlur={(e) => { if (!ref.current?.contains(e.relatedTarget)) setOpen(false); }}
-    >
+    <div className="al-select-wrap" ref={ref}>
       <button
         type="button"
         className={`al-select-trigger${open ? ' open' : ''}${value ? ' has-value' : ''}`}
         onClick={() => setOpen(p => !p)}
-        onMouseDown={(e) => e.stopPropagation()}
+        onBlur={(e) => { if (!ref.current?.contains(e.relatedTarget)) setOpen(false); }}
       >
         <span>{selected?.label ?? 'Select property type'}</span>
         <ChevronDown size={13} className="al-select-chevron" strokeWidth={2} />
@@ -52,14 +42,13 @@ function PropertyTypeSelect({ value, onChange }) {
             exit={{ opacity: 0, y: -4,    scaleY: 0.94 }}
             transition={{ duration: 0.16, ease: EASE }}
             style={{ transformOrigin: 'top' }}
-            onMouseDown={(e) => e.stopPropagation()}
           >
             {PROPERTY_TYPES.map(opt => (
               <button
                 key={opt.value}
                 type="button"
                 className={`al-select-option${value === opt.value ? ' selected' : ''}`}
-                onClick={() => { onChange(opt.value); setOpen(false); }}
+                onMouseDown={(e) => { e.preventDefault(); onChange(opt.value); setOpen(false); }}
               >
                 <span>{opt.label}</span>
                 {value === opt.value && <Check size={11} strokeWidth={2.5} />}
@@ -72,30 +61,66 @@ function PropertyTypeSelect({ value, onChange }) {
   );
 }
 
+/* ─── ALCard ──────────────────────────────────────────────────── */
+/*
+ * Dual-mode item management:
+ *   Controlled  — when `assetData` is provided (all asset types).
+ *                 Items come from context; add/remove go through callbacks.
+ *                 DefaultEntry receives `values` + `onChange` props.
+ *   Uncontrolled — when `assetData` is absent (liabilities).
+ *                 Internal useState manages item IDs.
+ *                 LiabilityEntry / CreditCardEntry manage their own fields.
+ */
 export function ALCard({
   id, icon, title, desc, hasFin, on, onToggle,
-  isLinked, linkedItems, linkedMeta, isRealEstate, isLiability,
-  onFinanceLink, addLabel, addDesc, children,
-  onRealEstateChange,
+  isLinked, linkedItems, linkedMeta,
+  isRealEstate, isLiability,
+  addLabel, addDesc, children,
+  // Controlled-mode props (assets)
+  assetData,    // { nextId: N, items: { [itemId]: { ...fields } } }
+  onAddItem,    // () => void
+  onRemoveItem, // (itemId: number) => void
+  onItemChange, // (itemId: number, fields: object) => void
 }) {
+  // Uncontrolled fallback (used by liabilities)
   const nextItemId = useRef(2);
-  const [itemIds, setItemIds] = useState([1]);
+  const [internalItemIds, setInternalItemIds] = useState([1]);
+
+  const isControlled = !!assetData;
+  const controlledItems = assetData?.items ?? { 1: {} };
+
+  const itemIds = isControlled
+    ? Object.keys(controlledItems).map(Number).sort((a, b) => a - b)
+    : internalItemIds;
 
   const addItem = () => {
-    const newId = nextItemId.current++;
-    setItemIds(p => [...p, newId]);
+    if (isControlled) {
+      onAddItem?.();
+    } else {
+      const newId = nextItemId.current++;
+      setInternalItemIds(p => [...p, newId]);
+    }
   };
 
   const removeItem = (itemId) => {
-    setItemIds(p => p.filter(x => x !== itemId));
-    onRealEstateChange?.(itemId, null);
+    if (isControlled) {
+      onRemoveItem?.(itemId);
+    } else {
+      setInternalItemIds(p => p.filter(x => x !== itemId));
+    }
   };
 
-  const displayCount = isLinked ? (linkedItems?.length || 0) : itemIds.length;
+  const displayCount = isLinked
+    ? (linkedItems?.length || 0)
+    : itemIds.length;
 
   return (
     <div className={`al-card ${on ? 'on' : ''}`}>
-      <div className="al-head" onClick={onToggle} style={isLinked && !onToggle ? { cursor: 'default' } : undefined}>
+      <div
+        className="al-head"
+        onClick={onToggle}
+        style={isLinked && !onToggle ? { cursor: 'default' } : undefined}
+      >
         <div className="al-head-left">
           <div className="al-icon-box"><Icon name={icon} size={17} /></div>
           <div className="al-head-info">
@@ -161,8 +186,8 @@ export function ALCard({
                               title={title}
                               isRealEstate={isRealEstate}
                               hasFin={hasFin}
-                              onFinanceLink={idx === 0 ? onFinanceLink : undefined}
-                              onDataChange={isRealEstate ? (data) => onRealEstateChange?.(itemId, data) : undefined}
+                              values={isControlled ? (controlledItems[itemId] || {}) : {}}
+                              onChange={isControlled ? (fields) => onItemChange?.(itemId, fields) : undefined}
                               {...entryProps}
                             />
                           )}
@@ -213,7 +238,7 @@ function EntryHeader({ label, canRemove, onRemove }) {
   );
 }
 
-/* ─── Linked entry — dynamically populated from real-estate asset ─ */
+/* ─── Linked entry — read-only, populated from real-estate asset ── */
 function LinkedEntry({ data }) {
   const propLabel = PROPERTY_TYPE_LABELS[data?.propertyType] || data?.propertyType || 'Property';
 
@@ -256,7 +281,134 @@ function LinkedEntry({ data }) {
   );
 }
 
-/* ─── Credit card entry ──────────────────────────────────────── */
+/* ─── Default asset entry — fully controlled via values + onChange ─ */
+/*
+ * No local state for form fields. All values flow from context through
+ * AssetsScreen → ALCard → DefaultEntry. Changes are pushed back up
+ * immediately via onChange, making every keystroke persistent.
+ */
+function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, values = {}, onChange }) {
+  // Convenience: set a single field from an input event
+  const set = (field) => (e) => onChange?.({ [field]: e.target.value });
+
+  const propType        = values.propertyType   ?? '';
+  const address         = values.address        ?? '';
+  const marketValue     = values.marketValue    ?? '';
+  const description     = values.description    ?? '';
+  const currentValue    = values.currentValue   ?? '';
+  const finOpen         = values.financeEnabled ?? false;
+  const lender          = values.lender         ?? '';
+  const originalAmount  = values.originalAmount ?? '';
+  const currentBalance  = values.currentBalance ?? '';
+  const interestRate    = values.interestRate   ?? '';
+  const monthlyRepayment = values.monthlyRepayment ?? '';
+  const loanType        = values.loanType       ?? 'P&I';
+
+  return (
+    <div className="al-entry">
+      <EntryHeader label={`${title} ${num}`} canRemove={canRemove} onRemove={onRemove} />
+      <div className="al-fields">
+        <div className="al-field">
+          {isRealEstate ? (
+            <>
+              <label>Property Type</label>
+              <PropertyTypeSelect
+                value={propType}
+                onChange={val => onChange?.({ propertyType: val })}
+              />
+            </>
+          ) : (
+            <>
+              <label>Description</label>
+              <input
+                placeholder="Description"
+                value={description}
+                onChange={set('description')}
+              />
+            </>
+          )}
+        </div>
+        <div className="al-field">
+          <label>{isRealEstate ? 'Market value' : 'Current value'}</label>
+          <input
+            placeholder="$0"
+            value={isRealEstate ? marketValue : currentValue}
+            onChange={isRealEstate ? set('marketValue') : set('currentValue')}
+          />
+        </div>
+        {isRealEstate && (
+          <div className="al-field" style={{ gridColumn: 'span 2' }}>
+            <label>Address</label>
+            <input
+              placeholder="⌕ Search address"
+              value={address}
+              onChange={set('address')}
+            />
+          </div>
+        )}
+      </div>
+
+      {hasFin && (
+        <>
+          <div className="fin-toggle-row">
+            <span className="fin-toggle-lbl">Has finance attached?</span>
+            <ToggleSwitch
+              on={finOpen}
+              onToggle={() => onChange?.({ financeEnabled: !finOpen })}
+            />
+          </div>
+          <AnimatePresence initial={false}>
+            {finOpen && (
+              <motion.div
+                key="fin"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.22, ease: EASE }}
+                style={{ overflow: 'hidden' }}
+              >
+                <div className="fin-body">
+                  <div className="al-field">
+                    <label>Lender</label>
+                    <input placeholder="e.g. CBA" value={lender} onChange={set('lender')} />
+                  </div>
+                  <div className="al-field">
+                    <label>Original amount</label>
+                    <input placeholder="$0" value={originalAmount} onChange={set('originalAmount')} />
+                  </div>
+                  <div className="al-field">
+                    <label>Current balance</label>
+                    <input placeholder="$0" value={currentBalance} onChange={set('currentBalance')} />
+                  </div>
+                  <div className="al-field">
+                    <label>Interest rate %</label>
+                    <input placeholder="e.g. 6.24" value={interestRate} onChange={set('interestRate')} />
+                  </div>
+                  <div className="al-field">
+                    <label>Monthly repayment</label>
+                    <input placeholder="$0" value={monthlyRepayment} onChange={set('monthlyRepayment')} />
+                  </div>
+                  <div className="al-field">
+                    <label>Loan type</label>
+                    <select value={loanType} onChange={set('loanType')}>
+                      <option value="P&I">P&I</option>
+                      <option value="Interest only">Interest only</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="fin-note">
+                  <Link size={10} strokeWidth={2.5} /> Auto-linked to Liabilities section
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ─── Credit card entry (liability, uncontrolled) ────────────────── */
 function CreditCardEntry({ num, canRemove, onRemove }) {
   const [cardNum, setCardNum] = useState('');
   const [consolidate, setConsolidate] = useState(false);
@@ -301,7 +453,7 @@ function CreditCardEntry({ num, canRemove, onRemove }) {
   );
 }
 
-/* ─── Generic liability entry ────────────────────────────────── */
+/* ─── Generic liability entry (uncontrolled) ─────────────────────── */
 function LiabilityEntry({ title, num, canRemove, onRemove }) {
   const [consolidate, setConsolidate] = useState(false);
 
@@ -334,162 +486,6 @@ function LiabilityEntry({ title, num, canRemove, onRemove }) {
         <span className="fin-toggle-lbl">Consolidate this debt?</span>
         <ToggleSwitch on={consolidate} onToggle={() => setConsolidate(c => !c)} />
       </div>
-    </div>
-  );
-}
-
-/* ─── Default asset entry — real-estate entries are fully controlled ─ */
-function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, onFinanceLink, onDataChange }) {
-  const [finOpen, setFinOpen] = useState(false);
-  const [propType, setPropType] = useState('');
-  const [address, setAddress] = useState('');
-  const [lender, setLender] = useState('');
-  const [originalAmount, setOriginalAmount] = useState('');
-  const [currentBalance, setCurrentBalance] = useState('');
-  const [interestRate, setInterestRate] = useState('');
-  const [monthlyRepayment, setMonthlyRepayment] = useState('');
-  const [loanType, setLoanType] = useState('P&I');
-
-  // Reports current state to parent; patch overrides one field with its NEW value
-  // before the setState call has been processed.
-  const notify = (patch = {}, open = finOpen) => {
-    if (!isRealEstate) return;
-    if (open) {
-      onDataChange?.({
-        propertyType: propType,
-        address,
-        lender,
-        originalAmount,
-        currentBalance,
-        interestRate,
-        monthlyRepayment,
-        loanType,
-        ...patch,
-      });
-    } else {
-      onDataChange?.(null);
-    }
-  };
-
-  const handleFinToggle = () => {
-    const next = !finOpen;
-    setFinOpen(next);
-    onFinanceLink?.(next);
-    notify({}, next);
-  };
-
-  return (
-    <div className="al-entry">
-      <EntryHeader label={`${title} ${num}`} canRemove={canRemove} onRemove={onRemove} />
-      <div className="al-fields">
-        <div className="al-field">
-          {isRealEstate ? (
-            <>
-              <label>Property Type</label>
-              <PropertyTypeSelect
-                value={propType}
-                onChange={val => { setPropType(val); notify({ propertyType: val }); }}
-              />
-            </>
-          ) : (
-            <>
-              <label>Description</label>
-              <input placeholder="Description" />
-            </>
-          )}
-        </div>
-        <div className="al-field">
-          <label>{isRealEstate ? 'Market value' : 'Current value'}</label>
-          <input placeholder="$0" />
-        </div>
-        {isRealEstate && (
-          <div className="al-field" style={{ gridColumn: 'span 2' }}>
-            <label>Address</label>
-            <input
-              placeholder="⌕ Search address"
-              value={address}
-              onChange={e => { const v = e.target.value; setAddress(v); notify({ address: v }); }}
-            />
-          </div>
-        )}
-      </div>
-
-      {hasFin && (
-        <>
-          <div className="fin-toggle-row">
-            <span className="fin-toggle-lbl">Has finance attached?</span>
-            <ToggleSwitch on={finOpen} onToggle={handleFinToggle} />
-          </div>
-          <AnimatePresence initial={false}>
-            {finOpen && (
-              <motion.div
-                key="fin"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.22, ease: EASE }}
-                style={{ overflow: 'hidden' }}
-              >
-                <div className="fin-body">
-                  <div className="al-field">
-                    <label>Lender</label>
-                    <input
-                      placeholder="e.g. CBA"
-                      value={lender}
-                      onChange={e => { const v = e.target.value; setLender(v); notify({ lender: v }); }}
-                    />
-                  </div>
-                  <div className="al-field">
-                    <label>Original amount</label>
-                    <input
-                      placeholder="$0"
-                      value={originalAmount}
-                      onChange={e => { const v = e.target.value; setOriginalAmount(v); notify({ originalAmount: v }); }}
-                    />
-                  </div>
-                  <div className="al-field">
-                    <label>Current balance</label>
-                    <input
-                      placeholder="$0"
-                      value={currentBalance}
-                      onChange={e => { const v = e.target.value; setCurrentBalance(v); notify({ currentBalance: v }); }}
-                    />
-                  </div>
-                  <div className="al-field">
-                    <label>Interest rate %</label>
-                    <input
-                      placeholder="e.g. 6.24"
-                      value={interestRate}
-                      onChange={e => { const v = e.target.value; setInterestRate(v); notify({ interestRate: v }); }}
-                    />
-                  </div>
-                  <div className="al-field">
-                    <label>Monthly repayment</label>
-                    <input
-                      placeholder="$0"
-                      value={monthlyRepayment}
-                      onChange={e => { const v = e.target.value; setMonthlyRepayment(v); notify({ monthlyRepayment: v }); }}
-                    />
-                  </div>
-                  <div className="al-field">
-                    <label>Loan type</label>
-                    <select
-                      value={loanType}
-                      onChange={e => { const v = e.target.value; setLoanType(v); notify({ loanType: v }); }}
-                    >
-                      <option value="P&I">P&I</option>
-                      <option value="Interest only">Interest only</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="fin-note">
-                  <Link size={10} strokeWidth={2.5} /> Auto-linked to Liabilities section
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </>
-      )}
     </div>
   );
 }

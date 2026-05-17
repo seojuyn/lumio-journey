@@ -36,8 +36,14 @@ const initialState = {
   checkedConsents: [],
   selectedServiceability: 'green',
   uploadedDocs: {},
+  // assets[id] = true/false (card on/off)
   assets: {},
+  // assetsData[assetId] = { nextId: N, items: { [itemId]: { ...fields } } }
+  // Persists form values independently of card on/off state.
+  assetsData: {},
   liabilities: {},
+  // realEstateLinks[itemId] = { id, propertyType, lender, ... }
+  // Derived from assetsData.realestate — kept in sync by AssetsScreen.
   realEstateLinks: {},
   expenses: initialExpenses,
   addressHistoryUnder3: false,
@@ -89,6 +95,63 @@ export function AppProvider({ children }) {
     setState(s => ({ ...s, liabilities: { ...s.liabilities, [id]: !s.liabilities[id] } }));
   }, []);
 
+  // ─── Asset form data ──────────────────────────────────────────────────────
+  // Updates one or more fields on a specific item within an asset type.
+  // Creates the asset type entry + item if they don't exist yet.
+  const setAssetItemField = useCallback((assetId, itemId, fields) => {
+    setState(s => {
+      const existing = s.assetsData[assetId] ?? { nextId: 2, items: {} };
+      return {
+        ...s,
+        assetsData: {
+          ...s.assetsData,
+          [assetId]: {
+            ...existing,
+            items: {
+              ...existing.items,
+              [itemId]: { ...existing.items[itemId], ...fields },
+            },
+          },
+        },
+      };
+    });
+  }, []);
+
+  // Appends a new empty item. The new item's ID equals the current nextId.
+  const addAssetItem = useCallback((assetId) => {
+    setState(s => {
+      const existing = s.assetsData[assetId] ?? { nextId: 2, items: { 1: {} } };
+      const newId = existing.nextId;
+      return {
+        ...s,
+        assetsData: {
+          ...s.assetsData,
+          [assetId]: {
+            nextId: newId + 1,
+            items: { ...existing.items, [newId]: {} },
+          },
+        },
+      };
+    });
+  }, []);
+
+  // Removes a specific item from an asset type's items map.
+  const removeAssetItem = useCallback((assetId, itemId) => {
+    setState(s => {
+      const existing = s.assetsData[assetId];
+      if (!existing) return s;
+      const { [itemId]: _dropped, ...restItems } = existing.items;
+      return {
+        ...s,
+        assetsData: {
+          ...s.assetsData,
+          [assetId]: { ...existing, items: restItems },
+        },
+      };
+    });
+  }, []);
+
+  // ─── Real estate ↔ Liabilities linking ───────────────────────────────────
   const setRealEstateLink = useCallback((itemId, data) => {
     setState(s => ({
       ...s,
@@ -98,7 +161,7 @@ export function AppProvider({ children }) {
 
   const removeRealEstateLink = useCallback((itemId) => {
     setState(s => {
-      const { [itemId]: _removed, ...rest } = s.realEstateLinks;
+      const { [itemId]: _dropped, ...rest } = s.realEstateLinks;
       return { ...s, realEstateLinks: rest };
     });
   }, []);
@@ -107,6 +170,7 @@ export function AppProvider({ children }) {
     setState(s => ({ ...s, realEstateLinks: {} }));
   }, []);
 
+  // ─── Other actions ────────────────────────────────────────────────────────
   const toggleConsent = useCallback((idx) => {
     setState(s => {
       const checked = s.checkedConsents.includes(idx)
@@ -165,6 +229,9 @@ export function AppProvider({ children }) {
     prev,
     toggleAsset,
     toggleLiability,
+    setAssetItemField,
+    addAssetItem,
+    removeAssetItem,
     setRealEstateLink,
     removeRealEstateLink,
     clearRealEstateLinks,

@@ -14,6 +14,7 @@ export const SNAP_CARDS = [
     id: 'loan',
     icon: 'CreditCard',
     title: 'Product & loan',
+    screenId: 'product',
     sub: 'Personal Loan · $25,000 · 5 years',
     fields: [
       ['Product', 'Personal Loan'],
@@ -30,6 +31,7 @@ export const SNAP_CARDS = [
     id: 'profile',
     icon: 'User',
     title: 'Your profile',
+    screenId: 'profile',
     sub: 'Full-time · Mortgage · Citizen · Sydney',
     fields: [
       ['Name', 'Jane Smith'],
@@ -44,6 +46,7 @@ export const SNAP_CARDS = [
     id: 'income',
     icon: 'Briefcase',
     title: 'Income',
+    screenId: 'income',
     sub: '$74,400 p.a. · PAYG wage',
     fields: [
       ['Gross income p.a.', '$74,400', 'green'],
@@ -56,6 +59,7 @@ export const SNAP_CARDS = [
     id: 'assets',
     icon: 'Scale',
     title: 'Assets & liabilities',
+    screenId: 'assets',
     sub: '$805,000 assets · $410,000 liabilities',
     fields: [
       ['Total assets', '$805,000', 'green'],
@@ -68,6 +72,7 @@ export const SNAP_CARDS = [
     id: 'expenses',
     icon: 'Home',
     title: 'Living expenses',
+    screenId: 'expenses',
     sub: '$3,640 / mo declared · HEM $3,840',
     fields: [
       ['Monthly declared', '$3,640', 'yellow'],

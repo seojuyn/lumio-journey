@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Pencil } from 'lucide-react';
 import { Icon } from '../common/Icon';
 import './SnapCard.css';
 
-export function SnapCard({ id, icon, title, sub, fields }) {
+export function SnapCard({ id, icon, title, sub, fields, onEdit }) {
   const [open, setOpen] = useState(false);
+
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    onEdit?.();
+  };
 
   return (
     <div className="snap-card">
@@ -17,7 +22,10 @@ export function SnapCard({ id, icon, title, sub, fields }) {
           </div>
         </div>
         <div className="snap-head-right">
-          <button className="edit-btn" onClick={e => e.stopPropagation()}>Edit</button>
+          <button className="edit-btn" onClick={handleEdit} title={`Edit ${title}`}>
+            <Pencil size={10} strokeWidth={2.5} />
+            Edit
+          </button>
           <span className="badge badge-green">Complete</span>
           <span className={`snap-chev ${open ? 'open' : ''}`}>
             <ChevronRight size={16} />

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ShieldCheck, ClipboardList, Pencil } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { SCREENS } from '../constants/screens';
 import { ScreenHeader } from '../components/common/ScreenHeader';
 import { BtnPrimary, BtnGhost, BtnRow } from '../components/common/Button';
 import { SnapCard } from '../components/ui/SnapCard';
@@ -9,10 +10,17 @@ import { SERVICEABILITY, SNAP_CARDS } from '../data/summaryData';
 import './SummaryScreen.css';
 
 export function SummaryScreen() {
-  const { next, prev } = useApp();
+  const { next, prev, goTo } = useApp();
   const [openSnap, setOpenSnap] = useState(null);
 
   const toggleSnap = (id) => setOpenSnap(p => p === id ? null : id);
+
+  // Navigates to the screen matching a SCREENS id string.
+  // Uses the centralized SCREENS config — no hardcoded indexes.
+  const handleEdit = useCallback((screenId) => {
+    const idx = SCREENS.findIndex(s => s.id === screenId);
+    if (idx !== -1) goTo(idx);
+  }, [goTo]);
 
   return (
     <div className="screen-enter">
@@ -97,6 +105,7 @@ export function SummaryScreen() {
           fields={snap.fields}
           open={openSnap === snap.id}
           onToggle={() => toggleSnap(snap.id)}
+          onEdit={snap.screenId ? () => handleEdit(snap.screenId) : undefined}
         />
       ))}
 
