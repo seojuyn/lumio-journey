@@ -706,7 +706,7 @@
   position: fixed;
   inset: 0;
   z-index: 50;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(6, 3, 14, 0.76);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -727,7 +727,7 @@
   border-top-left-radius: var(--r32);
   border-top-right-radius: var(--r32);
   padding: 16px 20px 36px;
-  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.38);
 }
 
 .doc-sheet-handle {

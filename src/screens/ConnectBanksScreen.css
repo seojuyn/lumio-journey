@@ -57,7 +57,7 @@
 
 /* Hero card */
 .bank-hero {
-  background: linear-gradient(135deg, var(--bg0) 0%, #2b0d60 50%, var(--accent) 100%);
+  background: linear-gradient(135deg, #1a1236 0%, #2d1560 50%, var(--accent) 100%);
   border: 1px solid var(--glass-border);
   border-radius: var(--r22);
   padding: 20px 22px;
@@ -1174,8 +1174,8 @@
   border-radius: var(--r22);
   padding: 28px 24px 24px;
   box-shadow:
-    0 30px 70px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(139, 92, 246, 0.06);
+    0 20px 50px rgba(0, 0, 0, 0.40),
+    0 0 0 1px rgba(167, 139, 250, 0.12);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   display: flex;
@@ -1481,44 +1481,3 @@
   }
 }
 
-/* ─── Light theme overrides ─────────────────────────────────────── */
-/* Hero is always a dark branded element — force consistent gradient */
-[data-theme="light"] .bank-hero {
-  background: linear-gradient(135deg, #1e0b4a 0%, #2d1272 50%, #5B3DF5 100%);
-  border-color: rgba(91, 61, 245, 0.30);
-}
-
-/* Force text to white since hero bg is always dark purple */
-[data-theme="light"] .bank-hero-title {
-  color: #fff;
-}
-[data-theme="light"] .bank-hero-eyebrow,
-[data-theme="light"] .bank-hero-desc,
-[data-theme="light"] .bank-hero-chip {
-  color: rgba(255, 255, 255, 0.82);
-}
-[data-theme="light"] .bank-hero-icon-wrap {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.18);
-}
-
-/* Step pills — ensure inactive pills are readable on light bg */
-[data-theme="light"] .bank-step-pill {
-  background: rgba(91, 61, 245, 0.07);
-  border-color: rgba(91, 61, 245, 0.16);
-  color: var(--text2);
-}
-
-/* Period note / benefit items — readable on light surfaces */
-[data-theme="light"] .bank-period-note,
-[data-theme="light"] .bank-benefit-item,
-[data-theme="light"] .bank-review-checks {
-  background: var(--surface-input);
-}
-
-/* Summary panel anika strip — needs visible border on light */
-[data-theme="light"] .bank-summary-anika {
-  background: var(--surface-input);
-  border-color: var(--border2);
-}

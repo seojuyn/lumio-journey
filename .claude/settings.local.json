@@ -27,7 +27,8 @@
       "Bash(\"ok\")",
       "PowerShell(New-Item -Path \"b:\\\\axio\\\\axio-react\\\\src\\\\hooks\" -ItemType Directory -Force)",
       "PowerShell(New-Item -Path \"b:\\\\axio\\\\axio-react\\\\src\\\\hooks\\\\useTheme.js\" -ItemType File -Force)",
-      "PowerShell(\"ok\")"
+      "PowerShell(\"ok\")",
+      "Bash(xargs grep -l \"consolidat\\\\|Consolidat\")"
     ]
   }
 }

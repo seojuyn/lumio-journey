@@ -42,7 +42,10 @@ const initialState = {
   // Persists form values independently of card on/off state.
   assetsData: {},
   liabilities: {},
-  // realEstateLinks[itemId] = { id, propertyType, lender, ... }
+  // liabilitiesData[liabilityId] = { nextId: N, items: { [itemId]: { ...fields } } }
+  // Mirrors assetsData pattern — persists field values + consolidate flag per item.
+  liabilitiesData: {},
+  // realEstateLinks[itemId] = { id, propertyType, lender, consolidate, ... }
   // Derived from assetsData.realestate — kept in sync by AssetsScreen.
   realEstateLinks: {},
   expenses: initialExpenses,
@@ -151,6 +154,58 @@ export function AppProvider({ children }) {
     });
   }, []);
 
+  // ─── Liability form data ──────────────────────────────────────────────────
+  const setLiabilityItemField = useCallback((liabilityId, itemId, fields) => {
+    setState(s => {
+      const existing = s.liabilitiesData[liabilityId] ?? { nextId: 2, items: {} };
+      return {
+        ...s,
+        liabilitiesData: {
+          ...s.liabilitiesData,
+          [liabilityId]: {
+            ...existing,
+            items: {
+              ...existing.items,
+              [itemId]: { ...existing.items[itemId], ...fields },
+            },
+          },
+        },
+      };
+    });
+  }, []);
+
+  const addLiabilityItem = useCallback((liabilityId) => {
+    setState(s => {
+      const existing = s.liabilitiesData[liabilityId] ?? { nextId: 2, items: { 1: {} } };
+      const newId = existing.nextId;
+      return {
+        ...s,
+        liabilitiesData: {
+          ...s.liabilitiesData,
+          [liabilityId]: {
+            nextId: newId + 1,
+            items: { ...existing.items, [newId]: {} },
+          },
+        },
+      };
+    });
+  }, []);
+
+  const removeLiabilityItem = useCallback((liabilityId, itemId) => {
+    setState(s => {
+      const existing = s.liabilitiesData[liabilityId];
+      if (!existing) return s;
+      const { [itemId]: _dropped, ...restItems } = existing.items;
+      return {
+        ...s,
+        liabilitiesData: {
+          ...s.liabilitiesData,
+          [liabilityId]: { ...existing, items: restItems },
+        },
+      };
+    });
+  }, []);
+
   // ─── Real estate ↔ Liabilities linking ───────────────────────────────────
   const setRealEstateLink = useCallback((itemId, data) => {
     setState(s => ({
@@ -168,6 +223,21 @@ export function AppProvider({ children }) {
 
   const clearRealEstateLinks = useCallback(() => {
     setState(s => ({ ...s, realEstateLinks: {} }));
+  }, []);
+
+  // Updates specific fields on an existing realEstateLink (e.g. consolidate flag).
+  const setRealEstateLinkField = useCallback((itemId, fields) => {
+    setState(s => {
+      const existing = s.realEstateLinks[itemId];
+      if (!existing) return s;
+      return {
+        ...s,
+        realEstateLinks: {
+          ...s.realEstateLinks,
+          [itemId]: { ...existing, ...fields },
+        },
+      };
+    });
   }, []);
 
   // ─── Other actions ────────────────────────────────────────────────────────
@@ -232,9 +302,13 @@ export function AppProvider({ children }) {
     setAssetItemField,
     addAssetItem,
     removeAssetItem,
+    setLiabilityItemField,
+    addLiabilityItem,
+    removeLiabilityItem,
     setRealEstateLink,
     removeRealEstateLink,
     clearRealEstateLinks,
+    setRealEstateLinkField,
     toggleConsent,
     toggleIncomeType,
     stepExpense,

@@ -64,8 +64,8 @@
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.50),
-    0 0 0 1px rgba(139, 92, 246, 0.06);
+    0 14px 40px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(167, 139, 250, 0.12);
   padding: 14px 14px 16px;
   animation: dp-appear .15s cubic-bezier(0.16, 1, 0.3, 1);
 }

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { ListChecks, Link2, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { ScreenHeader } from '../components/common/ScreenHeader';
@@ -7,8 +8,19 @@ import { ALCard } from '../components/ui/ALCard';
 import { LIABILITY_TYPES } from '../data/liabilityTypes';
 import '../components/ui/ALCard.css';
 
+const DEFAULT_LIABILITY_DATA = { nextId: 2, items: { 1: {} } };
+
 export function LiabilitiesScreen() {
-  const { state, toggleLiability, next, prev } = useApp();
+  const {
+    state,
+    toggleLiability,
+    setLiabilityItemField,
+    addLiabilityItem,
+    removeLiabilityItem,
+    setRealEstateLinkField,
+    next,
+    prev,
+  } = useApp();
 
   const realEstateLinks = Object.values(state.realEstateLinks || {});
   const hasLinkedRealEstate = realEstateLinks.length > 0;
@@ -16,6 +28,12 @@ export function LiabilitiesScreen() {
   const anikaMessage = hasLinkedRealEstate
     ? `I've pre-linked ${realEstateLinks.length} real estate ${realEstateLinks.length === 1 ? 'liability' : 'liabilities'} from your assets — auto-carried across. Select any additional liability types below.`
     : "Select applicable liabilities. If you have financed assets, enable 'Has finance?' in Assets to auto-link them here.";
+
+  const makeHandlers = useCallback((liabilityId) => ({
+    onAddItem:    ()            => addLiabilityItem(liabilityId),
+    onRemoveItem: (itemId)      => removeLiabilityItem(liabilityId, itemId),
+    onItemChange: (itemId, fields) => setLiabilityItemField(liabilityId, itemId, fields),
+  }), [addLiabilityItem, removeLiabilityItem, setLiabilityItemField]);
 
   return (
     <div className="screen-enter">
@@ -52,6 +70,7 @@ export function LiabilitiesScreen() {
               const linkedMeta = isLinked
                 ? `Auto-linked · ${linkedItems.length} propert${linkedItems.length !== 1 ? 'ies' : 'y'}`
                 : null;
+              const handlers = isLinked ? {} : makeHandlers(l.id);
               return (
                 <ALCard
                   key={l.id}
@@ -65,6 +84,11 @@ export function LiabilitiesScreen() {
                   linkedItems={linkedItems}
                   linkedMeta={linkedMeta}
                   isLiability={!isLinked}
+                  liabilityData={isLinked ? undefined : (state.liabilitiesData[l.id] ?? DEFAULT_LIABILITY_DATA)}
+                  onAddItem={handlers.onAddItem}
+                  onRemoveItem={handlers.onRemoveItem}
+                  onItemChange={handlers.onItemChange}
+                  onLinkedItemChange={isLinked ? setRealEstateLinkField : undefined}
                   addLabel={l.addLabel}
                   addDesc={l.addDesc}
                 />

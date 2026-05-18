@@ -14,27 +14,13 @@ html {
   background: var(--bg0); /* Covers overscroll / scrollbar gutter area */
 }
 
-/* Smooth theme transitions on key properties */
-html * {
-  transition: var(--transition-theme);
-}
-/* Exclude transitions from animated elements to avoid conflicts */
-html *[class*="motion"],
-html *[class*="animate"],
-html input,
-html select,
-html textarea,
-html button {
-  transition: none;
-}
-/* Re-apply only color transitions to form controls */
 html input,
 html select,
 html textarea {
-  transition: border-color 0.22s ease, box-shadow 0.22s ease, background-color 0.28s ease;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
 }
 html button {
-  transition: opacity 0.2s ease, box-shadow 0.2s ease, background-color 0.22s ease, border-color 0.22s ease, color 0.18s ease;
+  transition: opacity 0.15s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.15s ease;
 }
 
 body {
@@ -48,22 +34,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dark theme body gradient */
-:root body {
+body {
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -8%, rgba(109, 40, 217, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 88% 96%, rgba(59, 7, 100, 0.16) 0%, transparent 55%);
-}
-
-/* Light theme — multi-blob ambient layer for glassmorphism depth */
-[data-theme="light"] body {
-  background-image:
-    radial-gradient(ellipse 65% 55% at 4%  6%,  rgba(91, 61, 245, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 55% 44% at 92% 4%,  rgba(124, 77, 255, 0.06) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 40% at 50% -4%, rgba(91, 61, 245, 0.05) 0%, transparent 55%),
-    radial-gradient(ellipse 48% 44% at 6%  94%, rgba(167, 139, 250, 0.05) 0%, transparent 55%),
-    radial-gradient(ellipse 58% 48% at 88% 88%, rgba(91, 61, 245, 0.06) 0%, transparent 58%),
-    radial-gradient(ellipse 28% 34% at 95% 46%, rgba(196, 181, 253, 0.04) 0%, transparent 55%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 58, 237, 0.14) 0%, transparent 62%),
+    radial-gradient(ellipse 45% 35% at 92% 96%, rgba(76, 29, 149, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 35% 30% at 2% 92%, rgba(109, 40, 217, 0.08) 0%, transparent 50%);
 }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────── */

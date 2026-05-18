@@ -82,22 +82,24 @@ function PropertyTypeSelect({ value, onChange, ownerOccupiedTaken }) {
  */
 export function ALCard({
   id, icon, title, desc, hasFin, on, onToggle,
-  isLinked, linkedItems, linkedMeta,
+  isLinked, linkedItems, linkedMeta, onLinkedItemChange,
   isRealEstate, isLiability,
   addLabel, addDesc, children,
   // Controlled-mode props (assets)
-  assetData,    // { nextId: N, items: { [itemId]: { ...fields } } }
-  onAddItem,    // () => void
-  onRemoveItem, // (itemId: number) => void
-  onItemChange, // (itemId: number, fields: object) => void
+  assetData,      // { nextId: N, items: { [itemId]: { ...fields } } }
+  // Controlled-mode props (liabilities)
+  liabilityData,  // { nextId: N, items: { [itemId]: { ...fields } } }
+  onAddItem,      // () => void
+  onRemoveItem,   // (itemId: number) => void
+  onItemChange,   // (itemId: number, fields: object) => void
   ownerOccupiedItemId, // which itemId (if any) currently holds owner-occupied
 }) {
-  // Uncontrolled fallback (used by liabilities)
+  // Uncontrolled fallback (only when neither assetData nor liabilityData is provided)
   const nextItemId = useRef(2);
   const [internalItemIds, setInternalItemIds] = useState([1]);
 
-  const isControlled = !!assetData;
-  const controlledItems = assetData?.items ?? { 1: {} };
+  const isControlled = !!(assetData || liabilityData);
+  const controlledItems = (assetData ?? liabilityData)?.items ?? { 1: {} };
 
   const itemIds = isControlled
     ? Object.keys(controlledItems).map(Number).sort((a, b) => a - b)
@@ -167,7 +169,13 @@ export function ALCard({
             <div className="al-body">
               {isLinked ? (
                 (linkedItems || []).map(item => (
-                  <LinkedEntry key={item.id} data={item} />
+                  <LinkedEntry
+                    key={item.id}
+                    data={item}
+                    onChange={onLinkedItemChange
+                      ? (fields) => onLinkedItemChange(item.id, fields)
+                      : undefined}
+                  />
                 ))
               ) : (
                 <>
@@ -188,9 +196,18 @@ export function ALCard({
                           style={{ overflow: 'hidden' }}
                         >
                           {id === 'creditcard' ? (
-                            <CreditCardEntry {...entryProps} />
+                            <CreditCardEntry
+                              values={isControlled ? (controlledItems[itemId] || {}) : {}}
+                              onChange={isControlled ? (fields) => onItemChange?.(itemId, fields) : undefined}
+                              {...entryProps}
+                            />
                           ) : isLiability ? (
-                            <LiabilityEntry title={title} {...entryProps} />
+                            <LiabilityEntry
+                              title={title}
+                              values={isControlled ? (controlledItems[itemId] || {}) : {}}
+                              onChange={isControlled ? (fields) => onItemChange?.(itemId, fields) : undefined}
+                              {...entryProps}
+                            />
                           ) : (
                             <DefaultEntry
                               title={title}
@@ -254,9 +271,10 @@ function EntryHeader({ label, canRemove, onRemove }) {
   );
 }
 
-/* ─── Linked entry — read-only, populated from real-estate asset ── */
-function LinkedEntry({ data }) {
+/* ─── Linked entry — read-only fields, consolidation toggle ─── */
+function LinkedEntry({ data, onChange }) {
   const propLabel = PROPERTY_TYPE_LABELS[data?.propertyType] || data?.propertyType || 'Property';
+  const consolidate = data?.consolidate ?? false;
 
   return (
     <div className="al-entry al-entry-linked">
@@ -292,6 +310,13 @@ function LinkedEntry({ data }) {
       </div>
       <div className="linked-entry-note">
         To edit these details, update them in the Assets section.
+      </div>
+      <div className="fin-toggle-row">
+        <span className="fin-toggle-lbl">Consolidate this debt?</span>
+        <ToggleSwitch
+          on={consolidate}
+          onToggle={() => onChange?.({ consolidate: !consolidate })}
+        />
       </div>
     </div>
   );
@@ -429,15 +454,17 @@ function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, v
   );
 }
 
-/* ─── Credit card entry (liability, uncontrolled) ────────────────── */
-function CreditCardEntry({ num, canRemove, onRemove }) {
-  const [cardNum, setCardNum] = useState('');
-  const [lender, setLender] = useState('');
-  const [consolidate, setConsolidate] = useState(false);
+/* ─── Credit card entry ──────────────────────────────────────────── */
+function CreditCardEntry({ num, canRemove, onRemove, values = {}, onChange }) {
+  const cardNum    = values.cardNum       ?? '';
+  const lender     = values.lender        ?? '';
+  const cardLimit  = values.cardLimit     ?? '';
+  const currentBalance = values.currentBalance ?? '';
+  const consolidate    = values.consolidate    ?? false;
 
   const handleCardNum = (e) => {
     const digits = e.target.value.replace(/\D/g, '').slice(0, 16);
-    setCardNum((digits.match(/.{1,4}/g) || []).join(' '));
+    onChange?.({ cardNum: (digits.match(/.{1,4}/g) || []).join(' ') });
   };
 
   return (
@@ -456,29 +483,47 @@ function CreditCardEntry({ num, canRemove, onRemove }) {
         </div>
         <div className="al-field" style={{ gridColumn: 'span 2' }}>
           <label>Lender</label>
-          <LenderAutocomplete value={lender} onChange={setLender} placeholder="e.g. ANZ, NAB, Westpac" />
+          <LenderAutocomplete
+            value={lender}
+            onChange={(val) => onChange?.({ lender: val })}
+            placeholder="e.g. ANZ, NAB, Westpac"
+          />
         </div>
         <div className="al-field">
           <label>Card Limit</label>
-          <input placeholder="$0" />
+          <input
+            placeholder="$0"
+            value={cardLimit}
+            onChange={(e) => onChange?.({ cardLimit: e.target.value })}
+          />
         </div>
         <div className="al-field">
           <label>Current Balance</label>
-          <input placeholder="$0" />
+          <input
+            placeholder="$0"
+            value={currentBalance}
+            onChange={(e) => onChange?.({ currentBalance: e.target.value })}
+          />
         </div>
       </div>
       <div className="fin-toggle-row">
         <span className="fin-toggle-lbl">Consolidate this debt?</span>
-        <ToggleSwitch on={consolidate} onToggle={() => setConsolidate(c => !c)} />
+        <ToggleSwitch on={consolidate} onToggle={() => onChange?.({ consolidate: !consolidate })} />
       </div>
     </div>
   );
 }
 
-/* ─── Generic liability entry (uncontrolled) ─────────────────────── */
-function LiabilityEntry({ title, num, canRemove, onRemove }) {
-  const [lender, setLender] = useState('');
-  const [consolidate, setConsolidate] = useState(false);
+/* ─── Generic liability entry ────────────────────────────────────── */
+function LiabilityEntry({ title, num, canRemove, onRemove, values = {}, onChange }) {
+  const lender           = values.lender           ?? '';
+  const amountBorrowed   = values.amountBorrowed   ?? '';
+  const currentBalance   = values.currentBalance   ?? '';
+  const interestRate     = values.interestRate     ?? '';
+  const monthlyRepayments = values.monthlyRepayments ?? '';
+  const consolidate      = values.consolidate      ?? false;
+
+  const set = (field) => (e) => onChange?.({ [field]: e.target.value });
 
   return (
     <div className="al-entry">
@@ -486,28 +531,32 @@ function LiabilityEntry({ title, num, canRemove, onRemove }) {
       <div className="al-fields">
         <div className="al-field">
           <label>Lender</label>
-          <LenderAutocomplete value={lender} onChange={setLender} placeholder="e.g. ANZ, CBA, Latitude" />
+          <LenderAutocomplete
+            value={lender}
+            onChange={(val) => onChange?.({ lender: val })}
+            placeholder="e.g. ANZ, CBA, Latitude"
+          />
         </div>
         <div className="al-field">
           <label>Amount Borrowed</label>
-          <input placeholder="$0" />
+          <input placeholder="$0" value={amountBorrowed} onChange={set('amountBorrowed')} />
         </div>
         <div className="al-field">
           <label>Current Balance</label>
-          <input placeholder="$0" />
+          <input placeholder="$0" value={currentBalance} onChange={set('currentBalance')} />
         </div>
         <div className="al-field">
           <label>Interest Rate</label>
-          <input placeholder="e.g. 6.99%" />
+          <input placeholder="e.g. 6.99%" value={interestRate} onChange={set('interestRate')} />
         </div>
         <div className="al-field" style={{ gridColumn: 'span 2' }}>
           <label>Monthly Repayments</label>
-          <input placeholder="$0" />
+          <input placeholder="$0" value={monthlyRepayments} onChange={set('monthlyRepayments')} />
         </div>
       </div>
       <div className="fin-toggle-row">
         <span className="fin-toggle-lbl">Consolidate this debt?</span>
-        <ToggleSwitch on={consolidate} onToggle={() => setConsolidate(c => !c)} />
+        <ToggleSwitch on={consolidate} onToggle={() => onChange?.({ consolidate: !consolidate })} />
       </div>
     </div>
   );

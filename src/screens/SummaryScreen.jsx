@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { ShieldCheck, ClipboardList, Pencil } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { SCREENS } from '../constants/screens';
@@ -9,8 +9,16 @@ import { SvcPill } from '../components/common/Badge';
 import { SERVICEABILITY, SNAP_CARDS } from '../data/summaryData';
 import './SummaryScreen.css';
 
+function parseCurrency(str) {
+  return parseFloat(String(str ?? '').replace(/[^0-9.]/g, '')) || 0;
+}
+
+function formatAUD(n) {
+  return '$' + n.toLocaleString('en-AU', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
 export function SummaryScreen() {
-  const { next, prev, goTo } = useApp();
+  const { state, next, prev, goTo } = useApp();
   const [openSnap, setOpenSnap] = useState(null);
 
   const toggleSnap = (id) => setOpenSnap(p => p === id ? null : id);
@@ -21,6 +29,32 @@ export function SummaryScreen() {
     const idx = SCREENS.findIndex(s => s.id === screenId);
     if (idx !== -1) goTo(idx);
   }, [goTo]);
+
+  // Sum current balances of all liabilities (and real estate links) where consolidate === true.
+  const totalConsolidation = useMemo(() => {
+    let total = 0;
+    Object.values(state.realEstateLinks || {}).forEach(link => {
+      if (link.consolidate) total += parseCurrency(link.currentBalance);
+    });
+    Object.values(state.liabilitiesData || {}).forEach(liabType => {
+      Object.values(liabType.items || {}).forEach(item => {
+        if (item.consolidate) total += parseCurrency(item.currentBalance);
+      });
+    });
+    return total;
+  }, [state.realEstateLinks, state.liabilitiesData]);
+
+  // Build snap card list — inject the Consolidate row into Assets & Liabilities when > 0.
+  const snapCards = useMemo(() => SNAP_CARDS.map(snap => {
+    if (snap.id !== 'assets' || totalConsolidation === 0) return snap;
+    return {
+      ...snap,
+      fields: [
+        ...snap.fields,
+        ['Consolidate', formatAUD(totalConsolidation), 'yellow'],
+      ],
+    };
+  }), [totalConsolidation]);
 
   return (
     <div className="screen-enter">
@@ -96,7 +130,7 @@ export function SummaryScreen() {
         </div>
       </div>
 
-      {SNAP_CARDS.map(snap => (
+      {snapCards.map(snap => (
         <SnapCard
           key={snap.id}
           icon={snap.icon}

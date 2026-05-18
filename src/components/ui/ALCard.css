@@ -240,7 +240,8 @@
 .al-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
 .cc-num-input {
-  font-family: 'Geist Mono', 'Courier New', monospace !important;
+  font-family: 'Inter', sans-serif !important;
+  font-variant-numeric: tabular-nums;
   letter-spacing: 0.12em;
 }
 
