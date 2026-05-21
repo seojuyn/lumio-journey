@@ -6,6 +6,7 @@ import { ScreenHeader } from '../components/common/ScreenHeader';
 import { BtnPrimary } from '../components/common/Button';
 import { Badge } from '../components/common/Badge';
 import { TRUST_STRIP_ITEMS, PROMISE_CARDS, PRODUCTS } from '../data/productData';
+import { getStep } from '../constants/screens';
 import './ProductScreen.css';
 
 export function ProductScreen() {
@@ -15,7 +16,7 @@ export function ProductScreen() {
   return (
     <div className="screen-enter">
       <ScreenHeader
-        eyebrow="Step 2  ·  Select your loan type"
+        eyebrow={`Step ${getStep('product')} · Select your loan type`}
         title="Finance for the"
         titleGradient="new generation"
         sub={

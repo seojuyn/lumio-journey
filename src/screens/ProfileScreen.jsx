@@ -42,12 +42,78 @@ const EMP_META = {
 
 const EMPTY_EMP = { employer: '', phone: '', years: '', months: '' };
 
+/* ─── Previous employment panel (per employment type) ────────── */
+function PrevEmpPanel({ label, data, onUpdate }) {
+  return (
+    <motion.div
+      className="prev-emp-panel"
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.22, ease: 'easeOut' }}
+    >
+      <div className="prev-emp-header">
+        <div className="prev-emp-header-icon">
+          <AlertTriangle size={13} />
+        </div>
+        <div className="prev-emp-header-body">
+          <div className="prev-emp-header-title">Previous employment required</div>
+          <div className="prev-emp-header-sub">{label} under 3 years — lenders need your prior history.</div>
+        </div>
+      </div>
+
+      <div className="prev-emp-body">
+        <div className="fld">
+          <label className="fl">Previous employer / ABN</label>
+          <input className="inp" placeholder="⌕  Search employer or ABN"
+            value={data.employer}
+            onChange={e => onUpdate('employer', e.target.value)} />
+        </div>
+        <div className="fld">
+          <label className="fl">Previous role title</label>
+          <input className="inp" placeholder="e.g. Senior Analyst"
+            value={data.role}
+            onChange={e => onUpdate('role', e.target.value)} />
+        </div>
+        <div className="prev-emp-duration">
+          <div className="fld prev-emp-date-fld">
+            <label className="fl">Start date</label>
+            <DateSelect value={data.start} onChange={v => onUpdate('start', v)} yearRange={[1970, new Date().getFullYear()]} />
+          </div>
+          {!data.current && (
+            <div className="fld prev-emp-date-fld">
+              <label className="fl">End date</label>
+              <DateSelect value={data.end} onChange={v => onUpdate('end', v)} yearRange={[1970, new Date().getFullYear()]} />
+            </div>
+          )}
+          <label className="prev-emp-current-chk">
+            <input
+              type="checkbox"
+              checked={data.current}
+              onChange={e => {
+                onUpdate('current', e.target.checked);
+                if (e.target.checked) onUpdate('end', null);
+              }}
+            />
+            <span>Still employed here</span>
+          </label>
+        </div>
+      </div>
+
+      <div className="prev-emp-footer">
+        <Sparkles size={9} />
+        <span>Anika will never contact your employer without your permission. <a className="prev-emp-policy-link" href="#">See our Privacy Policy.</a></span>
+      </div>
+    </motion.div>
+  );
+}
+
 /* ─── Per-type employment detail block ───────────────────────── */
-function EmploymentBlock({ typeId, label, icon, details, onUpdate, otherText, setOtherText }) {
-  const isLast = typeId !== 'other'; // fld margin-bottom handled by block padding
+function EmploymentBlock({ typeId, label, icon, details, onUpdate, otherText, setOtherText, needsPrev, prevData, onPrevUpdate }) {
   return (
     <motion.div
       className="emp-block"
+      layout
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
@@ -96,6 +162,17 @@ function EmploymentBlock({ typeId, label, icon, details, onUpdate, otherText, se
             onChange={e => setOtherText(e.target.value)} />
         </div>
       )}
+
+      <AnimatePresence initial={false}>
+        {needsPrev && (
+          <PrevEmpPanel
+            key="prev"
+            label={label}
+            data={prevData}
+            onUpdate={onPrevUpdate}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
@@ -110,6 +187,7 @@ export function ProfileScreen() {
   const [partnerDob,   setPartnerDob]   = useState(null);
   const [otherEmpText, setOtherEmpText] = useState('');
   const [empDetails,   setEmpDetails]   = useState({});
+  const [prevEmpData,  setPrevEmpData]  = useState({});
 
   const isCouple = state.relationshipStatus === 'married' || state.relationshipStatus === 'defacto';
   const initials = getInitials(state.firstName, state.lastName);
@@ -131,11 +209,21 @@ export function ProfileScreen() {
   // "not-employed" is exclusive and needs no employer form
   const activeEmpTypes = state.employmentTypes.filter(t => t !== 'not-employed');
 
-  // Show previous-employment panel if ANY active type has < 3 years entered
-  const needsPrevEmp = activeEmpTypes.some(t => {
-    const yrs = getEmpDetails(t).years;
-    return yrs !== '' && Number(yrs) < 3;
-  });
+  const EMPTY_PREV = { employer: '', role: '', current: false, start: null, end: null };
+  const getPrevEmp = (typeId) => ({ ...EMPTY_PREV, ...prevEmpData[typeId] });
+  const updatePrevEmp = (typeId, field, value) => {
+    setPrevEmpData(p => ({
+      ...p,
+      [typeId]: { ...EMPTY_PREV, ...p[typeId], [field]: value },
+    }));
+  };
+
+  const needsPrevForType = (typeId) => {
+    const d = getEmpDetails(typeId);
+    if (d.years === '') return false;
+    const total = Number(d.years) * 12 + (d.months === '' ? 0 : Number(d.months));
+    return total < 36;
+  };
 
   return (
     <div className="screen-enter">
@@ -344,25 +432,12 @@ export function ProfileScreen() {
               onUpdate={(field, value) => updateEmpDetail(typeId, field, value)}
               otherText={otherEmpText}
               setOtherText={setOtherEmpText}
+              needsPrev={needsPrevForType(typeId)}
+              prevData={getPrevEmp(typeId)}
+              onPrevUpdate={(field, value) => updatePrevEmp(typeId, field, value)}
             />
           ))}
         </AnimatePresence>
-
-        {needsPrevEmp && (
-          <div className="cond-panel show" style={{ marginTop: 14 }}>
-            <div className="cond-head" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <AlertTriangle size={13} /> Previous employment needed — current role under 3 years
-            </div>
-            <div className="g2">
-              <div className="fld"><label className="fl">Previous employer / ABN</label><input className="inp" placeholder="⌕  Search" /></div>
-              <div className="fld"><label className="fl">Previous role title</label><input className="inp" placeholder="e.g. Senior Analyst" /></div>
-            </div>
-          </div>
-        )}
-
-        <div className="text-small text-border2" style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 5 }}>
-          <Sparkles size={10} /> Anika will never contact your employer without your explicit consent.
-        </div>
       </Card>
 
       <BtnRow>
