@@ -2,7 +2,7 @@
 import { BarChart2, Sparkles, Building2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { ScreenHeader } from '../components/common/ScreenHeader';
-import { BtnGhost, BtnRow } from '../components/common/Button';
+import { ScreenActions } from '../components/common/ScreenActions';
 import { AnikaPanel } from '../components/common/AnikaPanel';
 import { InfoBanner } from '../components/common/InfoBanner';
 import { LenderCard } from '../components/ui/LenderCard';
@@ -46,7 +46,7 @@ export function LendersScreen() {
       />
 
       <AnikaPanel
-        message={`I found ${LENDERS.length} lender matches based on your profile — stable PAYG income, 42% debt-to-income ratio, and 6+ years residential stability. Results are ranked by approval probability. Top match: ${LENDERS.find(l => l.best)?.name}.`}
+        message={`I found ${LENDERS.length} lender matches based on your profile — stable PAYG income, 42% debt-to-income ratio, and 6+ years residential stability. Results are ranked by approval probability. Top match: ${(l => l?.displayName ?? l?.name)(LENDERS.find(l => l.best))}.`}
         thinkingMs={600}
       />
       <InfoBanner icon="Sparkles" variant="green" style={{ marginBottom: 14 }}>
@@ -74,9 +74,7 @@ export function LendersScreen() {
         ))}
       </div>
 
-      <BtnRow>
-        <BtnGhost onClick={prev}>← Back</BtnGhost>
-      </BtnRow>
+      <ScreenActions onBack={prev} />
     </div>
   );
 }

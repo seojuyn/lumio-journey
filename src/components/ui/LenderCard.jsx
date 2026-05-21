@@ -85,12 +85,14 @@ export function LenderCard({ lender, frequency = 'monthly' }) {
   const [typingPhase, setTypingPhase] = useState(-1);
 
   const {
-    name, abbr, logo, logoBg, rate, comp, best,
+    name, displayName, abbr, logo, logoBg, rate, comp, best,
     etFee, estFee, brokFee, monthlyFee, totalRepayNum,
     types, approval, reasons, sla,
     loanTerm, extraRepayments,
     capacityNote, conductNote, stabilityNote,
   } = lender;
+
+  const shortName = displayName ?? name;
 
   const notes   = [capacityNote, conductNote, stabilityNote];
   const nextPhase = () => setTypingPhase(p => p + 1);
@@ -135,7 +137,7 @@ export function LenderCard({ lender, frequency = 'monthly' }) {
       <div className="lc-header">
         <LenderLogo src={logo} abbr={abbr} logoBg={logoBg} />
         <div className="lc-header-body">
-          <div className="lc-name">{name}</div>
+          <div className="lc-name">{shortName}</div>
           <div className="lc-types">
             {types.map(t => (
               <span key={t} className={`type-pill ${t === 'Fixed' ? 'type-fixed' : 'type-variable'}`}>{t}</span>
@@ -216,7 +218,7 @@ export function LenderCard({ lender, frequency = 'monthly' }) {
           className={`lc-apply${best ? ' lc-apply-primary' : ' lc-apply-ghost'}`}
           onClick={next}
         >
-          Apply with {name} →
+          Apply with {shortName} →
         </button>
         <button className="lc-toggle" onClick={() => setOpen(p => !p)}>
           <span>{open ? 'View less' : 'View more'}</span>

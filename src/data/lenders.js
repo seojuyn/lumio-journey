@@ -2,6 +2,7 @@ export const LENDERS = [
   {
     id: 'lender1',
     name: 'Commonwealth Bank',
+    displayName: 'CommBank',
     abbr: 'CBA',
     logo: '/lender-logos/CBA.png',
     logoBg: 'linear-gradient(135deg, #FFCC00 0%, #FDB913 100%)',
@@ -31,6 +32,7 @@ export const LENDERS = [
   {
     id: 'lender2',
     name: 'National Australia Bank',
+    displayName: 'NAB',
     abbr: 'NAB',
     logo: '/lender-logos/NAB.png',
     logoBg: 'linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%)',
@@ -60,6 +62,7 @@ export const LENDERS = [
   {
     id: 'lender3',
     name: 'Westpac',
+    displayName: 'Westpac',
     abbr: 'WBC',
     logo: '/lender-logos/Westpac.png',
     logoBg: 'linear-gradient(135deg, #D1141A 0%, #E84444 100%)',
