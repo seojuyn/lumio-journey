@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Star, ChevronDown, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Badge } from '../common/Badge';
 import { useApp } from '../../context/AppContext';
@@ -10,6 +10,32 @@ const FREQ_TEXT = {
   weekly:      'per week',
 };
 
+/* ─── Lender logo with initials fallback ────────────────────────── */
+function LenderLogo({ src, abbr, logoBg }) {
+  const [errored, setErrored] = useState(false);
+
+  if (src && !errored) {
+    return (
+      <div className="lc-logo lc-logo-real">
+        <img
+          src={src}
+          alt={abbr}
+          className="lc-logo-img"
+          onError={() => setErrored(true)}
+          loading="lazy"
+          draggable={false}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="lc-logo" style={{ background: logoBg }}>
+      {abbr}
+    </div>
+  );
+}
+
 function InfoRow({ label, value, valCls = '', last }) {
   return (
     <div className={`lc-info-row${last ? ' lc-info-last' : ''}`}>
@@ -19,17 +45,73 @@ function InfoRow({ label, value, valCls = '', last }) {
   );
 }
 
+/* ─── Character-by-character typing component ──────────────────── */
+function TypewriterText({ text, phase, myPhase, onDone, charSpeed = 12 }) {
+  const isTyping   = phase === myPhase;
+  const isRevealed = phase > myPhase;
+  const [count, setCount] = useState(0);
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
+
+  useEffect(() => {
+    if (isRevealed) { setCount(text.length); return; }
+    if (!isTyping)  { setCount(0); return; }
+    let i = 0;
+    setCount(0);
+    const id = setInterval(() => {
+      i++;
+      setCount(i);
+      if (i >= text.length) {
+        clearInterval(id);
+        setTimeout(() => doneRef.current?.(), 80);
+      }
+    }, charSpeed);
+    return () => clearInterval(id);
+  }, [isTyping, isRevealed, text, charSpeed]);
+
+  if (!isTyping && !isRevealed) return null;
+  const done = count >= text.length;
+  return (
+    <span>
+      {text.slice(0, count)}
+      {isTyping && !done && <span className="tw-cursor" aria-hidden="true" />}
+    </span>
+  );
+}
+
 export function LenderCard({ lender, frequency = 'monthly' }) {
   const { next, state } = useApp();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen]             = useState(false);
+  const [typingPhase, setTypingPhase] = useState(-1);
 
   const {
-    name, abbr, logoBg, rate, comp, best,
+    name, abbr, logo, logoBg, rate, comp, best,
     etFee, estFee, brokFee, monthlyFee, totalRepayNum,
     types, approval, reasons, sla,
     loanTerm, extraRepayments,
     capacityNote, conductNote, stabilityNote,
   } = lender;
+
+  const notes   = [capacityNote, conductNote, stabilityNote];
+  const nextPhase = () => setTypingPhase(p => p + 1);
+
+  /* Start typing after expand animation; reset cleanly on collapse */
+  useEffect(() => {
+    if (open) {
+      const t = setTimeout(() => setTypingPhase(0), 340);
+      return () => clearTimeout(t);
+    }
+    setTypingPhase(-1);
+  }, [open]);
+
+  /* Once all reasons are done, reveal notes one-by-one at 250 ms each */
+  useEffect(() => {
+    if (typingPhase < reasons.length) return;
+    const noteIdx = typingPhase - reasons.length;
+    if (noteIdx >= notes.length) return;
+    const t = setTimeout(() => setTypingPhase(p => p + 1), 250);
+    return () => clearTimeout(t);
+  }, [typingPhase, reasons.length, notes.length]);
 
   const repayNum = {
     monthly:     totalRepayNum,
@@ -41,17 +123,17 @@ export function LenderCard({ lender, frequency = 'monthly' }) {
   const estGreen = estFee === '$0';
   const feeGreen = monthlyFee === '$0';
 
-  const approvalHigh = approval >= 85;
+  const approvalHigh  = approval >= 85;
   const approvalColor = approvalHigh ? 'var(--green)' : approval >= 75 ? 'var(--hover)' : 'var(--yellow)';
   const approvalBg    = approvalHigh ? 'var(--green)' : 'var(--accentg)';
-  const approvalLabel = approvalHigh ? 'High' : approval >= 75 ? 'Good' : 'Moderate';
+  const approvalLabel = approvalHigh ? 'High'         : approval >= 75 ? 'Good'         : 'Moderate';
 
   return (
     <div className={`lender-card${best ? ' best' : ''}`}>
 
       {/* ── Header ── */}
       <div className="lc-header">
-        <div className="lc-logo" style={{ background: logoBg }}>{abbr}</div>
+        <LenderLogo src={logo} abbr={abbr} logoBg={logoBg} />
         <div className="lc-header-body">
           <div className="lc-name">{name}</div>
           <div className="lc-types">
@@ -99,11 +181,11 @@ export function LenderCard({ lender, frequency = 'monthly' }) {
 
       {/* ── Fee & loan info ── */}
       <div className="lc-info">
-        <InfoRow label="Monthly fee"        value={monthlyFee}      valCls={feeGreen ? 'val-green' : 'val-yellow'} />
-        <InfoRow label="Establishment fee"  value={estFee}          valCls={estGreen ? 'val-green' : 'val-yellow'} />
-        <InfoRow label="Early exit fee"     value={etFee}           valCls={etGreen  ? 'val-green' : 'val-amber'}  />
-        <InfoRow label="Extra repayments"   value={extraRepayments}                                                 />
-        <InfoRow label="Loan term"          value={state.loanTerm + " Months" ?? '—'} last                                       />
+        <InfoRow label="Monthly fee"       value={monthlyFee}      valCls={feeGreen ? 'val-green' : 'val-yellow'} />
+        <InfoRow label="Establishment fee" value={estFee}          valCls={estGreen ? 'val-green' : 'val-yellow'} />
+        <InfoRow label="Early exit fee"    value={etFee}           valCls={etGreen  ? 'val-green' : 'val-amber'}  />
+        <InfoRow label="Extra repayments"  value={extraRepayments}                                                 />
+        <InfoRow label="Loan term"         value={state.loanTerm + ' Months' ?? '—'} last />
       </div>
 
       {/* ── Brokerage transparency strip ── */}
@@ -142,27 +224,52 @@ export function LenderCard({ lender, frequency = 'monthly' }) {
         </button>
       </div>
 
-      {/* ── Expandable: Anika AI insights + Assessment notes ONLY ── */}
+      {/* ── Expandable: Anika AI insights (typed) + Assessment notes (fade-in) ── */}
       <div className={`lc-expand${open ? ' open' : ''}`}>
         <div className="lc-expand-inner">
 
+          {/* Anika AI insights — character-by-character typing */}
           <div className="lc-section">
             <div className="lc-section-head">
               <Sparkles size={10} /> Anika AI insights
             </div>
             {reasons.map((r, i) => (
-              <div key={i} className="lc-reason">
+              <div
+                key={i}
+                className="lc-reason"
+                style={{ opacity: typingPhase >= i ? 1 : 0, transition: 'opacity 0.12s ease' }}
+              >
                 <CheckCircle2 size={12} className="lc-reason-icon" />
-                {r}
+                <TypewriterText
+                  text={r}
+                  phase={typingPhase}
+                  myPhase={i}
+                  onDone={nextPhase}
+                />
               </div>
             ))}
           </div>
 
+          {/* Assessment notes — sequential fade-in after reasons complete */}
           <div className="lc-section lc-section-last">
-            <div className="lc-section-head">Assessment notes</div>
-            <div className="lc-note">{capacityNote}</div>
-            <div className="lc-note">{conductNote}</div>
-            <div className="lc-note lc-note-last">{stabilityNote}</div>
+            <div
+              className="lc-section-head"
+              style={{ opacity: typingPhase >= reasons.length ? 1 : 0, transition: 'opacity 0.2s ease' }}
+            >
+              Assessment notes
+            </div>
+            {notes.map((note, j) => {
+              const notePhase = reasons.length + j;
+              return (
+                <div
+                  key={j}
+                  className={`lc-note${j === notes.length - 1 ? ' lc-note-last' : ''}`}
+                  style={{ opacity: typingPhase > notePhase ? 1 : 0, transition: 'opacity 0.3s ease' }}
+                >
+                  {note}
+                </div>
+              );
+            })}
           </div>
 
         </div>

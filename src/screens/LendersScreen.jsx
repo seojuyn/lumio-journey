@@ -46,7 +46,7 @@ export function LendersScreen() {
       />
 
       <AnikaPanel
-        message={`I found ${LENDERS.length} lender matches based on your profile — stable PAYG income, 42% debt-to-income ratio, and 6+ years residential stability. Results are ranked by approval probability.`}
+        message={`I found ${LENDERS.length} lender matches based on your profile — stable PAYG income, 42% debt-to-income ratio, and 6+ years residential stability. Results are ranked by approval probability. Top match: ${LENDERS.find(l => l.best)?.name}.`}
         thinkingMs={600}
       />
       <InfoBanner icon="Sparkles" variant="green" style={{ marginBottom: 14 }}>

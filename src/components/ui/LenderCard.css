@@ -31,19 +31,19 @@
 .lc-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 18px 20px 16px;
+  gap: 16px;
+  padding: 20px 22px 18px;
   position: relative;
 }
 
 .lender-card.best .lc-header {
-  padding-right: 96px;
+  padding-right: 106px;
 }
 
 .lc-best-badge {
   position: absolute;
   top: 50%;
-  right: 16px;
+  right: 18px;
   transform: translateY(-50%);
   pointer-events: none;
   white-space: nowrap;
@@ -64,21 +64,37 @@
   flex-shrink: 0;
 }
 
+/* ─── Logo shell ────────────────────────────────────────────────── */
 .lc-logo {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  border-radius: var(--r12);
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  border-radius: var(--r16);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 800;
   color: #fff;
   letter-spacing: -.3px;
   flex-shrink: 0;
   box-shadow: var(--glow-sm);
+}
+
+/* Real logo: no shell — renders directly on card surface */
+.lc-logo-real {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.lc-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
 }
 
 .lc-header-body {
@@ -91,10 +107,10 @@
 
 .lc-name {
   font-family: var(--font-display);
-  font-size: 15.5px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text0);
-  line-height: 1;
+  line-height: 1.15;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -436,6 +452,23 @@
 }
 .lc-note-last { border-bottom: none; }
 
+/* ─── Typewriter cursor ─────────────────────────────────────────── */
+@keyframes tw-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.tw-cursor {
+  display: inline-block;
+  width: 1.5px;
+  height: 0.88em;
+  background: var(--hover);
+  vertical-align: text-bottom;
+  margin-left: 1.5px;
+  border-radius: 1px;
+  animation: tw-blink 0.65s ease-in-out infinite;
+}
+
 /* ─── Type pills ────────────────────────────────────────────────── */
 .type-pill {
   font-size: 10.5px;
@@ -461,13 +494,17 @@
 }
 
 @media (max-width: 720px) {
-  .lender-grid { grid-template-columns: 1fr; }
+  .lender-grid  { grid-template-columns: 1fr; }
   .lc-repay-num { font-size: 44px; }
+  /* Tablet: slightly reduced logo */
+  .lc-logo { width: 62px; height: 62px; min-width: 62px; font-size: 15px; }
 }
 
 @media (max-width: 480px) {
-  .lc-header                            { padding: 16px; }
-  .lender-card.best .lc-header          { padding-right: 96px; }
+  .lc-header                            { padding: 16px; gap: 14px; }
+  .lender-card.best .lc-header          { padding-right: 100px; }
+  /* Mobile: compact logo */
+  .lc-logo { width: 56px; height: 56px; min-width: 56px; font-size: 14px; border-radius: var(--r12); }
   .lc-repay                             { padding: 18px 16px 16px; }
   .lc-chip                              { padding: 12px 8px; }
   .lc-info                              { padding: 4px 16px 0; }

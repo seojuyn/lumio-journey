@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Check, Link, ChevronDown, Trash2, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '../common/Icon';
@@ -7,6 +7,50 @@ import { LenderAutocomplete } from '../common/LenderAutocomplete';
 import './ALCard.css';
 
 const EASE = [0.25, 0.46, 0.45, 0.94];
+
+/* Format a raw numeric-string or number as "12.5%" — returns "—" for empty */
+function fmtPct(v) {
+  if (v === null || v === undefined || v === '') return '—';
+  const raw = String(v).replace('%', '').trim();
+  return raw ? raw + '%' : '—';
+}
+
+function usePercentInput(value, onCommit) {
+  const focused = useRef(false);
+  const [display, setDisplay] = useState(() => {
+    const raw = String(value ?? '').replace('%', '').trim();
+    return raw ? raw + '%' : '';
+  });
+
+  /* Sync display when value changes externally (prefilled / restored state) */
+  useEffect(() => {
+    if (focused.current) return;
+    const raw = String(value ?? '').replace('%', '').trim();
+    setDisplay(raw ? raw + '%' : '');
+  }, [value]);
+
+  const handleChange = (e) => {
+    const v = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\./g, '$1');
+    setDisplay(v);
+  };
+  const handleFocus = () => {
+    focused.current = true;
+    setDisplay(String(value ?? '').replace('%', '').trim());
+  };
+  const handleBlur  = () => {
+    focused.current = false;
+    const trimmed = display.replace('%', '').trim();
+    if (trimmed) {
+      setDisplay(trimmed + '%');
+      onCommit(trimmed);
+    } else {
+      setDisplay('');
+      onCommit('');
+    }
+  };
+
+  return { display, handleChange, handleFocus, handleBlur };
+}
 
 const PROPERTY_TYPES = [
   { value: 'owner-occupied',      label: 'Owner - Occupied'   },
@@ -300,7 +344,7 @@ function LinkedEntry({ data, onChange, allowConsolidate }) {
         </div>
         <div className="al-field">
           <label>Interest rate</label>
-          <input value={data?.interestRate || '—'} readOnly style={{ color: 'var(--text2)' }} />
+          <input value={fmtPct(data?.interestRate)} readOnly style={{ color: 'var(--text2)' }} />
         </div>
         <div className="al-field">
           <label>Monthly repayment</label>
@@ -334,8 +378,8 @@ function LinkedEntry({ data, onChange, allowConsolidate }) {
  * immediately via onChange, making every keystroke persistent.
  */
 function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, values = {}, onChange, ownerOccupiedTaken }) {
-  // Convenience: set a single field from an input event
   const set = (field) => (e) => onChange?.({ [field]: e.target.value });
+  const pctRate = usePercentInput(values.interestRate ?? '', (v) => onChange?.({ interestRate: v }));
 
   const propType        = values.propertyType   ?? '';
   const address         = values.address        ?? '';
@@ -433,7 +477,13 @@ function DefaultEntry({ title, isRealEstate, hasFin, num, canRemove, onRemove, v
                   </div>
                   <div className="al-field">
                     <label>Interest rate %</label>
-                    <input placeholder="e.g. 6.24" value={interestRate} onChange={set('interestRate')} />
+                    <input
+                      placeholder="e.g. 6.24"
+                      value={pctRate.display}
+                      onChange={pctRate.handleChange}
+                      onFocus={pctRate.handleFocus}
+                      onBlur={pctRate.handleBlur}
+                    />
                   </div>
                   <div className="al-field">
                     <label>Monthly repayment</label>
@@ -529,6 +579,7 @@ function LiabilityEntry({ title, num, canRemove, onRemove, values = {}, onChange
   const consolidate      = values.consolidate      ?? false;
 
   const set = (field) => (e) => onChange?.({ [field]: e.target.value });
+  const pctRate = usePercentInput(values.interestRate ?? '', (v) => onChange?.({ interestRate: v }));
 
   return (
     <div className="al-entry">
@@ -552,7 +603,13 @@ function LiabilityEntry({ title, num, canRemove, onRemove, values = {}, onChange
         </div>
         <div className="al-field">
           <label>Interest Rate</label>
-          <input placeholder="e.g. 6.99%" value={interestRate} onChange={set('interestRate')} />
+          <input
+            placeholder="e.g. 6.99"
+            value={pctRate.display}
+            onChange={pctRate.handleChange}
+            onFocus={pctRate.handleFocus}
+            onBlur={pctRate.handleBlur}
+          />
         </div>
         <div className="al-field" style={{ gridColumn: 'span 2' }}>
           <label>Monthly Repayments</label>
