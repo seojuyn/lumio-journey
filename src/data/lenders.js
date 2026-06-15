@@ -27,7 +27,7 @@ export const LENDERS = [
     stabilityNote: '6+ years at current address exceeds this lender\'s 3-year minimum — a positive credit indicator.',
     etTip: 'No fee applies after 24 months — competitive with other lenders.',
     estTip: 'One-time charge at drawdown. Always disclosed upfront — no surprises at settlement.',
-    brokTip: 'Axio is compensated by the lender after settlement. You pay $0 brokerage — disclosed in your credit guide.',
+    brokTip: 'Lumio is compensated by the lender after settlement. You pay $0 brokerage — disclosed in your credit guide.',
   },
   {
     id: 'lender2',
@@ -57,7 +57,7 @@ export const LENDERS = [
     stabilityNote: 'Current residential tenure satisfies requirements. Employment history aligns with minimum period criteria.',
     etTip: '$150 applies only in first 12 months — no fee after that.',
     estTip: 'No establishment fee — saving of $195+ compared to others.',
-    brokTip: 'Brokerage paid by lender to Axio after settlement. You pay $0.',
+    brokTip: 'Brokerage paid by lender to Lumio after settlement. You pay $0.',
   },
   {
     id: 'lender3',

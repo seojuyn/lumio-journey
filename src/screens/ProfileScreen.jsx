@@ -350,7 +350,7 @@ export function ProfileScreen() {
                 : 'Your name'}
             </div>
             <div className="text-small text-border2" style={{ marginTop: 3 }}>
-              Personal loan applicant · Axio Finance
+              Personal loan applicant · Lumio Finance
             </div>
           </div>
         </div>

@@ -61,7 +61,7 @@ export function VerificationStatusScreen() {
               finance workspace is now active.
             </p>
             <p className="vs-card-body">
-              Your Axio Portal combines AI-powered lending technology with
+              Your Lumio Portal combines AI-powered lending technology with
               real-time analyst support to give you a smarter finance experience.
               Monitor your application live, receive lender updates instantly,
               securely manage your documents, and access future finance faster

@@ -80,9 +80,9 @@ export function Sidebar({ open, onClose }) {
 
         <div className="sidebar-brand">
           <div className="brand-logo">
-            <div className="brand-icon">Ax</div>
+            <div className="brand-icon">Lu</div>
             <div className="brand-text">
-              <div className="brand-name">Axio Finance</div>
+              <div className="brand-name">Lumio Finance</div>
               <div className="brand-ai-badge">
                 <span className="brand-ai-dot" />
                 AI-guided

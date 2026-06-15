@@ -543,7 +543,7 @@ export function CreateAccount() {
                   <div className="ca-otp-info-icon"><Shield size={13} /></div>
                   <p className="ca-otp-info-text">
                     We will send a 6-digit code to both your email and mobile at the same time.
-                    Once verified, you will unlock secure access to your Axio Finance dashboard,
+                    Once verified, you will unlock secure access to your Lumio Finance dashboard,
                     real time updates, secure messaging, documents, and your personalised finance journey.
                   </p>
                 </div>
@@ -668,7 +668,7 @@ export function CreateAccount() {
                   <h2 className="ca-success-title">Account verified!</h2>
                   <p className="ca-success-text">
                     Your email and mobile number have been confirmed.
-                    You can now continue your Axio Finance journey by uploading your documents.
+                    You can now continue your Lumio Finance journey by uploading your documents.
                   </p>
                 </motion.div>
 

@@ -50,7 +50,7 @@ export function LendersScreen() {
         thinkingMs={600}
       />
       <InfoBanner icon="Sparkles" variant="green" style={{ marginBottom: 14 }}>
-        Axio works on full transparency — no hidden fees. Every total shown is exactly what you pay, inclusive of all fees and lender charges.
+        Lumio works on full transparency — no hidden fees. Every total shown is exactly what you pay, inclusive of all fees and lender charges.
       </InfoBanner>
 
       {/* ── Frequency tab bar ── */}

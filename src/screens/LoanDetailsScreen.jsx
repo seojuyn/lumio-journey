@@ -313,7 +313,7 @@ function CarLoanDetails({ repay, rateLabel }) {
               <div className="flex-between" style={{ gap: 14, flexWrap: 'wrap' }}>
                 <div>
                   <div className="mp-title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <Sparkles size={12} /> Axio Vehicle Marketplace — unlocks after approval
+                    <Sparkles size={12} /> Lumio Vehicle Marketplace — unlocks after approval
                   </div>
                   <div className="mp-sub">Complete your application and get approved. Your portal will unlock the marketplace filtered to exactly your approved budget.</div>
                 </div>

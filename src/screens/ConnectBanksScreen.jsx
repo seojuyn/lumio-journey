@@ -177,7 +177,7 @@ function SecureConnectModal({ bank, onClose, onConnect, onUpload }) {
               <div>
                 <div className="sc-modal-notice-title">Encrypted &amp; Read-Only Access</div>
                 <div className="sc-modal-notice-desc">
-                  Your banking credentials are encrypted during transmission. Stoik and Axio Finance
+                  Your banking credentials are encrypted during transmission. Stoik and Lumio Finance
                   do not store your login details.
                 </div>
               </div>
@@ -193,7 +193,7 @@ function SecureConnectModal({ bank, onClose, onConnect, onUpload }) {
               <span className="sc-modal-consent-text">
                 Consent to access financial data
                 <span className="sc-modal-consent-desc">
-                  By continuing, you authorise Stoik and Axio Finance to securely access your
+                  By continuing, you authorise Stoik and Lumio Finance to securely access your
                   banking transaction history for assessment, verification, and lender matching.
                 </span>
               </span>
@@ -321,7 +321,7 @@ export function ConnectBanksScreen() {
               <div className="bank-hero-copy">
                 <div className="bank-hero-eyebrow">
                   <Icon name="Building2" size={11} />
-                  Axio × Stoik
+                  Lumio × Stoik
                 </div>
                 <h2 className="bank-hero-title">Connect your bank statements</h2>
                 <p className="bank-hero-desc">
@@ -483,7 +483,7 @@ export function ConnectBanksScreen() {
                     <div className="bank-connect-info">
                       <div className="bank-connect-info-title">Secure bank redirect</div>
                       <p className="bank-connect-info-desc">
-                        Axio does not collect internet banking passwords. You will be redirected to
+                        Lumio does not collect internet banking passwords. You will be redirected to
                         your bank or approved Open Banking provider to authenticate securely.
                       </p>
                     </div>

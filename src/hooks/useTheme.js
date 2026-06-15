@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const STORAGE_KEY = 'axio-theme';
+const STORAGE_KEY = 'lumio-theme';
 
 export function useTheme() {
   const [theme, setTheme] = useState(() =>

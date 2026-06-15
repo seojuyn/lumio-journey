@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Axio is a React 19 + Vite 8 loan application wizard. There is no client-side router — screen navigation is index-based, driven entirely by `AppContext`. All 14 screens live in `src/screens/`, are lazy-loaded via `React.lazy`, and share state through a single context.
+Lumio Finance is a React 19 + Vite 8 loan application wizard. There is no client-side router — screen navigation is index-based, driven entirely by `AppContext`. All 16 screens live in `src/screens/`, are lazy-loaded via `React.lazy`, and share state through a single context.
 
 ## Project Structure & Module Organization
 
