@@ -47,7 +47,6 @@ function validateMobile(v) {
   const d = v.replace(/\D/g, '');
   if (!d) return 'Mobile number is required';
   if (d.length !== 9) return 'Enter all 9 digits after +61';
-  if (!/^4\d{8}$/.test(d)) return 'Australian mobile numbers must start with 4';
   return null;
 }
 

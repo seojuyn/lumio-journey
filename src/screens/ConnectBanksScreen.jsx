@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Landmark, Sparkles } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -80,18 +80,41 @@ function BankSummaryPanel({ selectedBanks, months }) {
 
 // ─── Secure Connect Modal ─────────────────────────────────────────────────────
 
-function SecureConnectModal({ bank, onClose, onConnect, onUpload }) {
-  const [crn, setCrn]           = useState('');
-  const [password, setPassword] = useState('');
-  const [showPwd, setShowPwd]   = useState(false);
+function SecureConnectModal({ bank, onClose, onSecureConnect, onStatementUpload }) {
+  const [modalMode, setModalMode] = useState('connect'); // 'connect' | 'upload'
+  const [crn, setCrn]             = useState('');
+  const [password, setPassword]   = useState('');
+  const [showPwd, setShowPwd]     = useState(false);
   const [consented, setConsented] = useState(false);
-
-  const canSubmit = crn.trim().length > 0 && password.trim().length > 0 && consented;
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadError, setUploadError]     = useState('');
 
   useEffect(() => {
     if (bank) document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, [bank]);
+
+  const canSubmit = crn.trim().length > 0 && password.trim().length > 0 && consented;
+
+  const handleFileChange = (e) => {
+    const incoming = Array.from(e.target.files);
+    setUploadedFiles((prev) => {
+      const existingNames = new Set(prev.map((f) => f.name));
+      return [...prev, ...incoming.filter((f) => !existingNames.has(f.name))];
+    });
+    setUploadError('');
+    e.target.value = '';
+  };
+
+  const removeFile = (idx) => setUploadedFiles((prev) => prev.filter((_, i) => i !== idx));
+
+  const handleUploadSubmit = () => {
+    if (uploadedFiles.length === 0) {
+      setUploadError('Please upload at least one PDF bank statement.');
+      return;
+    }
+    onStatementUpload(uploadedFiles.map((f) => f.name));
+  };
 
   return createPortal(
     <AnimatePresence>
@@ -117,18 +140,24 @@ function SecureConnectModal({ bank, onClose, onConnect, onUpload }) {
               <Icon name="X" size={14} />
             </button>
 
+            {/* ── Header ── */}
             <div className="sc-modal-header">
               <div className="sc-modal-lock-icon">
-                <Icon name="Lock" size={20} />
+                <Icon name={modalMode === 'upload' ? 'FileText' : 'Lock'} size={20} />
               </div>
               <div>
-                <div className="sc-modal-title">Secure Authentication</div>
+                <div className="sc-modal-title">
+                  {modalMode === 'upload' ? 'Upload Bank Statements' : 'Secure Authentication'}
+                </div>
                 <div className="sc-modal-sub">
-                  Enter your CRN and password to securely connect your account.
+                  {modalMode === 'upload'
+                    ? 'Upload PDF statements for this bank account.'
+                    : 'Enter your CRN and password to securely connect your account.'}
                 </div>
               </div>
             </div>
 
+            {/* ── Bank pill ── */}
             <div className="sc-modal-bank-row">
               <div className="sc-modal-bank-icon">
                 <Icon name={bank.icon} size={14} />
@@ -137,81 +166,151 @@ function SecureConnectModal({ bank, onClose, onConnect, onUpload }) {
               <span className="sc-modal-bank-type">{bank.type} Bank</span>
             </div>
 
-            <div className="sc-modal-field">
-              <label className="sc-modal-label">Customer Reference Number (CRN)</label>
-              <input
-                className="sc-modal-input"
-                type="text"
-                placeholder="Enter your CRN"
-                value={crn}
-                onChange={(e) => setCrn(e.target.value)}
-                autoComplete="username"
-              />
-            </div>
-
-            <div className="sc-modal-field">
-              <label className="sc-modal-label">Password</label>
-              <div className="sc-modal-input-wrap">
-                <input
-                  className="sc-modal-input"
-                  type={showPwd ? 'text' : 'password'}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                  onKeyDown={(e) => e.key === 'Enter' && canSubmit && onConnect()}
-                />
-                <button
-                  type="button"
-                  className="sc-modal-pwd-toggle"
-                  onClick={() => setShowPwd((p) => !p)}
-                  aria-label={showPwd ? 'Hide password' : 'Show password'}
-                >
-                  <Icon name={showPwd ? 'EyeOff' : 'Eye'} size={14} />
-                </button>
-              </div>
-            </div>
-
-            <div className="sc-modal-notice">
-              <Icon name="Lock" size={13} className="sc-modal-notice-icon" />
-              <div>
-                <div className="sc-modal-notice-title">Encrypted &amp; Read-Only Access</div>
-                <div className="sc-modal-notice-desc">
-                  Your banking credentials are encrypted during transmission. Stoik and Lumio Finance
-                  do not store your login details.
+            {/* ── Connect mode ── */}
+            {modalMode === 'connect' && (
+              <>
+                <div className="sc-modal-field">
+                  <label className="sc-modal-label">Customer Reference Number (CRN)</label>
+                  <input
+                    className="sc-modal-input"
+                    type="text"
+                    placeholder="Enter your CRN"
+                    value={crn}
+                    onChange={(e) => setCrn(e.target.value)}
+                    autoComplete="username"
+                  />
                 </div>
-              </div>
-            </div>
 
-            <label className="sc-modal-consent">
-              <input
-                type="checkbox"
-                className="sc-modal-checkbox"
-                checked={consented}
-                onChange={(e) => setConsented(e.target.checked)}
-              />
-              <span className="sc-modal-consent-text">
-                Consent to access financial data
-                <span className="sc-modal-consent-desc">
-                  By continuing, you authorise Stoik and Lumio Finance to securely access your
-                  banking transaction history for assessment, verification, and lender matching.
-                </span>
-              </span>
-            </label>
+                <div className="sc-modal-field">
+                  <label className="sc-modal-label">Password</label>
+                  <div className="sc-modal-input-wrap">
+                    <input
+                      className="sc-modal-input"
+                      type={showPwd ? 'text' : 'password'}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="current-password"
+                      onKeyDown={(e) => e.key === 'Enter' && canSubmit && onSecureConnect()}
+                    />
+                    <button
+                      type="button"
+                      className="sc-modal-pwd-toggle"
+                      onClick={() => setShowPwd((p) => !p)}
+                      aria-label={showPwd ? 'Hide password' : 'Show password'}
+                    >
+                      <Icon name={showPwd ? 'EyeOff' : 'Eye'} size={14} />
+                    </button>
+                  </div>
+                </div>
 
-            <div className="sc-modal-cta">
-              <button
-                type="button"
-                className="sc-modal-connect-btn"
-                onClick={() => canSubmit && onConnect()}
-                disabled={!canSubmit}
-              >
-                Connect Bank Securely
-              </button>
-              <button type="button" className="sc-modal-upload-btn" onClick={onUpload}>
-                Upload Bank Statements Instead
-              </button>
-            </div>
+                <div className="sc-modal-notice">
+                  <Icon name="Lock" size={13} className="sc-modal-notice-icon" />
+                  <div>
+                    <div className="sc-modal-notice-title">Encrypted &amp; Read-Only Access</div>
+                    <div className="sc-modal-notice-desc">
+                      Your banking credentials are encrypted during transmission. Stoik and Lumio Finance
+                      do not store your login details.
+                    </div>
+                  </div>
+                </div>
+
+                <label className="sc-modal-consent">
+                  <input
+                    type="checkbox"
+                    className="sc-modal-checkbox"
+                    checked={consented}
+                    onChange={(e) => setConsented(e.target.checked)}
+                  />
+                  <span className="sc-modal-consent-text">
+                    Consent to access financial data
+                    <span className="sc-modal-consent-desc">
+                      By continuing, you authorise Stoik and Lumio Finance to securely access your
+                      banking transaction history for assessment, verification, and lender matching.
+                    </span>
+                  </span>
+                </label>
+
+                <div className="sc-modal-cta">
+                  <button
+                    type="button"
+                    className="sc-modal-connect-btn"
+                    onClick={() => canSubmit && onSecureConnect()}
+                    disabled={!canSubmit}
+                  >
+                    Connect Bank Securely
+                  </button>
+                  <button
+                    type="button"
+                    className="sc-modal-upload-btn"
+                    onClick={() => setModalMode('upload')}
+                  >
+                    Upload Bank Statements Instead
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* ── Upload mode ── */}
+            {modalMode === 'upload' && (
+              <>
+                <div className="sc-upload-warning">
+                  ⚠️ Minimum 3 months of bank statements are required for lender assessment and matching.
+                </div>
+
+                <div className="sc-upload-drop">
+                  <input
+                    type="file"
+                    accept="application/pdf,.pdf"
+                    multiple
+                    onChange={handleFileChange}
+                    aria-label="Upload PDF bank statements"
+                  />
+                  <Icon name="Upload" size={18} className="sc-upload-drop-icon" />
+                  <span className="sc-upload-drop-label">Click to upload PDF statements</span>
+                  <span className="sc-upload-drop-sub">PDF files only · Multiple files allowed</span>
+                </div>
+
+                {uploadedFiles.length > 0 && (
+                  <div className="sc-upload-file-list">
+                    {uploadedFiles.map((file, idx) => (
+                      <div key={idx} className="sc-upload-file-item">
+                        <Icon name="FileText" size={13} className="sc-upload-file-icon" />
+                        <span className="sc-upload-file-name">{file.name}</span>
+                        <button
+                          type="button"
+                          className="sc-upload-file-remove"
+                          onClick={() => removeFile(idx)}
+                          aria-label={`Remove ${file.name}`}
+                        >
+                          <Icon name="X" size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {uploadError && <div className="sc-upload-error">{uploadError}</div>}
+
+                <div className="sc-modal-cta">
+                  <button
+                    type="button"
+                    className="sc-modal-connect-btn"
+                    onClick={handleUploadSubmit}
+                    disabled={uploadedFiles.length === 0}
+                  >
+                    Upload Statements
+                  </button>
+                  <button
+                    type="button"
+                    className="sc-modal-upload-btn"
+                    onClick={() => setModalMode('connect')}
+                  >
+                    ← Back to Secure Connect
+                  </button>
+                </div>
+              </>
+            )}
           </motion.div>
         </motion.div>
       )}
@@ -225,12 +324,13 @@ function SecureConnectModal({ bank, onClose, onConnect, onUpload }) {
 export function ConnectBanksScreen() {
   const { state, updateState, next, prev } = useApp();
 
-  const [bankStep, setBankStep]         = useState(0);
-  const [selectedBankIds, setSelectedBankIds] = useState(['cba', 'nab']);
-  const [months, setMonths]             = useState(6);
-  const [bankSearch, setBankSearch]     = useState('');
-  const [connectedIds, setConnectedIds] = useState([]);
-  const [modalBank, setModalBank]       = useState(null);
+  const [bankStep, setBankStep]             = useState(0);
+  const [selectedBankIds, setSelectedBankIds] = useState([]);
+  const [months, setMonths]                 = useState(6);
+  const [bankSearch, setBankSearch]         = useState('');
+  const [connectedBankData, setConnectedBankData] = useState({});
+  // { [bankId]: { method: 'secure' | 'upload', files: string[] } }
+  const [modalBank, setModalBank]           = useState(null);
 
   const selectedBanks = BANK_ITEMS.filter((b) => selectedBankIds.includes(b.id));
   const filteredBanks = useMemo(
@@ -238,7 +338,14 @@ export function ConnectBanksScreen() {
     [bankSearch]
   );
 
-  const canContinue = bankStep !== 1 || selectedBankIds.length > 0;
+  const allBanksConnected =
+    selectedBankIds.length > 0 && selectedBankIds.every((id) => connectedBankData[id]);
+
+  const canContinue =
+    bankStep === 1 ? selectedBankIds.length > 0 :
+    bankStep === 3 ? allBanksConnected :
+    true;
+
   const pct = Math.round(((bankStep + 1) / FLOW_STEPS.length) * 100);
 
   const toggleBank = (id) =>
@@ -246,13 +353,17 @@ export function ConnectBanksScreen() {
       prev.includes(id) ? prev.filter((bid) => bid !== id) : [...prev, id]
     );
 
-  const connectBank = (id) => setConnectedIds((prev) => [...new Set([...prev, id])]);
-
   const handleNext = () => { if (canContinue) setBankStep((p) => Math.min(FLOW_STEPS.length - 1, p + 1)); };
   const handleBack = () => setBankStep((p) => Math.max(0, p - 1));
 
   const buildSummary = () =>
-    `${selectedBankIds.length} bank${selectedBankIds.length !== 1 ? 's' : ''} · ${months} months · CDR accredited`;
+    selectedBankIds
+      .map((id) => {
+        const b    = BANK_ITEMS.find((b) => b.id === id);
+        const conn = connectedBankData[id];
+        return `${b?.name ?? id} · ${conn?.method === 'secure' ? 'Secure Connect' : 'Statement Upload'}`;
+      })
+      .join('  ·  ');
 
   const handleComplete = () => {
     updateState({
@@ -263,17 +374,24 @@ export function ConnectBanksScreen() {
     });
   };
 
-  const handlePdfUpload = () => {
-    updateState({
-      bankConnected: true,
-      selectedBank: null,
-      uploadedDocs: { ...state.uploadedDocs, bankstatements: true },
-      bankConnectionSummary: 'PDF statements uploaded · CDR accredited',
-    });
+  const handleDisconnect = () => {
+    setConnectedBankData({});
+    updateState({ bankConnected: false, selectedBank: null, bankConnectionSummary: null });
   };
 
-  const handleDisconnect = () =>
-    updateState({ bankConnected: false, selectedBank: null, bankConnectionSummary: null });
+  const handleSecureConnect = () => {
+    if (modalBank) {
+      setConnectedBankData((prev) => ({ ...prev, [modalBank.id]: { method: 'secure', files: [] } }));
+    }
+    setModalBank(null);
+  };
+
+  const handleStatementUpload = (files) => {
+    if (modalBank) {
+      setConnectedBankData((prev) => ({ ...prev, [modalBank.id]: { method: 'upload', files } }));
+    }
+    setModalBank(null);
+  };
 
   return (
     <div className="screen-enter">
@@ -489,24 +607,42 @@ export function ConnectBanksScreen() {
                     </div>
                     <div className="bank-connect-list">
                       {selectedBanks.map((bank) => {
-                        const isConnected = connectedIds.includes(bank.id);
+                        const conn        = connectedBankData[bank.id];
+                        const isConnected = !!conn;
                         return (
                           <div key={bank.id} className="bank-connect-item">
                             <div className="bank-connect-item-left">
                               <div className="bank-connect-item-icon">
                                 <Icon name={bank.icon} size={16} />
                               </div>
-                              <div>
+                              <div className="bank-connect-item-info">
                                 <div className="bank-connect-item-name">{bank.name}</div>
-                                <div className="bank-connect-item-sub">
-                                  {isConnected ? 'Connected · read-only' : 'Ready to connect'}
-                                </div>
+                                {isConnected ? (
+                                  <>
+                                    <div className="bank-connect-item-method">
+                                      <Icon name="CheckCircle2" size={10} />
+                                      {conn.method === 'secure' ? 'Secure Connect' : 'Statement Upload'}
+                                    </div>
+                                    {conn.files.length > 0 && (
+                                      <div className="bank-connect-item-files">
+                                        {conn.files.map((f, i) => (
+                                          <span key={i} className="bank-connect-file-tag">
+                                            <Icon name="FileText" size={10} /> {f}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </>
+                                ) : (
+                                  <div className="bank-connect-item-sub">Ready to connect</div>
+                                )}
                               </div>
                             </div>
                             <button
                               type="button"
                               className={`bank-connect-btn${isConnected ? ' done' : ''}`}
                               onClick={() => !isConnected && setModalBank(bank)}
+                              disabled={isConnected}
                             >
                               {isConnected ? (
                                 <><Icon name="Check" size={12} /> Connected</>
@@ -518,24 +654,11 @@ export function ConnectBanksScreen() {
                         );
                       })}
                     </div>
-                    <div className="bank-connect-divider">
-                      <div className="bank-connect-line" />
-                      <span>or upload PDF manually</span>
-                      <div className="bank-connect-line" />
-                    </div>
-                    <div
-                      className={`bank-pdf-zone${state.uploadedDocs?.bankstatements ? ' done' : ''}`}
-                      role="button"
-                      tabIndex={0}
-                      onClick={handlePdfUpload}
-                      onKeyDown={(e) => e.key === 'Enter' && handlePdfUpload()}
-                    >
-                      <Icon name="FileText" size={18} className="bank-pdf-zone-icon" />
-                      <div className="bank-pdf-zone-title">Upload PDF statements</div>
-                      <div className="bank-pdf-zone-sub">
-                        3 months · all accounts used for income or expenses
+                    {!allBanksConnected && selectedBankIds.length > 0 && (
+                      <div className="bank-warn">
+                        Connect all selected banks to continue.
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
 
@@ -615,20 +738,15 @@ export function ConnectBanksScreen() {
 
       <BtnRow>
         <BtnGhost onClick={prev}>← Back</BtnGhost>
-        <BtnPrimary onClick={next}>Continue →</BtnPrimary>
+        <BtnPrimary onClick={next} disabled={!state.bankConnected}>Continue →</BtnPrimary>
       </BtnRow>
 
       <SecureConnectModal
+        key={modalBank?.id ?? ''}
         bank={modalBank}
         onClose={() => setModalBank(null)}
-        onConnect={() => {
-          if (modalBank) connectBank(modalBank.id);
-          setModalBank(null);
-        }}
-        onUpload={() => {
-          setModalBank(null);
-          handlePdfUpload();
-        }}
+        onSecureConnect={handleSecureConnect}
+        onStatementUpload={handleStatementUpload}
       />
     </div>
   );
