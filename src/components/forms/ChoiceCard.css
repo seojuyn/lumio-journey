@@ -63,6 +63,12 @@
 .cc-title  { font-family: var(--font-display); font-size: 13px; font-weight: 600; margin-bottom: 3px; color: var(--text0); }
 .cc-desc   { font-size: 11.5px; color: var(--text1); line-height: 1.45; }
 
+.choice-card.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* Cond card variant */
 .cond-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 

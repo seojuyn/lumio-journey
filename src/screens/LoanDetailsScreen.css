@@ -205,6 +205,13 @@
   pointer-events: none;
 }
 
+/* Asset-type card disabled (non-vehicle when loan > $70k) */
+.sec-type-card--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* ─── Security asset type selection ─────────────────────────────── */
 @keyframes sec-type-in {
   from { opacity: 0; transform: translateY(6px); }

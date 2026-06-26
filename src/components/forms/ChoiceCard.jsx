@@ -9,11 +9,11 @@ export function ChoiceGrid({ cols = 2, children, style }) {
   );
 }
 
-export function ChoiceCard({ icon, title, desc, selected, onClick, children, style }) {
+export function ChoiceCard({ icon, title, desc, selected, onClick, children, style, disabled }) {
   return (
     <div
-      className={`choice-card ${selected ? 'on' : ''}`}
-      onClick={onClick}
+      className={`choice-card ${selected ? 'on' : ''}${disabled ? ' disabled' : ''}`}
+      onClick={disabled ? undefined : onClick}
       style={style}
     >
       <div className="cc-check"><Check size={11} strokeWidth={2.5} /></div>
