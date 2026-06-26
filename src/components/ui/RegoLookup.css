@@ -60,6 +60,23 @@
 }
 .rf-val { font-size: 12.5px; font-weight: 700; font-family: var(--font-mono); }
 
+.rego-odo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rego-odo-wrap .inp {
+  flex: 1;
+  min-width: 0;
+}
+.rego-odo-suffix {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 @media (max-width: 600px) {
   .rego-row {
     grid-template-columns: 1fr 1fr;

@@ -81,7 +81,10 @@ export function RegoLookup({ prefix }) {
             <div className="g2">
               <div className="fld" style={{ marginBottom: 0 }}>
                 <label className="fl">Current odometer</label>
-                <div className="flex-between"><input className="inp" placeholder="e.g. 62,000" /><span className="text-small text-border2">km</span></div>
+                <div className="rego-odo-wrap">
+                  <input className="inp" placeholder="e.g. 62,000" />
+                  <span className="rego-odo-suffix">km</span>
+                </div>
               </div>
               <div className="fld" style={{ marginBottom: 0 }}>
                 <label className="fl">Estimated value</label>
