@@ -4,54 +4,74 @@
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ─── BACKGROUNDS — soft dark-indigo, warm purple tones ──── */
-  --bg0: #0F0D1E;          /* Page background — dark indigo */
-  --bg1: #13102A;          /* Sidebar / secondary areas */
-  --bg2: #17142D;          /* Card background */
-  --bg3: #1D1A37;          /* Glass / inner surfaces */
-  --bg4: #231F42;          /* Elevated inner elements */
+  /* Background */
+  --bg0:
+          radial-gradient(circle at 12% 10%, rgba(196,181,253,.42), transparent 30%),
+          radial-gradient(circle at 88% 12%, rgba(219,234,254,.72), transparent 34%),
+          linear-gradient(135deg,#F8F5FF 0%,#EEF4FF 48%,#FFFFFF 100%);
+  --bg1: #F4F1FF;
+  --bg2: rgba(255,255,255,.68);
+  --bg3: rgba(255,255,255,.56);
+  --bg4: rgba(255,255,255,.82);
 
-  /* ─── SEMANTIC SURFACES ───────────────────────────────────── */
-  --surface-card:    rgba(23, 20, 45, 0.96);   /* Cards, panels */
-  --surface-input:   rgba(29, 26, 55, 0.88);   /* Inputs, chips, ghost btns */
-  --surface-inner:   rgba(15, 13, 30, 0.97);   /* Icon boxes, inner elements */
-  --surface-hover:   rgba(139, 92, 246, 0.09); /* Hover tint */
-  --surface-active:  rgba(139, 92, 246, 0.16); /* Selected / active tint */
-  --surface-nav:     rgba(11, 9, 22, 0.99);    /* Sidebar */
-  --surface-topbar:  rgba(14, 12, 26, 0.95);   /* Top bar */
-  --surface-accent:  rgba(139, 92, 246, 0.10); /* Accent-tinted surface */
-  --surface-overlay: rgba(6, 3, 14, 0.80);     /* Mobile overlay */
+  /* Brand */
 
-  /* ─── BRAND PURPLE SPECTRUM ───────────────────────────────── */
-  --accent:  #7C3AED;
+  --accent: #7C3AED;
   --accent2: #8B5CF6;
-  --cta:     #7C3AED;
-  --hover:   #A78BFA;
-  --deep:    #2E1065;
+  --hover: #7C3AED;
+  --deep: #5B21B6;
 
-  /* ─── GRADIENTS ───────────────────────────────────────────── */
-  --accentg:      linear-gradient(135deg, #6D28D9 0%, #7C3AED 55%, #8B5CF6 100%);
-  --accentg-deep: linear-gradient(135deg, #1E1035 0%, #3B0764 45%, #6D28D9 100%);
-  --dashg:        linear-gradient(145deg, #0F0D1E 0%, #13102A 40%, #181530 100%);
+  /* Gradients */
 
-  /* ─── BORDERS & GLASS ─────────────────────────────────────── */
-  --border:       rgba(167, 139, 250, 0.12);
-  --border2:      rgba(167, 139, 250, 0.28);
-  --glass-border: rgba(167, 139, 250, 0.14);
-  --white-glass:  rgba(255, 255, 255, 0.055);
+  --accentg: linear-gradient(
+          135deg,
+          #6D28D9 0%,
+          #7C3AED 55%,
+          #A78BFA 100%
+  );
 
-  /* ─── TEXT — warm purple-white, readable hierarchy ─────────── */
-  --text0: #ECEAF8;        /* Primary — warm near-white with lavender warmth */
-  --text1: #B4B0CE;        /* Secondary — clearly readable */
-  --text2: #8882A8;        /* Muted — accessible, not faded */
+  --accentg-deep: linear-gradient(
+          135deg,
+          #312E81 0%,
+          #6D28D9 100%
+  );
 
+  /* Surfaces */
+  --surface-card: rgba(255,255,255,.58);
+  --surface-input: rgba(255,255,255,.46);
+  --surface-inner: rgba(255,255,255,.38);
+  --surface-hover: rgba(124,58,237,.06);
+  --surface-active: rgba(124,58,237,.12);
+  --surface-nav: rgba(255,255,255,.42);
+  --surface-topbar: transparent;
+  --surface-accent: rgba(124,58,237,.08);
+  --surface-overlay: rgba(18,20,35,.18);
+
+  /* Text */
+  --text0: #241A3A;
+  --text1: #5B5274;
+  --text2: #7B7198;
+
+  /* Borders */
+  --border: rgba(124,58,237,.10);
+  --border2: rgba(124,58,237,.28);
+  --glass-border: rgba(255,255,255,.62);
+
+  /* Shadows */
+  --card-shadow:
+          0 18px 45px rgba(31,41,55,.08),
+          inset 0 1px 0 rgba(255,255,255,.72);
+
+  --card-shadow-hover:
+          0 22px 58px rgba(31,41,55,.12),
+          inset 0 1px 0 rgba(255,255,255,.82);
   /* ─── STATUS ──────────────────────────────────────────────── */
-  --green:        #10B981;
-  --greenbg:      rgba(16, 185, 129, 0.10);
-  --greenborder:  rgba(16, 185, 129, 0.26);
-  --yellow:       #F59E0B;
-  --yellowbg:     rgba(245, 158, 11, 0.10);
-  --yellowborder: rgba(245, 158, 11, 0.26);
+  --green: #059669;
+  --greenbg: rgba(5,150,105,.10);
+  --greenborder: rgba(5,150,105,.28);
+  --yellow: #D97706;
+  --yellowbg: rgba(245,158,11,.10);
+  --yellowborder: rgba(245,158,11,.22);
   --red:          #F43F5E;
   --redbg:        rgba(244, 63, 94, 0.10);
   --redborder:    rgba(244, 63, 94, 0.26);
@@ -61,8 +81,6 @@
   --glow-sm:           0 2px 8px rgba(0, 0, 0, 0.18);
   --glow-md:           0 4px 16px rgba(0, 0, 0, 0.24);
   --glow-lg:           0 8px 32px rgba(0, 0, 0, 0.32);
-  --card-shadow:       0 1px 0 rgba(255, 255, 255, 0.06), 0 2px 8px rgba(0, 0, 0, 0.22), 0 8px 24px rgba(0, 0, 0, 0.14);
-  --card-shadow-hover: 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 14px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(167, 139, 250, 0.20);
 
   /* ─── BORDER RADII ────────────────────────────────────────── */
   --r6:  6px;
@@ -98,6 +116,24 @@
   --sp28: 28px;
   --sp32: 32px;
   --sp36: 36px;
+
+  /* variables.css에 추가만 */
+  --lumio-page-bg:
+          radial-gradient(circle at 12% 10%, rgba(196,181,253,.45), transparent 30%),
+          radial-gradient(circle at 92% 12%, rgba(219,234,254,.75), transparent 34%),
+          linear-gradient(135deg, #F8F5FF 0%, #EEF4FF 48%, #FFFFFF 100%);
+
+  --lumio-glass-bg: rgba(255,255,255,.52);
+  --lumio-glass-bg-strong: rgba(255,255,255,.72);
+  --lumio-glass-border: rgba(255,255,255,.62);
+  --lumio-glass-blur: blur(28px) saturate(190%);
+  --lumio-glass-shadow:
+          0 18px 45px rgba(31,41,55,.10),
+          inset 0 1px 0 rgba(255,255,255,.64);
+
+  --lumio-text-main: #241A3A;
+  --lumio-text-sub: #5F5478;
+  --lumio-text-muted: #8D82A8;
 }
 
 

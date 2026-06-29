@@ -8,12 +8,22 @@
   letter-spacing: .15px;
 }
 .badge-blue {
-  background: var(--surface-active);
-  border: 1px solid var(--border2);
-  color: var(--hover);
+  background: rgba(124,58,237,.08);
+  border: 1px solid rgba(124,58,237,.16);
+  color: #7C3AED;
 }
-.badge-green  { background: var(--greenbg);  border: 1px solid var(--greenborder);  color: var(--green); }
-.badge-yellow { background: var(--yellowbg); border: 1px solid var(--yellowborder); color: var(--yellow); }
+
+.badge-green {
+  background: rgba(16,185,129,.08);
+  border: 1px solid rgba(16,185,129,.18);
+  color: #059669;
+}
+
+.badge-yellow {
+  background: rgba(245,158,11,.10);
+  border: 1px solid rgba(245,158,11,.20);
+  color: #B45309;
+}
 .badge-red    { background: var(--redbg);    border: 1px solid var(--redborder);    color: var(--red); }
 
 .svc-pill {
