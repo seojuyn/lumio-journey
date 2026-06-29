@@ -1673,3 +1673,15 @@
   font-weight: 500;
   color: var(--text2);
 }
+
+/* Force modal overlay on deployed build */
+.sc-modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+
+  background: rgba(32, 28, 48, 0.42) !important;
+
+  backdrop-filter: blur(34px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(34px) saturate(170%) !important;
+}
